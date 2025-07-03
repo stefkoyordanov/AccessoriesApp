@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AccessoriesApp.Data\AccessoriesApp.Data.csproj" />
+    <ProjectReference Include="..\AccessoriesApp.GCommon\AccessoriesApp.GCommon.csproj" />
+    <ProjectReference Include="..\AccessoriesApp.Web.ViewModels\AccessoriesApp.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

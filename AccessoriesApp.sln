@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessoriesApp.Web", "AccessoriesApp.Web\AccessoriesApp.Web.csproj", "{E708ED94-F723-495C-8AE7-1D0530837A51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{A107E98A-9B2D-43FC-B295-7DE6451364B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{CAE36826-534A-4FAB-91CA-BE8ABF699388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessoriesApp.Data", "AccessoriesApp.Data\AccessoriesApp.Data.csproj", "{D33EC270-988B-4B8C-815B-1764A4B04C1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessoriesApp.Data.Models", "AccessoriesApp.Data.Models\AccessoriesApp.Data.Models.csproj", "{B55A05AC-2A45-4042-9A91-3F92EB3E4623}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessoriesApp.Web.ViewModels", "AccessoriesApp.Web.ViewModels\AccessoriesApp.Web.ViewModels.csproj", "{E69DB94F-A989-4BB3-88DE-30EF1EECD5B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessoriesApp.GCommon", "AccessoriesApp.GCommon\AccessoriesApp.GCommon.csproj", "{EE1B8C6E-2ADA-4FF2-875E-7B67DB2CA80D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{671D588B-F589-456D-B34B-427F7CB182AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessoriesApp.Services", "AccessoriesApp.Services\AccessoriesApp.Services.csproj", "{3BB51E2A-28B6-47F1-B0CC-B3DC9EBB0E6D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E708ED94-F723-495C-8AE7-1D0530837A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E708ED94-F723-495C-8AE7-1D0530837A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E708ED94-F723-495C-8AE7-1D0530837A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E708ED94-F723-495C-8AE7-1D0530837A51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D33EC270-988B-4B8C-815B-1764A4B04C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D33EC270-988B-4B8C-815B-1764A4B04C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D33EC270-988B-4B8C-815B-1764A4B04C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D33EC270-988B-4B8C-815B-1764A4B04C1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B55A05AC-2A45-4042-9A91-3F92EB3E4623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B55A05AC-2A45-4042-9A91-3F92EB3E4623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B55A05AC-2A45-4042-9A91-3F92EB3E4623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B55A05AC-2A45-4042-9A91-3F92EB3E4623}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E69DB94F-A989-4BB3-88DE-30EF1EECD5B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E69DB94F-A989-4BB3-88DE-30EF1EECD5B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E69DB94F-A989-4BB3-88DE-30EF1EECD5B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E69DB94F-A989-4BB3-88DE-30EF1EECD5B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE1B8C6E-2ADA-4FF2-875E-7B67DB2CA80D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE1B8C6E-2ADA-4FF2-875E-7B67DB2CA80D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE1B8C6E-2ADA-4FF2-875E-7B67DB2CA80D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE1B8C6E-2ADA-4FF2-875E-7B67DB2CA80D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BB51E2A-28B6-47F1-B0CC-B3DC9EBB0E6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BB51E2A-28B6-47F1-B0CC-B3DC9EBB0E6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BB51E2A-28B6-47F1-B0CC-B3DC9EBB0E6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BB51E2A-28B6-47F1-B0CC-B3DC9EBB0E6D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E708ED94-F723-495C-8AE7-1D0530837A51} = {A107E98A-9B2D-43FC-B295-7DE6451364B1}
+		{D33EC270-988B-4B8C-815B-1764A4B04C1A} = {CAE36826-534A-4FAB-91CA-BE8ABF699388}
+		{B55A05AC-2A45-4042-9A91-3F92EB3E4623} = {CAE36826-534A-4FAB-91CA-BE8ABF699388}
+		{E69DB94F-A989-4BB3-88DE-30EF1EECD5B0} = {A107E98A-9B2D-43FC-B295-7DE6451364B1}
+		{3BB51E2A-28B6-47F1-B0CC-B3DC9EBB0E6D} = {671D588B-F589-456D-B34B-427F7CB182AD}
+	EndGlobalSection
+EndGlobal
