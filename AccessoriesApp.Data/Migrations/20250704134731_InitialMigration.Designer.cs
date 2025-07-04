@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessoriesApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250608131640_UpdateMigrationBGN2")]
-    partial class UpdateMigrationBGN2
+    [Migration("20250704134731_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,32 +27,44 @@ namespace AccessoriesApp.Data.Migrations
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.Accessory", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("int")
                         .HasComment("Accessory identifier");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int")
+                        .HasComment("Accessory category");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
                         .HasComment("Accessory description");
 
-                    b.Property<string>("ImageUrl")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)")
-                        .HasComment("Accessory image url from the image store");
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)")
+                        .HasComment("Accessory image file");
+
+                    b.Property<string>("ImageFileName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Accessory image file name");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasComment("Shows if Accessory is deleted");
 
-                    b.Property<decimal>("PriceEuro")
+                    b.Property<decimal>("PriceBGN")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)")
-                        .HasComment("Accessory price Euro");
+                        .HasComment("Accessory price BGN");
 
                     b.Property<DateOnly>("ReleaseDate")
                         .HasColumnType("date")
@@ -64,152 +76,55 @@ namespace AccessoriesApp.Data.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasComment("Accessory title");
 
-                    b.Property<string>("TypeAccessory")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasComment("Accessory type");
+                    b.Property<string>("TypeImage")
+                        .HasColumnType("nvarchar(max)")
+                        .HasComment("Accessory image file type");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Accessories", t =>
                         {
                             t.HasComment("Accessory in the system");
                         });
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("ae50a5ab-9642-466f-b528-3cc61071bb4c"),
-                            Description = "Размер: един\r\nМатерия: слама",
-                            ImageUrl = "verde_1743160657.jpg",
-                            IsDeleted = false,
-                            PriceEuro = 7.25m,
-                            ReleaseDate = new DateOnly(2005, 11, 1),
-                            Title = "Дамско бомбе 05-0000769 S мента",
-                            TypeAccessory = "Hats"
-                        },
-                        new
-                        {
-                            Id = new Guid("777634e2-3bb6-4748-8e91-7a10b70c78ac"),
-                            Description = "Размери:\r\nВисочина: 28 см,\r\nДължина: 16 см,\r\nШирина: 9 см.\r\n",
-                            ImageUrl = "verde_1743161112.jpg",
-                            IsDeleted = false,
-                            PriceEuro = 42.52m,
-                            ReleaseDate = new DateOnly(2001, 5, 1),
-                            Title = "Дамска раница16-0007678 бежова",
-                            TypeAccessory = "Bags"
-                        },
-                        new
-                        {
-                            Id = new Guid("68fb84b9-ef2a-402f-b4fc-595006f5c275"),
-                            Description = "Размери:\r\nВисочина: 38 см,\r\nДължина: 30 см,\r\nШирина: 12 см.",
-                            ImageUrl = "verde_1743160545.jpg",
-                            IsDeleted = false,
-                            PriceEuro = 52.52m,
-                            ReleaseDate = new DateOnly(2010, 7, 16),
-                            Title = "Дамска чанта 16-0007365 светло синя",
-                            TypeAccessory = "Bags"
-                        },
-                        new
-                        {
-                            Id = new Guid("02b52bb0-1c2b-49a4-ba66-6d33f81d38d1"),
-                            Description = "Размери:\r\nВисочина: 22 см,\r\nДължина: 28 см,\r\nШирина: 3 см.",
-                            ImageUrl = "verde_1743160301.jpg",
-                            IsDeleted = false,
-                            PriceEuro = 35.52m,
-                            ReleaseDate = new DateOnly(2008, 7, 18),
-                            Title = "Дамска чанта плик 01-0001795 лилава",
-                            TypeAccessory = "Bags"
-                        },
-                        new
-                        {
-                            Id = new Guid("16376cc6-b3e0-4bf7-a0e4-9cbd1490522c"),
-                            Description = "Форма на очила: правоъгълник.\r\nЦвят на леща: преливащ, сиво-кафяв нюанс.\r\nЦвят на рамка: сребрист.\r\nЗащита: поляризация. UV400",
-                            ImageUrl = "slancevi-ocila.jpg",
-                            IsDeleted = false,
-                            PriceEuro = 45.52m,
-                            ReleaseDate = new DateOnly(2014, 11, 7),
-                            Title = "Слънчеви очила HAVVS - преливащи лещи, преливаща метална рамка",
-                            TypeAccessory = "Glasses"
-                        },
-                        new
-                        {
-                            Id = new Guid("811a1a9e-61a8-4f6f-acb0-55a252c2b713"),
-                            Description = "Характеристики на очилата\r\nФорма на очила: правоъгълна.\r\nЦвят на леща: черен.\r\nЦвят на рамка: черен.\r\nМатериал на рамка: метал.\r\nЗащита: поляризация.\r\nНомер: TR8999.",
-                            ImageUrl = "mazki-slancevi-ocila-matrix-aviator",
-                            IsDeleted = false,
-                            PriceEuro = 42.47m,
-                            ReleaseDate = new DateOnly(2009, 12, 18),
-                            Title = "Мъжки слънчеви очила Тhom Richard с правоъгълна форма",
-                            TypeAccessory = "Glasses"
-                        },
-                        new
-                        {
-                            Id = new Guid("ab2c3213-48a7-41ea-9393-45c60ef813e6"),
-                            Description = "Цвят: Черно\r\nМатериал: Памук, Акрил\r\nРазмери: 31см. X 188см.\r\nСтил:  Ежедневен\r\nПол: Мъж",
-                            ImageUrl = "mazki-sal-mazki-shal.jpeg",
-                            IsDeleted = false,
-                            PriceEuro = 12.54m,
-                            ReleaseDate = new DateOnly(1997, 12, 19),
-                            Title = "Мъжки шал",
-                            TypeAccessory = "Scarves"
-                        },
-                        new
-                        {
-                            Id = new Guid("844d9abd-104d-41ab-b14a-ce059779ad91"),
-                            Description = "Цвят: Син\r\nМатериал: Памук, Акрил\r\nРазмери: 31см. X 188см.\r\nСтил:  Ежедневен\r\nПол: Мъж",
-                            ImageUrl = "mazki-mazki-image.jpeg",
-                            IsDeleted = false,
-                            PriceEuro = 15.45m,
-                            ReleaseDate = new DateOnly(1999, 3, 31),
-                            Title = "Мъжки двулицев шал",
-                            TypeAccessory = "Scarves"
-                        },
-                        new
-                        {
-                            Id = new Guid("54082f99-023b-4d68-89ac-44c00a0958d0"),
-                            Description = "Размери:\r\nВисочина: 160.00 см,\r\nШирина: 90.00 см.\r\n\r\nСъстав: памук",
-                            ImageUrl = "verde_1747042025_2.jpg",
-                            IsDeleted = false,
-                            PriceEuro = 17.56m,
-                            ReleaseDate = new DateOnly(1994, 7, 6),
-                            Title = "Плажна кърпа 61-0000027 оранжева",
-                            TypeAccessory = "Beachtowels"
-                        },
-                        new
-                        {
-                            Id = new Guid("bf9ff8b3-3209-4b18-9f4b-5172c45b73f9"),
-                            Description = "Размери:\r\nВисочина: 160.00 см,\r\nШирина: 90.00 см.\r\n\r\nСъстав: памук",
-                            ImageUrl = "verde_1747042020_2.jpg",
-                            IsDeleted = false,
-                            PriceEuro = 19.52m,
-                            ReleaseDate = new DateOnly(2000, 5, 5),
-                            Title = "Плажна кърпа 61-0000026 зелена",
-                            TypeAccessory = "Beachtowels"
-                        },
-                        new
-                        {
-                            Id = new Guid("e00208b1-cb12-4bd4-8ac1-36ab62f7b4c9"),
-                            Description = "Джоб/ове за хартиени пари: Джоб за монети: Вътрешни джобове.\r\nДжоб/ове за кредитни карти.Джоб за лична карта.\r\nМатериал: Екологична синтетична кожа.\r\n​Предлага се в подаръчна кутия.\r\n\r\nРазмери:\r\nВисочина: 19 см,\r\nДължина: 10 см,\r\nШирина: 3 см.",
-                            ImageUrl = "verde_1730297565.jpg",
-                            IsDeleted = false,
-                            PriceEuro = 18.78m,
-                            ReleaseDate = new DateOnly(1994, 9, 23),
-                            Title = "Дамско потртмоне 18-1291 бронз",
-                            TypeAccessory = "Purses"
-                        },
-                        new
-                        {
-                            Id = new Guid("4491b6f5-2a11-4c4c-8c6b-c371f47d2152"),
-                            Description = "Размери:\r\nВисочина: 9 см,\r\nДължина: 10 см,\r\nШирина: 2 см.\r\n\r\nДжоб за хартиени пари.\r\nДжоб за монети. Вътрешни джобове. Джоб за кредитни карти. Джоб за лична карта.\r\nМатериал: Екологична синтетична кожа.\r\nПредлага се в подаръчна кутия.",
-                            ImageUrl = "verde_1730297433.jpg",
-                            IsDeleted = false,
-                            PriceEuro = 16.47m,
-                            ReleaseDate = new DateOnly(1994, 10, 14),
-                            Title = "Pulp Fiction",
-                            TypeAccessory = "Purses"
-                        });
+            modelBuilder.Entity("AccessoriesApp.Data.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessory", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("Foreign key to the referenced AspNetUser. Part of the entity composite PK.");
+
+                    b.Property<int>("AccessoryId")
+                        .HasColumnType("int")
+                        .HasComment("Foreign key to the referenced Accessory. Part of the entity composite PK.");
+
+                    b.HasKey("UserId", "AccessoryId");
+
+                    b.HasIndex("AccessoryId");
+
+                    b.ToTable("UserAccessories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -414,6 +329,44 @@ namespace AccessoriesApp.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AccessoriesApp.Data.Models.Accessory", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AccessoriesApp.Data.Models.Category", "Category")
+                        .WithMany("Accessories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessory", b =>
+                {
+                    b.HasOne("AccessoriesApp.Data.Models.Accessory", "Accessory")
+                        .WithMany("UserAccessories")
+                        .HasForeignKey("AccessoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Accessory");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -463,6 +416,16 @@ namespace AccessoriesApp.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AccessoriesApp.Data.Models.Accessory", b =>
+                {
+                    b.Navigation("UserAccessories");
+                });
+
+            modelBuilder.Entity("AccessoriesApp.Data.Models.Category", b =>
+                {
+                    b.Navigation("Accessories");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,4 @@
-﻿using AccessoriesApp.Web.ViewModels.Accessory;
+﻿using AccessoriesApp.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,14 +12,14 @@ namespace AccessoriesApp.Services.Interfaces
 
         Task<IEnumerable<AccessoriesIndexViewModel>> GetAllAccessoriesAsync();
 
-        Task AddAccessoryAsync(AccessoriesFormInputModel inputModel);
+        //Task AddAccessoryAsync(AccessoriesFormInputModel inputModel);
 
-        Task<AccessoriesDetailsViewModel?> GetAccessoryDetailsByIdAsync(string? id);
+        Task<AccessoriesDetailsViewModel?> GetAccessoryDetailsByIdAsync(int id);
 
-        Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(string? id);
+        //Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(string? id);
 
-        Task<bool> EditAccessoryAsync(AccessoriesFormInputModel inputModel);
-        Task<int> DeleteAccessoryAsync(string? id);
+        //Task<bool> EditAccessoryAsync(AccessoriesFormInputModel inputModel);
+        //Task<int> DeleteAccessoryAsync(string? id);
 
     }
 }

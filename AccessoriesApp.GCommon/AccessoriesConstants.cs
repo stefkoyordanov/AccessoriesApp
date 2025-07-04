@@ -16,7 +16,13 @@ namespace AccessoriesApp.GCommon
         /// <summary>
         /// Accessory Title should be able to store text with length up to 100 characters.
         /// </summary>
-        public const int TitleMaxLength = 100;        
+        public const int TitleMaxLength = 100;
+
+        public const int CategoryMinLength = 2;
+
+        public const int CategoryMaxLength = 100;
+
+        
 
         /// <summary>
         /// Accessory Description must be at least 10 characters.
@@ -28,6 +34,9 @@ namespace AccessoriesApp.GCommon
         /// </summary>
         public const int DescriptionMaxLength = 1000;
 
-        
+        public const int CategoryNameMinLength = 3;
+        public const int CategoryNameMaxLength = 20;
     }
+
+
 }

@@ -1,13 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using AccessoriesApp.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AccessoriesApp.Data.Models;
-using static AccessoriesApp.Data.Common.EntityConstants.AccessoriesConstants;
-using System.Reflection.Emit;
 
 namespace AccessoriesApp.Data.Configuration
 {
@@ -15,87 +13,32 @@ namespace AccessoriesApp.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Accessory> builder)
         {
-            // Define the primary key of the Movie entity
-            builder
-                .HasKey(m => m.Id);
-
-            // Define constraints for the Title column
-            builder
-                .Property(m => m.Title)
-                .IsRequired()
-                .HasMaxLength(TitleMaxLength);
-
-            // Define constraints for the Genre column
-            builder
-                .Property(m => m.TypeAccessory)
-                .IsRequired()                
-                .HasMaxLength(TypeMaxLength);
-
-            // Define constraints for the ReleaseDate column
-            builder
-                .Property(m => m.ReleaseDate)
-                .IsRequired();
-
-            // Define constraints for the PriceEuro column
-            builder
-                .Property(m => m.PriceEuro)
-                .IsRequired()
-                .HasPrecision(18, 2); // (precision: total digits, scale: decimal places)
-
-            /*
             // Define constraints for the PriceBGN column
             builder
                 .Property(m => m.PriceBGN)
                 .IsRequired()
                 .HasPrecision(18, 2); // (precision: total digits, scale: decimal places)
-            */
 
-
-            builder
-            .Property(m => m.PriceBGN)
-            .IsRequired()
-            .HasPrecision(18, 2) // (precision: total digits, scale: decimal places)
-            .HasComputedColumnSql("CAST(ROUND([PriceEuro] / 1.95583, 2) AS decimal(18,2))");
-
-
-
-
-            // Define constraints for the Description column
-            builder
-                .Property(m => m.Description)
-                .IsRequired()
-                .HasMaxLength(DescriptionMaxLength);
-
-            // Define constraints for the ImageUrl column
-            builder
-                .Property(m => m.ImageUrl)
-                .IsRequired(false)
-                .HasMaxLength(ImageUrlMaxLength);
-
-            // Define constraints for the IsDeleted column
-            builder
-                .Property(m => m.IsDeleted)
-                .IsRequired()
-                .HasDefaultValue(false);
-
-
-            builder.HasData(SeedMovies());
+            //builder.HasData(SeedMovies());
         }
 
-
+        
+        /*
         public List<Accessory> SeedMovies()
         {
             List<Accessory> movies = new List<Accessory>()
             {
                 new Accessory()
                 {
-                    Id = Guid.Parse("ae50a5ab-9642-466f-b528-3cc61071bb4c"),
+                    Id = 1,
                     Title = "Дамско бомбе 05-0000769 S мента",
-                    TypeAccessory = "Hats",
+                    CategoryId = 1,
                     ReleaseDate = new DateOnly(2005, 11, 01),
-                    PriceEuro = 7.25m,
+                    PriceBGN = 7.25m,
                     Description = "Размер: един\r\nМатерия: слама",
-                    ImageUrl = "verde_1743160657.jpg"
+                    AuthorId="7699db7d-964f-4782-8209-d76562e0fece",
+                    IsDeleted = false
+
                 },
                 new Accessory()
                 {
@@ -211,8 +154,12 @@ namespace AccessoriesApp.Data.Configuration
 
             return movies;
         }
+        */
+
 
 
     }
+
+
 
 }

@@ -1,7 +1,7 @@
 ﻿using AccessoriesApp.Data;
 using AccessoriesApp.Data.Models;
 using AccessoriesApp.Services.Interfaces;
-using AccessoriesApp.Web.ViewModels.Accessory;
+using AccessoriesApp.Web.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using static AccessoriesApp.GCommon.ApplicationConstants;
@@ -22,16 +22,22 @@ namespace AccessoriesApp.Services
             IEnumerable<AccessoriesIndexViewModel> allAccessories = await this._dbContext
                 .Accessories
                 .AsNoTracking()
+                .Where(r => !r.IsDeleted)
+                .Include(r => r.Category)                
                 .Select(m => new AccessoriesIndexViewModel()
                 {
                     Id = m.Id.ToString(),
                     Title = m.Title,
-                    TypeAccessory = m.TypeAccessory,
+                    Description = m.Description,
+                    CategoryAccessory = m.Category.Name,
                     ReleaseDate = m.ReleaseDate.ToString(AppDateFormat),
+                    PriceBGN = m.PriceBGN.ToString(),
                     PriceEuro = m.PriceEuro.ToString(),
-                    ImageUrl = m.ImageUrl,
+                    //Image = m.Image,
                 })
                 .ToListAsync();
+
+            /*
             foreach (AccessoriesIndexViewModel movie in allAccessories)
             {
                 if (String.IsNullOrEmpty(movie.ImageUrl))
@@ -39,10 +45,37 @@ namespace AccessoriesApp.Services
                     movie.ImageUrl = $"/images/{NoImageUrl}";
                 }
             }
+            */
 
             return allAccessories;
         }
 
+        public async Task<AccessoriesDetailsViewModel?> GetAccessoryDetailsByIdAsync(int id)
+        {
+            AccessoriesDetailsViewModel? movieDetails = null;
+            
+                movieDetails = await this._dbContext
+                    .Accessories                    
+                    .AsNoTracking()
+                    .Where(m => m.Id == id && !m.IsDeleted)
+                    .Select(m => new AccessoriesDetailsViewModel()
+                    {
+                        Id = m.Id.ToString(),
+                        Title = m.Title,
+                        Description = m.Description,
+                        CategoryAccessory = m.Category.Name,                        
+                        ReleaseDate = m.ReleaseDate.ToString(AppDateFormat),
+                        PriceBGN = m.PriceBGN.ToString(),
+                        PriceEuro = m.PriceEuro.ToString(),
+                        //ImageUrl = m.ImageUrl ?? $"/images/{NoImageUrl}",
+                    })
+                    .SingleOrDefaultAsync();            
+
+            return movieDetails;
+        }
+
+
+        /*
         public async Task AddAccessoryAsync(AccessoriesFormInputModel inputModel)
         {
             Accessory newMovie = new Accessory()
@@ -60,35 +93,7 @@ namespace AccessoriesApp.Services
             await this._dbContext.Accessories.AddAsync(newMovie);
             await this._dbContext.SaveChangesAsync();
         }
-
-        public async Task<AccessoriesDetailsViewModel?> GetAccessoryDetailsByIdAsync(string? id)
-        {
-            AccessoriesDetailsViewModel? movieDetails = null;
-
-            bool isIdValidGuid = Guid.TryParse(id, out Guid movieId);
-            if (isIdValidGuid)
-            {
-                movieDetails = await this._dbContext
-                    .Accessories
-                    .AsNoTracking()
-                    .Where(m => m.Id == movieId)
-                    .Select(m => new AccessoriesDetailsViewModel()
-                    {
-                        Id = m.Id.ToString(),
-                        Description = m.Description,
-                        TypeAccessory = m.TypeAccessory,
-                        ImageUrl = m.ImageUrl ?? $"/images/{NoImageUrl}",
-                        ReleaseDate = m.ReleaseDate.ToString(AppDateFormat),
-                        PriceEuro = m.PriceEuro.ToString(),
-                        Title = m.Title
-                    })
-                    .SingleOrDefaultAsync();
-            }
-
-            return movieDetails;
-        }
-
-                
+                                
 
         public async Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(string? id)
         {
@@ -159,7 +164,7 @@ namespace AccessoriesApp.Services
             return countdeleted;
         }
 
-
+        */
 
 
     }

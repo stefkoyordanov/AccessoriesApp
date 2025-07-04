@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using AccessoriesApp.Data;
 using AccessoriesApp.Data.Models;
 using AccessoriesApp.Services.Interfaces;
-using AccessoriesApp.Web.ViewModels.Accessory;
 using static AccessoriesApp.Web.ViewModels.ValidationMessages.AccessoriesMessages;
+using AccessoriesApp.Web.ViewModels;
 
 
 
@@ -33,7 +33,7 @@ namespace AccessoriesApp.Web.Controllers
 
         // GET: Accessories/Details/5
         [HttpGet]
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Details(int id)
         {
             try
             {
@@ -56,6 +56,8 @@ namespace AccessoriesApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
         }
+
+        /*
 
         // GET: Accessories/Create
         public async Task<IActionResult> Create()
@@ -192,6 +194,8 @@ namespace AccessoriesApp.Web.Controllers
             
             return RedirectToAction(nameof(Index));
         }
+
+        */
 
         
     }

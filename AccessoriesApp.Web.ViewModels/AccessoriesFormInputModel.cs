@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using static AccessoriesApp.Data.Common.EntityConstants.AccessoriesConstants;
 using static AccessoriesApp.Web.ViewModels.ValidationMessages.AccessoriesMessages;
 using static AccessoriesApp.GCommon.ApplicationConstants;
+using static AccessoriesApp.GCommon.AccessoriesConstants;
 
-namespace AccessoriesApp.Web.ViewModels.Accessory
+namespace AccessoriesApp.Web.ViewModels
 {
     public class AccessoriesFormInputModel
     {
@@ -23,21 +23,19 @@ namespace AccessoriesApp.Web.ViewModels.Accessory
         public string Title { get; set; } = null!;
 
         [Required(ErrorMessage = TypeAccessoryRequiredMessage)]
-        [MinLength(TypeMinLength, ErrorMessage = TypeAccessoryMinLengthMessage)]
-        [MaxLength(TypeMaxLength, ErrorMessage = TypeAccessoryMaxLengthMessage)]
-        public string TypeAccessory { get; set; } = null!;
+        [MinLength(CategoryMinLength, ErrorMessage = TypeAccessoryMinLengthMessage)]
+        [MaxLength(CategoryMaxLength, ErrorMessage = TypeAccessoryMaxLengthMessage)]
+        public string CategoryAccessory { get; set; } = null!;
 
         [Required(ErrorMessage = ReleaseDateRequiredMessage)]
         public string ReleaseDate { get; set; } = null!;
         [Required(ErrorMessage = PriceEuroRequiredMessage)]
-        public string PriceEuro { get; set; } = null!;
+        public string PriceBGN { get; set; } = null!;
 
         [Required(ErrorMessage = DescriptionRequiredMessage)]
         [MinLength(DescriptionMinLength, ErrorMessage = DescriptionMinLengthMessage)]
         [MaxLength(DescriptionMaxLength, ErrorMessage = DescriptionMaxLengthMessage)]
         public string Description { get; set; } = null!;
-
-        [MaxLength(ImageUrlMaxLength, ErrorMessage = ImageUrlMaxLengthMessage)]
-        public string? ImageUrl { get; set; } = $"/images/{NoImageUrl}";
+        
     }
 }

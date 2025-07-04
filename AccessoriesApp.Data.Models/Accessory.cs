@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,18 +25,21 @@ namespace AccessoriesApp.Data.Models
         [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]
         public string Title { get; set; } = null!;
 
-        [Comment("Accessory type")]
+        [Comment("Accessory category")]
         [Required]
         public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
+        [Required]
         public Category Category { get; set; } = null!;
 
         [Comment("Accessory release date")]
+        [Required]
         public DateOnly ReleaseDate { get; set; }
                 
         [Comment("Accessory price BGN")]
-        public decimal PriceBGN { get; private set; }  // Mapped to computed column
+        [Required]
+        public decimal PriceBGN { get; set; }  
 
         [NotMapped]
         public decimal PriceEuro => PriceBGN / 1.95583m; // Calculated, not mapped to DB
@@ -46,15 +50,27 @@ namespace AccessoriesApp.Data.Models
         [StringLength(DescriptionMinLength, MinimumLength = DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
-        [Comment("Accessory image type")]
+        [Comment("Accessory image file name")]
+        public string? ImageFileName { get; set; }
+
+        [Comment("Accessory image file type")]
         public string? TypeImage{ get; set; }
 
         [Comment("Accessory image file")]
-        public byte[] Image { get; set; } 
+        public byte[] Image { get; set; }
+
+        [Required]
+        public string AuthorId { get; set; } = null!;
+
+
+        [ForeignKey(nameof(AuthorId))]
+        public IdentityUser Author { get; set; } = null!;
 
         // TODO: Extract the property with Id to BaseDeletableModel
         [Comment("Shows if Accessory is deleted")]
         public bool IsDeleted { get; set; }
+
+        public ICollection<UserAccessory> UserAccessories { get; set; } = new List<UserAccessory>();
 
     }
 }

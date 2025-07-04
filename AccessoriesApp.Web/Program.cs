@@ -24,6 +24,19 @@ namespace AccessoriesApp.Web
 
             builder.Services.AddScoped<IAccessoryService, AccessoryService>();
 
+            builder.Services.AddDefaultIdentity<IdentityUser>(
+                options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                })
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
