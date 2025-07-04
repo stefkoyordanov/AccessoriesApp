@@ -4,6 +4,7 @@ using AccessoriesApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessoriesApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250704195645_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,19 +91,6 @@ namespace AccessoriesApp.Data.Migrations
                     b.ToTable("Accessories", t =>
                         {
                             t.HasComment("Accessory in the system");
-                        });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AuthorId = "bda68b66-7ff7-43de-88b1-705b0181666d",
-                            CategoryId = 6,
-                            Description = "Размер: един\r\nМатерия: слама",
-                            IsDeleted = false,
-                            PriceBGN = 7.25m,
-                            ReleaseDate = new DateOnly(2005, 11, 1),
-                            Title = "Дамско бомбе 05-0000769 S мента"
                         });
                 });
 

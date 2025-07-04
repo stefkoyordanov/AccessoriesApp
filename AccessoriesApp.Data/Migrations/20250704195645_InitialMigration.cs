@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace AccessoriesApp.Data.Migrations
 {
     /// <inheritdoc />
@@ -176,14 +178,14 @@ namespace AccessoriesApp.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false, comment: "Accessory identifier")
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, comment: "Accessory title"),
-                    CategoryId = table.Column<int>(type: "int", nullable: false, comment: "Accessory category"),
+                    CategoryId = table.Column<int>(type: "int", nullable: false, comment: "Accessory CategoryId"),
                     ReleaseDate = table.Column<DateOnly>(type: "date", nullable: false, comment: "Accessory release date"),
                     PriceBGN = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false, comment: "Accessory price BGN"),
-                    Description = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false, comment: "Accessory description"),
-                    ImageFileName = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "Accessory image file name"),
-                    TypeImage = table.Column<string>(type: "nvarchar(max)", nullable: true, comment: "Accessory image file type"),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false, comment: "Accessory image file"),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false, comment: "Accessory description"),
+                    ImageFileName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "Accessory image file name"),
+                    TypeImage = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "Accessory image file type"),
+                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true, comment: "Accessory image file"),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false, comment: "Accessory AuthorId"),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if Accessory is deleted")
                 },
                 constraints: table =>
@@ -226,6 +228,19 @@ namespace AccessoriesApp.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Bags" },
+                    { 2, "Glasses" },
+                    { 3, "Scarves" },
+                    { 4, "Beachtowels" },
+                    { 5, "Purses" },
+                    { 6, "Hats" }
                 });
 
             migrationBuilder.CreateIndex(

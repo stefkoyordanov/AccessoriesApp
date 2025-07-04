@@ -25,12 +25,11 @@ namespace AccessoriesApp.Data.Models
         [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]
         public string Title { get; set; } = null!;
 
-        [Comment("Accessory category")]
+        [Comment("Accessory CategoryId")]
         [Required]
         public int CategoryId { get; set; }
 
-        [ForeignKey(nameof(CategoryId))]
-        [Required]
+        [ForeignKey(nameof(CategoryId))]        
         public Category Category { get; set; } = null!;
 
         [Comment("Accessory release date")]
@@ -42,23 +41,26 @@ namespace AccessoriesApp.Data.Models
         public decimal PriceBGN { get; set; }  
 
         [NotMapped]
-        public decimal PriceEuro => PriceBGN / 1.95583m; // Calculated, not mapped to DB
-
+        public decimal PriceEuro => Math.Round(PriceBGN / 1.95583m, 2); // Calculated, not mapped to DB
 
         [Comment("Accessory description")]
         [Required]
-        [StringLength(DescriptionMinLength, MinimumLength = DescriptionMaxLength)]
+        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; set; } = null!;
 
         [Comment("Accessory image file name")]
+        [StringLength(ImageFileNameMaxLength, MinimumLength = ImageFileNameMinLength)]
         public string? ImageFileName { get; set; }
 
         [Comment("Accessory image file type")]
+        [StringLength(TypeImageMaxLength, MinimumLength = TypeImageMinLength)]
         public string? TypeImage{ get; set; }
 
         [Comment("Accessory image file")]
-        public byte[] Image { get; set; }
+        public byte[]? Image { get; set; }
 
+
+        [Comment("Accessory AuthorId")]
         [Required]
         public string AuthorId { get; set; } = null!;
 
@@ -68,7 +70,7 @@ namespace AccessoriesApp.Data.Models
 
         // TODO: Extract the property with Id to BaseDeletableModel
         [Comment("Shows if Accessory is deleted")]
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public ICollection<UserAccessory> UserAccessories { get; set; } = new List<UserAccessory>();
 

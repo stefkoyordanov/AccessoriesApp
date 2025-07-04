@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessoriesApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250704134731_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250704200152_SeedMigration2")]
+    partial class SeedMigration2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,25 +36,26 @@ namespace AccessoriesApp.Data.Migrations
 
                     b.Property<string>("AuthorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("Accessory AuthorId");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int")
-                        .HasComment("Accessory category");
+                        .HasComment("Accessory CategoryId");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)")
                         .HasComment("Accessory description");
 
                     b.Property<byte[]>("Image")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)")
                         .HasComment("Accessory image file");
 
                     b.Property<string>("ImageFileName")
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
                         .HasComment("Accessory image file name");
 
                     b.Property<bool>("IsDeleted")
@@ -77,7 +78,8 @@ namespace AccessoriesApp.Data.Migrations
                         .HasComment("Accessory title");
 
                     b.Property<string>("TypeImage")
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
                         .HasComment("Accessory image file type");
 
                     b.HasKey("Id");
@@ -89,6 +91,19 @@ namespace AccessoriesApp.Data.Migrations
                     b.ToTable("Accessories", t =>
                         {
                             t.HasComment("Accessory in the system");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AuthorId = "bda68b66-7ff7-43de-88b1-705b0181666d",
+                            CategoryId = 6,
+                            Description = "Размер: един\r\nМатерия: слама",
+                            IsDeleted = false,
+                            PriceBGN = 7.25m,
+                            ReleaseDate = new DateOnly(2005, 11, 1),
+                            Title = "Дамско бомбе 05-0000769 S мента"
                         });
                 });
 
@@ -108,6 +123,38 @@ namespace AccessoriesApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Bags"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Glasses"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Scarves"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Beachtowels"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Purses"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Hats"
+                        });
                 });
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessory", b =>

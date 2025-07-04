@@ -25,7 +25,7 @@ namespace AccessoriesApp.Data.Configuration
                 new Category { Id = 3, Name = "Scarves" },
                 new Category { Id = 4, Name = "Beachtowels" },
                 new Category { Id = 5, Name = "Purses" },
-                new Category { Id = 6, Name = "Belts" }
+                new Category { Id = 6, Name = "Hats" }
             };
             return categories;
         }

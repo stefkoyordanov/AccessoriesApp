@@ -19,12 +19,12 @@ namespace AccessoriesApp.Data.Configuration
                 .IsRequired()
                 .HasPrecision(18, 2); // (precision: total digits, scale: decimal places)
 
-            //builder.HasData(SeedMovies());
+            builder.HasData(SeedAccessories());
         }
 
         
-        /*
-        public List<Accessory> SeedMovies()
+        
+        public List<Accessory> SeedAccessories()
         {
             List<Accessory> movies = new List<Accessory>()
             {
@@ -32,17 +32,18 @@ namespace AccessoriesApp.Data.Configuration
                 {
                     Id = 1,
                     Title = "Дамско бомбе 05-0000769 S мента",
-                    CategoryId = 1,
+                    CategoryId = 6,
                     ReleaseDate = new DateOnly(2005, 11, 01),
                     PriceBGN = 7.25m,
                     Description = "Размер: един\r\nМатерия: слама",
-                    AuthorId="7699db7d-964f-4782-8209-d76562e0fece",
+                    AuthorId="bda68b66-7ff7-43de-88b1-705b0181666d",
                     IsDeleted = false
 
-                },
+                } //,
+                /*
                 new Accessory()
                 {
-                    Id = Guid.Parse("777634e2-3bb6-4748-8e91-7a10b70c78ac"),
+                    Id = 2,
                     Title = "Дамска раница16-0007678 бежова",
                     TypeAccessory = "Bags",
                     ReleaseDate = new DateOnly(2001, 05, 01),
@@ -150,16 +151,19 @@ namespace AccessoriesApp.Data.Configuration
                     Description = "Размери:\r\nВисочина: 9 см,\r\nДължина: 10 см,\r\nШирина: 2 см.\r\n\r\nДжоб за хартиени пари.\r\nДжоб за монети. Вътрешни джобове. Джоб за кредитни карти. Джоб за лична карта.\r\nМатериал: Екологична синтетична кожа.\r\nПредлага се в подаръчна кутия.",
                     ImageUrl = "verde_1730297433.jpg"
                 }
+
+                */
             };
 
             return movies;
+
+                
         }
-        */
+
+
 
 
 
     }
-
-
 
 }
