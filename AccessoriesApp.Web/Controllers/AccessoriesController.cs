@@ -10,6 +10,7 @@ using AccessoriesApp.Data.Models;
 using AccessoriesApp.Services.Interfaces;
 using static AccessoriesApp.Web.ViewModels.ValidationMessages.AccessoriesMessages;
 using AccessoriesApp.Web.ViewModels;
+using static AccessoriesApp.GCommon.ApplicationConstants;
 
 
 
@@ -57,12 +58,29 @@ namespace AccessoriesApp.Web.Controllers
             }
         }
 
-        /*
+
 
         // GET: Accessories/Create
-        public async Task<IActionResult> Create()
+        [HttpGet]
+        public async Task<IActionResult> Add()
         {
-            return View();
+            var model = new AccessoriesFormInputModel
+            {
+                Categories = await GetCategoriesSelectList(),
+                ReleaseDate = DateTime.UtcNow.ToString(AppDateFormat),
+            };
+            return View(model);            
+        }
+
+        private async Task<IEnumerable<CategoryViewModel>> GetCategoriesSelectList()
+        {
+            var categories = await _accessoryService.GetAllCategoriesAsync();
+            return categories.Select(c => new CategoryViewModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+
+            });
         }
 
         // POST: Accessories/Create
@@ -70,16 +88,21 @@ namespace AccessoriesApp.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(AccessoriesFormInputModel inputModel)
+        public async Task<IActionResult> Add(AccessoriesFormInputModel inputModel)
         {
+            
             if (!this.ModelState.IsValid)
             {
+                inputModel.Categories = await GetCategoriesSelectList();
                 return this.View(inputModel);
-            }
+            }            
 
             try
             {
-                await this._accessoryService.AddAccessoryAsync(inputModel);
+
+                string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                //string userId = "";
+                bool? addResult = await this._accessoryService.AddAccessoryAsync(inputModel, userId);
 
                 return this.RedirectToAction(nameof(Index));
             }
@@ -88,11 +111,14 @@ namespace AccessoriesApp.Web.Controllers
                 // TODO: Implement it with the ILogger
                 Console.WriteLine(e.Message);
 
-                this.ModelState.AddModelError(string.Empty, ServiceCreateError);
+                this.ModelState.AddModelError(string.Empty, e.InnerException.Message);
+                inputModel.Categories = await GetCategoriesSelectList();
                 return this.View(inputModel);
             }
+            
         }
 
+        /*
         // GET: Accessories/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
@@ -197,6 +223,6 @@ namespace AccessoriesApp.Web.Controllers
 
         */
 
-        
+
     }
 }

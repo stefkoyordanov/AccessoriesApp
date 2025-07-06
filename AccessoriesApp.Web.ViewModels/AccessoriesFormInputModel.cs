@@ -21,21 +21,25 @@ namespace AccessoriesApp.Web.ViewModels
         [MinLength(TitleMinLength, ErrorMessage = TitleMinLengthMessage)]
         [MaxLength(TitleMaxLength, ErrorMessage = TitleMaxLengthMessage)]
         public string Title { get; set; } = null!;
+                
+        [Required]
+        [Display(Name = "Category")]
+        public int CategoryId { get; set; }
 
-        [Required(ErrorMessage = TypeAccessoryRequiredMessage)]
-        [MinLength(CategoryMinLength, ErrorMessage = TypeAccessoryMinLengthMessage)]
-        [MaxLength(CategoryMaxLength, ErrorMessage = TypeAccessoryMaxLengthMessage)]
-        public string CategoryAccessory { get; set; } = null!;
+        public IEnumerable<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
 
         [Required(ErrorMessage = ReleaseDateRequiredMessage)]
         public string ReleaseDate { get; set; } = null!;
         [Required(ErrorMessage = PriceEuroRequiredMessage)]
+
         public string PriceBGN { get; set; } = null!;
 
         [Required(ErrorMessage = DescriptionRequiredMessage)]
         [MinLength(DescriptionMinLength, ErrorMessage = DescriptionMinLengthMessage)]
         [MaxLength(DescriptionMaxLength, ErrorMessage = DescriptionMaxLengthMessage)]
         public string Description { get; set; } = null!;
-        
+
+        public byte[]? Image { get; set; }
+
     }
 }

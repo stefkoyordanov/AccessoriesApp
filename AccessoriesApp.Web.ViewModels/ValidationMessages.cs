@@ -9,9 +9,9 @@
             public const string TitleMinLengthMessage = "Title must be at least 2 characters.";
             public const string TitleMaxLengthMessage = "Title cannot exceed 100 characters.";
 
-            public const string TypeAccessoryRequiredMessage = "Type accessory is required.";
-            public const string TypeAccessoryMinLengthMessage = "Type accessory must be at least 3 characters.";
-            public const string TypeAccessoryMaxLengthMessage = "Type accessory cannot exceed 50 characters.";
+            public const string CategoryAccessoryRequiredMessage = "Category accessory is required.";
+            public const string CategoryAccessoryMinLengthMessage = "Category accessory must be at least 3 characters.";
+            public const string CategoryAccessoryMaxLengthMessage = "Category accessory cannot exceed 50 characters.";
 
             public const string ReleaseDateRequiredMessage = "Release date is required.";
             public const string PriceEuroRequiredMessage = "Price Euro is required.";

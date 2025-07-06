@@ -17,6 +17,17 @@ namespace AccessoriesApp.Services
             _dbContext = dbContext;
         }
 
+        public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
+        {
+            return await _dbContext.Categories
+                .Select(c => new CategoryViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<AccessoriesIndexViewModel>> GetAllAccessoriesAsync()
         {
             IEnumerable<AccessoriesIndexViewModel> allAccessories = await this._dbContext
@@ -75,26 +86,32 @@ namespace AccessoriesApp.Services
         }
 
 
-        /*
-        public async Task AddAccessoryAsync(AccessoriesFormInputModel inputModel)
+        
+        public async Task<bool> AddAccessoryAsync(AccessoriesFormInputModel inputModel,string userId)
         {
-            Accessory newMovie = new Accessory()
+            bool opResult = false;
+            Accessory newAccessory = new Accessory()
             {
                 Title = inputModel.Title,
-                TypeAccessory = inputModel.TypeAccessory,
-                PriceEuro = Convert.ToDecimal(inputModel.PriceEuro),
-                Description = inputModel.Description,
-                ImageUrl = inputModel.ImageUrl,
+                CategoryId = inputModel.CategoryId,
                 ReleaseDate = DateOnly
                     .ParseExact(inputModel.ReleaseDate, AppDateFormat,
                         CultureInfo.InvariantCulture, DateTimeStyles.None),
+                PriceBGN = Convert.ToDecimal(inputModel.PriceBGN),
+                Description = inputModel.Description,
+                Image = inputModel.Image,
+                AuthorId = userId
+
             };
 
-            await this._dbContext.Accessories.AddAsync(newMovie);
+            await this._dbContext.Accessories.AddAsync(newAccessory);
             await this._dbContext.SaveChangesAsync();
-        }
-                                
+            opResult = true;
 
+            return opResult;
+        }
+
+        /*
         public async Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(string? id)
         {
             AccessoriesFormInputModel? editableMovie = null;

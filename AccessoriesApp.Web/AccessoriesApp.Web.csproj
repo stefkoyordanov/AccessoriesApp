@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AccessoriesApp.Data\AccessoriesApp.Data.csproj" />
+    <ProjectReference Include="..\AccessoriesApp.GCommon\AccessoriesApp.GCommon.csproj" />
     <ProjectReference Include="..\AccessoriesApp.Services\AccessoriesApp.Services.csproj" />
     <ProjectReference Include="..\AccessoriesApp.Web.ViewModels\AccessoriesApp.Web.ViewModels.csproj" />
   </ItemGroup>
