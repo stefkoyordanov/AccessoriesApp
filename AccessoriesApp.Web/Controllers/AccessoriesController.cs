@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AccessoriesApp.Data;
+using AccessoriesApp.Data.Models;
+using AccessoriesApp.Services.Interfaces;
+using AccessoriesApp.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AccessoriesApp.Data;
-using AccessoriesApp.Data.Models;
-using AccessoriesApp.Services.Interfaces;
-using static AccessoriesApp.Web.ViewModels.ValidationMessages.AccessoriesMessages;
-using AccessoriesApp.Web.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Drawing.Printing;
+using System.Linq;
+using System.Threading.Tasks;
 using static AccessoriesApp.GCommon.ApplicationConstants;
+using static AccessoriesApp.Web.ViewModels.ValidationMessages.AccessoriesMessages;
 
 
 
@@ -27,9 +28,30 @@ namespace AccessoriesApp.Web.Controllers
 
         // GET: Accessories
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 8)
         {
-            return View(await _accessoryService.GetAllAccessoriesAsync());
+            string? userId = User.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
+
+            var accessories = await _accessoryService.GetAllAccessoriesAsync(userId);
+
+            var totalItems = accessories.Count();
+            var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
+            var items = accessories
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            var viewModel = new PagedViewModel<AccessoriesIndexViewModel>
+            {
+                Items = items,
+                CurrentPage = page,
+                TotalPages = totalPages
+            };
+
+
+
+            return View(viewModel);
         }
 
         // GET: Accessories/Details/5
@@ -90,7 +112,17 @@ namespace AccessoriesApp.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(AccessoriesFormInputModel inputModel)
         {
-            
+
+            if (inputModel.File != null && inputModel.File.Length > 0)
+            {
+                MemoryStream memoryStream = new MemoryStream();
+                await inputModel.File.CopyToAsync(memoryStream);
+
+                inputModel.ImageFileName = inputModel.File.FileName;
+                inputModel.TypeImage = inputModel.File.ContentType;
+                inputModel.Data = memoryStream.ToArray();
+            }
+
             if (!this.ModelState.IsValid)
             {
                 inputModel.Categories = await GetCategoriesSelectList();
@@ -99,9 +131,9 @@ namespace AccessoriesApp.Web.Controllers
 
             try
             {
-
-                string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 //string userId = "";
+                string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                
                 bool? addResult = await this._accessoryService.AddAccessoryAsync(inputModel, userId);
 
                 return this.RedirectToAction(nameof(Index));

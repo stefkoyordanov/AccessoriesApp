@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using static AccessoriesApp.Web.ViewModels.ValidationMessages.AccessoriesMessages;
 using static AccessoriesApp.GCommon.ApplicationConstants;
 using static AccessoriesApp.GCommon.AccessoriesConstants;
+using Microsoft.AspNetCore.Http;
+
 
 namespace AccessoriesApp.Web.ViewModels
 {
@@ -30,8 +32,9 @@ namespace AccessoriesApp.Web.ViewModels
 
         [Required(ErrorMessage = ReleaseDateRequiredMessage)]
         public string ReleaseDate { get; set; } = null!;
-        [Required(ErrorMessage = PriceEuroRequiredMessage)]
 
+        [Required]
+        [Range(0.01, 999999.99, ErrorMessage = "Please enter a valid BGN price.")]
         public string PriceBGN { get; set; } = null!;
 
         [Required(ErrorMessage = DescriptionRequiredMessage)]
@@ -39,7 +42,11 @@ namespace AccessoriesApp.Web.ViewModels
         [MaxLength(DescriptionMaxLength, ErrorMessage = DescriptionMaxLengthMessage)]
         public string Description { get; set; } = null!;
 
-        public byte[]? Image { get; set; }
+        public string? ImageFileName { get; set; }               
+        public string? TypeImage { get; set; }
+
+        public byte[]? Data { get; set; }
+        public IFormFile? File { get; set; }
 
     }
 }

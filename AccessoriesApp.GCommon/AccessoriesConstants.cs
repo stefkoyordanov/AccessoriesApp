@@ -32,7 +32,7 @@ namespace AccessoriesApp.GCommon
         /// <summary>
         /// Accessory Description should be able to store text with length up to 1000 characters.
         /// </summary>
-        public const int DescriptionMaxLength = 1000;
+        public const int DescriptionMaxLength = 500;
 
         public const int ImageFileNameMinLength = 1;
         public const int ImageFileNameMaxLength = 500;

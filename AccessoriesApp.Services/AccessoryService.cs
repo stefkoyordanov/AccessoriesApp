@@ -28,13 +28,14 @@ namespace AccessoriesApp.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<AccessoriesIndexViewModel>> GetAllAccessoriesAsync()
+        public async Task<IEnumerable<AccessoriesIndexViewModel>> GetAllAccessoriesAsync(string? userId)
         {
             IEnumerable<AccessoriesIndexViewModel> allAccessories = await this._dbContext
                 .Accessories
                 .AsNoTracking()
                 .Where(r => !r.IsDeleted)
-                .Include(r => r.Category)                
+                .Include(r => r.Category)
+                .Include(r => r.UserAccessories)
                 .Select(m => new AccessoriesIndexViewModel()
                 {
                     Id = m.Id.ToString(),
@@ -44,7 +45,12 @@ namespace AccessoriesApp.Services
                     ReleaseDate = m.ReleaseDate.ToString(AppDateFormat),
                     PriceBGN = m.PriceBGN.ToString(),
                     PriceEuro = m.PriceEuro.ToString(),
-                    //Image = m.Image,
+                    Image = m.Image,
+
+                    IsAuthor = userId != null && m.AuthorId == userId,
+                    IsSaved = userId != null && m.UserAccessories.Any(ur => ur.UserId == userId),
+                    SavedCount = m.UserAccessories.Count
+
                 })
                 .ToListAsync();
 
@@ -99,9 +105,10 @@ namespace AccessoriesApp.Services
                         CultureInfo.InvariantCulture, DateTimeStyles.None),
                 PriceBGN = Convert.ToDecimal(inputModel.PriceBGN),
                 Description = inputModel.Description,
-                Image = inputModel.Image,
+                ImageFileName = inputModel.ImageFileName,
+                TypeImage = inputModel.TypeImage,
+                Image = inputModel.Data,
                 AuthorId = userId
-
             };
 
             await this._dbContext.Accessories.AddAsync(newAccessory);

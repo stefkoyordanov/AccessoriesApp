@@ -68,7 +68,7 @@ namespace AccessoriesApp.Data.Models
         [ForeignKey(nameof(AuthorId))]
         public IdentityUser Author { get; set; } = null!;
 
-        // TODO: Extract the property with Id to BaseDeletableModel
+        
         [Comment("Shows if Accessory is deleted")]
         public bool IsDeleted { get; set; } = false;
 

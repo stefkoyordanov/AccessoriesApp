@@ -14,11 +14,11 @@
             public const string CategoryAccessoryMaxLengthMessage = "Category accessory cannot exceed 50 characters.";
 
             public const string ReleaseDateRequiredMessage = "Release date is required.";
-            public const string PriceEuroRequiredMessage = "Price Euro is required.";
+            public const string PriceBGNRequiredMessage = "Price BGN is required.";
             
             public const string DescriptionRequiredMessage = "Description is required.";
-            public const string DescriptionMinLengthMessage = "Description must be at least 10 characters.";
-            public const string DescriptionMaxLengthMessage = "Description cannot exceed 1000 characters.";
+            public const string DescriptionMinLengthMessage = "Description must be at least 5 characters.";
+            public const string DescriptionMaxLengthMessage = "Description cannot exceed 500 characters.";
 
             public const string DurationRequiredMessage = "Duration is required.";
             public const string DurationRangeMessage = "Duration must be between 1 and 300 minutes.";

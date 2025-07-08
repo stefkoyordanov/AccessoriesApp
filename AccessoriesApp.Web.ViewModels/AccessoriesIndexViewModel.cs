@@ -20,6 +20,11 @@ namespace AccessoriesApp.Web.ViewModels
         public string Description { get; set; } = null!;        
         public byte[]? Image { get; set; }
 
+        public bool IsAuthor { get; set; } // Determines if the logged-in user is the author
+
+        public bool IsSaved { get; set; } // Determines if the accessory is in the user's favorites
+        public long SavedCount { get; set; }
+
     }
 }
 
