@@ -13,13 +13,15 @@ namespace AccessoriesApp.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Accessory> builder)
         {
+            /*
             // Define constraints for the PriceBGN column
             builder
                 .Property(m => m.PriceBGN)
                 .IsRequired()
                 .HasPrecision(18, 2); // (precision: total digits, scale: decimal places)
+            */
 
-            builder.HasData(SeedAccessories());
+            //builder.HasData(SeedAccessories());
         }
 
         

@@ -18,6 +18,7 @@ namespace AccessoriesApp.Data.Models
     public class Accessory
     {        
         [Comment("Accessory identifier")]
+        [Key]
         public int Id { get; set; }
 
         [Comment("Accessory title")]
@@ -37,6 +38,7 @@ namespace AccessoriesApp.Data.Models
         public DateOnly ReleaseDate { get; set; }
                 
         [Comment("Accessory price BGN")]
+        [Precision(18, 2)]  // Total 18 digits, 2 after the decimal point
         [Required]
         public decimal PriceBGN { get; set; }  
 
@@ -72,7 +74,8 @@ namespace AccessoriesApp.Data.Models
         [Comment("Shows if Accessory is deleted")]
         public bool IsDeleted { get; set; } = false;
 
-        public ICollection<UserAccessory> UserAccessories { get; set; } = new List<UserAccessory>();
+        public ICollection<UserAccessories> UserAccessories { get; set; } = new List<UserAccessories>();
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
     }
 }

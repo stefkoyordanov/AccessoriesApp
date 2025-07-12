@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AccessoriesApp.Data.Models
 {
-    public class UserAccessory
+    public class UserAccessories
     {
         [Comment("Foreign key to the referenced AspNetUser. Part of the entity composite PK.")]
         [Key]

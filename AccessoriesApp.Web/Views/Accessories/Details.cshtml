@@ -7,60 +7,62 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>Accessory</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryAccessory)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryAccessory)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReleaseDate)
-        </dd>
+@{
+    ViewData["Title"] = "Recipe Details";
+}
 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PriceBGN)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PriceBGN)
-        </dd>
-
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PriceEuro)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PriceEuro)
-        </dd>
-
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        
-        
-    </dl>
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<hr />
+
+<div class="row justify-content-center" style="margin: 0 auto; max-width: 800px;">
+    <div class="col-md-4 text-center">
+        @if (Model.Image != null)
+        {
+            <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Image)" class="img-fluid w-100 h-100 object-fit-cover" alt="@Model.Title" />
+        }
+        else
+        {
+            <img src="~/images/default-image.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
+        }
+    </div>
+
+    <div class="col-md-8">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Title</h5>
+            <hr />
+            <p class="card-text">@Model.Description</p>
+            <hr />
+            <p class="card-text"><small class="text-muted">Category: @Model.CategoryName</small></p>
+            <p class="card-text"><small class="text-muted">Created On: @Model.ReleaseDate.ToString("dd-MM-yyyy")</small></p>
+            <p class="card-text"><small class="text-muted">Author: @Model.AuthorUserName</small></p>
+            <hr />
+        </div>
+        <div class="card-footer text-center">
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1" onclick="history.back()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                @if (User?.Identity?.IsAuthenticated == true && !Model.IsAuthor && !Model.IsSaved)
+                {
+                    <form asp-controller="Accessories" asp-action="Save" method="post" class="d-flex justify-content-center align-items-center flex-fill mx-1">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-heart"></i> Add to Favorites
+                        </button>
+                    </form>
+                }
+                @if (Model.IsAuthor)
+                {
+                    <a asp-controller="Accessories" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a asp-controller="Accessories" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
 </div>

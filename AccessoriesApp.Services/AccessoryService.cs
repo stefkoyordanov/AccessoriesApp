@@ -20,6 +20,7 @@ namespace AccessoriesApp.Services
         public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
         {
             return await _dbContext.Categories
+                .Where(r => r.IsActive)
                 .Select(c => new CategoryViewModel
                 {
                     Id = c.Id,
@@ -41,7 +42,7 @@ namespace AccessoriesApp.Services
                     Id = m.Id.ToString(),
                     Title = m.Title,
                     Description = m.Description,
-                    CategoryAccessory = m.Category.Name,
+                    CategoryName = m.Category.Name,
                     ReleaseDate = m.ReleaseDate.ToString(AppDateFormat),
                     PriceBGN = m.PriceBGN.ToString(),
                     PriceEuro = m.PriceEuro.ToString(),
@@ -80,11 +81,11 @@ namespace AccessoriesApp.Services
                         Id = m.Id.ToString(),
                         Title = m.Title,
                         Description = m.Description,
-                        CategoryAccessory = m.Category.Name,                        
-                        ReleaseDate = m.ReleaseDate.ToString(AppDateFormat),
+                        CategoryName = m.Category.Name,                        
+                        ReleaseDate = m.ReleaseDate,
                         PriceBGN = m.PriceBGN.ToString(),
                         PriceEuro = m.PriceEuro.ToString(),
-                        //ImageUrl = m.ImageUrl ?? $"/images/{NoImageUrl}",
+                        Image = m.Image                        
                     })
                     .SingleOrDefaultAsync();            
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace AccessoriesApp.Data.Models
         [Required]
         [StringLength(CategoryNameMaxLength, MinimumLength = CategoryNameMinLength)]
         public string Name { get; set; } = null!;
+
+        [Comment("Shows if Category is active")]
+        public bool IsActive { get; set; } = false;
 
         public ICollection<Accessory> Accessories { get; set; } = new List<Accessory>();
     }

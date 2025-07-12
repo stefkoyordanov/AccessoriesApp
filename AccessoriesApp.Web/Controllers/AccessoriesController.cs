@@ -97,12 +97,7 @@ namespace AccessoriesApp.Web.Controllers
         private async Task<IEnumerable<CategoryViewModel>> GetCategoriesSelectList()
         {
             var categories = await _accessoryService.GetAllCategoriesAsync();
-            return categories.Select(c => new CategoryViewModel
-            {
-                Id = c.Id,
-                Name = c.Name,
-
-            });
+            return categories;
         }
 
         // POST: Accessories/Create

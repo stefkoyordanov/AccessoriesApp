@@ -58,7 +58,8 @@ namespace AccessoriesApp.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if Category is active")
                 },
                 constraints: table =>
                 {
@@ -181,7 +182,7 @@ namespace AccessoriesApp.Data.Migrations
                     CategoryId = table.Column<int>(type: "int", nullable: false, comment: "Accessory CategoryId"),
                     ReleaseDate = table.Column<DateOnly>(type: "date", nullable: false, comment: "Accessory release date"),
                     PriceBGN = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false, comment: "Accessory price BGN"),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false, comment: "Accessory description"),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, comment: "Accessory description"),
                     ImageFileName = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "Accessory image file name"),
                     TypeImage = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true, comment: "Accessory image file type"),
                     Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true, comment: "Accessory image file"),
@@ -207,6 +208,36 @@ namespace AccessoriesApp.Data.Migrations
                 comment: "Accessory in the system");
 
             migrationBuilder.CreateTable(
+                name: "OrderItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderItemUserId = table.Column<string>(type: "nvarchar(450)", nullable: false, comment: "Foreign key to the referenced AspNetUser."),
+                    OrderItemAccessoryId = table.Column<int>(type: "int", nullable: false, comment: "Foreign key to the referenced Accessory."),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    PriceBGN = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    IsOrderItemIsActive = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the OrderItem has been fulfilled is active"),
+                    IsOrderItemFulfilled = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been fulfilled is active")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Accessories_OrderItemAccessoryId",
+                        column: x => x.OrderItemAccessoryId,
+                        principalTable: "Accessories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderItem_AspNetUsers_OrderItemUserId",
+                        column: x => x.OrderItemUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserAccessories",
                 columns: table => new
                 {
@@ -230,17 +261,46 @@ namespace AccessoriesApp.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderUserId = table.Column<string>(type: "nvarchar(450)", nullable: false, comment: "Foreign key to the referenced AspNetUser."),
+                    OrderItemId = table.Column<int>(type: "int", nullable: false, comment: "Foreign key to the referenced OrderItem."),
+                    CreatedOn = table.Column<DateOnly>(type: "date", nullable: false),
+                    TotalPriceBGN = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    IsOrderFulfilled = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been fulfilled is active")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Order_AspNetUsers_OrderUserId",
+                        column: x => x.OrderUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Order_OrderItem_OrderItemId",
+                        column: x => x.OrderItemId,
+                        principalTable: "OrderItem",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "Name" },
+                columns: new[] { "Id", "IsActive", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Bags" },
-                    { 2, "Glasses" },
-                    { 3, "Scarves" },
-                    { 4, "Beachtowels" },
-                    { 5, "Purses" },
-                    { 6, "Hats" }
+                    { 1, false, "Bags" },
+                    { 2, false, "Glasses" },
+                    { 3, false, "Scarves" },
+                    { 4, false, "Beachtowels" },
+                    { 5, false, "Purses" },
+                    { 6, false, "Hats" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -293,6 +353,27 @@ namespace AccessoriesApp.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Order_OrderItemId",
+                table: "Order",
+                column: "OrderItemId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_OrderUserId",
+                table: "Order",
+                column: "OrderUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_OrderItemAccessoryId",
+                table: "OrderItem",
+                column: "OrderItemAccessoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_OrderItemUserId",
+                table: "OrderItem",
+                column: "OrderItemUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserAccessories_AccessoryId",
                 table: "UserAccessories",
                 column: "AccessoryId");
@@ -317,10 +398,16 @@ namespace AccessoriesApp.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Order");
+
+            migrationBuilder.DropTable(
                 name: "UserAccessories");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "OrderItem");
 
             migrationBuilder.DropTable(
                 name: "Accessories");

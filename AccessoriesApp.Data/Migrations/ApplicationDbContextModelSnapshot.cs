@@ -42,8 +42,8 @@ namespace AccessoriesApp.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
                         .HasComment("Accessory description");
 
                     b.Property<byte[]>("Image")
@@ -89,19 +89,6 @@ namespace AccessoriesApp.Data.Migrations
                         {
                             t.HasComment("Accessory in the system");
                         });
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AuthorId = "bda68b66-7ff7-43de-88b1-705b0181666d",
-                            CategoryId = 6,
-                            Description = "Размер: един\r\nМатерия: слама",
-                            IsDeleted = false,
-                            PriceBGN = 7.25m,
-                            ReleaseDate = new DateOnly(2005, 11, 1),
-                            Title = "Дамско бомбе 05-0000769 S мента"
-                        });
                 });
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.Category", b =>
@@ -111,6 +98,10 @@ namespace AccessoriesApp.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasComment("Shows if Category is active");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -125,36 +116,121 @@ namespace AccessoriesApp.Data.Migrations
                         new
                         {
                             Id = 1,
+                            IsActive = false,
                             Name = "Bags"
                         },
                         new
                         {
                             Id = 2,
+                            IsActive = false,
                             Name = "Glasses"
                         },
                         new
                         {
                             Id = 3,
+                            IsActive = false,
                             Name = "Scarves"
                         },
                         new
                         {
                             Id = 4,
+                            IsActive = false,
                             Name = "Beachtowels"
                         },
                         new
                         {
                             Id = 5,
+                            IsActive = false,
                             Name = "Purses"
                         },
                         new
                         {
                             Id = 6,
+                            IsActive = false,
                             Name = "Hats"
                         });
                 });
 
-            modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessory", b =>
+            modelBuilder.Entity("AccessoriesApp.Data.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("CreatedOn")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsOrderFulfilled")
+                        .HasColumnType("bit")
+                        .HasComment("Shows if the Order has been fulfilled is active");
+
+                    b.Property<int>("OrderItemId")
+                        .HasColumnType("int")
+                        .HasComment("Foreign key to the referenced OrderItem.");
+
+                    b.Property<string>("OrderUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("Foreign key to the referenced AspNetUser.");
+
+                    b.Property<decimal>("TotalPriceBGN")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderItemId")
+                        .IsUnique();
+
+                    b.HasIndex("OrderUserId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("AccessoriesApp.Data.Models.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsOrderItemFulfilled")
+                        .HasColumnType("bit")
+                        .HasComment("Shows if the Order has been fulfilled is active");
+
+                    b.Property<bool>("IsOrderItemIsActive")
+                        .HasColumnType("bit")
+                        .HasComment("Shows if the OrderItem has been fulfilled is active");
+
+                    b.Property<int>("OrderItemAccessoryId")
+                        .HasColumnType("int")
+                        .HasComment("Foreign key to the referenced Accessory.");
+
+                    b.Property<string>("OrderItemUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("Foreign key to the referenced AspNetUser.");
+
+                    b.Property<decimal>("PriceBGN")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderItemAccessoryId");
+
+                    b.HasIndex("OrderItemUserId");
+
+                    b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessories", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)")
@@ -392,7 +468,45 @@ namespace AccessoriesApp.Data.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessory", b =>
+            modelBuilder.Entity("AccessoriesApp.Data.Models.Order", b =>
+                {
+                    b.HasOne("AccessoriesApp.Data.Models.OrderItem", "OrderItem")
+                        .WithOne("Order")
+                        .HasForeignKey("AccessoriesApp.Data.Models.Order", "OrderItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "OrderUser")
+                        .WithMany()
+                        .HasForeignKey("OrderUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("OrderItem");
+
+                    b.Navigation("OrderUser");
+                });
+
+            modelBuilder.Entity("AccessoriesApp.Data.Models.OrderItem", b =>
+                {
+                    b.HasOne("AccessoriesApp.Data.Models.Accessory", "OrderItemAccessory")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderItemAccessoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "OrderItemUser")
+                        .WithMany()
+                        .HasForeignKey("OrderItemUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("OrderItemAccessory");
+
+                    b.Navigation("OrderItemUser");
+                });
+
+            modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessories", b =>
                 {
                     b.HasOne("AccessoriesApp.Data.Models.Accessory", "Accessory")
                         .WithMany("UserAccessories")
@@ -464,12 +578,20 @@ namespace AccessoriesApp.Data.Migrations
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.Accessory", b =>
                 {
+                    b.Navigation("OrderItems");
+
                     b.Navigation("UserAccessories");
                 });
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.Category", b =>
                 {
                     b.Navigation("Accessories");
+                });
+
+            modelBuilder.Entity("AccessoriesApp.Data.Models.OrderItem", b =>
+                {
+                    b.Navigation("Order")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
