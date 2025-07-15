@@ -59,7 +59,7 @@ namespace AccessoriesApp.Web.Controllers
             }
 
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            await _orderItemService.AddToOrderItemAsync(model, userId);
+            await _orderItemService.AddToOrderItem_OrderAsync(model, userId);
 
             return RedirectToAction(nameof(Index));
         }
@@ -106,6 +106,7 @@ namespace AccessoriesApp.Web.Controllers
             }
             return View(item);
         }
+
 
         // POST: Accessories/Delete/5
         [HttpPost, ActionName("Delete")]

@@ -46,7 +46,7 @@ namespace AccessoriesApp.Data.Models
         public decimal PriceBGN { get; set; }
 
         [Comment("Shows if the OrderItem has been fulfilled is active")]
-        public bool IsOrderItemIsActive { get; set; } = false;
+        public bool IsOrderItemIsActive { get; set; } = true;
 
         [Comment("Shows if the Order has been fulfilled is active")]
         public bool IsOrderItemFulfilled { get; set; } = false;

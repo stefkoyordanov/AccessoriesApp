@@ -157,7 +157,8 @@ namespace AccessoriesApp.Services
         public async Task<bool> EditAccessoryAsync(AccessoriesFormInputModel inputModel)
         {
             Accessory? editableMovie = await this._dbContext
-                .Accessories
+                .Accessories                
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.Id.ToString() == inputModel.Id);
             if (editableMovie == null)
             {
@@ -169,8 +170,8 @@ namespace AccessoriesApp.Services
                     CultureInfo.InvariantCulture, DateTimeStyles.None);
             editableMovie.Title = inputModel.Title;
             editableMovie.Description = inputModel.Description;            
-            editableMovie.TypeAccessory = inputModel.TypeAccessory;
-            editableMovie.ImageUrl = inputModel.ImageUrl ?? $"/images/{NoImageUrl}";
+            editableMovie.CategoryId = inputModel.CategoryId;
+            editableMovie.Image = inputModel.Image;
             editableMovie.ReleaseDate = movieReleaseDate;
 
             await this._dbContext.SaveChangesAsync();
