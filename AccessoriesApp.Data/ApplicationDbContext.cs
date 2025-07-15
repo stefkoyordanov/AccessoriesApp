@@ -14,7 +14,9 @@ namespace AccessoriesApp.Data
 
         public virtual DbSet<Accessory> Accessories { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
-        public DbSet<UserAccessories> UserAccessories { get; set; } = null!;
+        public DbSet<UserAccessory> UserAccessories { get; set; } = null!;
+
+        public DbSet<OrderItem> OrderItems { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

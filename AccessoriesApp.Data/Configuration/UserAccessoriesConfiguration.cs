@@ -10,9 +10,9 @@ using System.Reflection.Emit;
 
 namespace AccessoriesApp.Data.Configuration
 {
-    public class UserAccessoriesConfiguration : IEntityTypeConfiguration<UserAccessories>
+    public class UserAccessoriesConfiguration : IEntityTypeConfiguration<UserAccessory>
     {
-        public void Configure(EntityTypeBuilder<UserAccessories> builder)
+        public void Configure(EntityTypeBuilder<UserAccessory> builder)
         {            
 
             // Define composite Primary Key of the Mapping Entity

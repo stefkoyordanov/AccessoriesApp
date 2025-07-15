@@ -27,10 +27,11 @@ namespace AccessoriesApp.Data.Configuration
 
             // Configure relation between UserAccessory and Accessory
             builder
-                .HasOne(aum => aum.OrderItem)
+                //.HasOne(aum => aum.or)
+                .HasMany(aum => aum.OrderItems)
                 //.WithMany(m => m.Order)
                 .WithOne(one => one.Order)
-                .HasForeignKey<Order>(aum => aum.OrderItemId)
+                .HasForeignKey(aum => aum.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

@@ -16,10 +16,10 @@ namespace AccessoriesApp.Services.Interfaces
 
         Task<AccessoriesDetailsViewModel?> GetAccessoryDetailsByIdAsync(int id);
 
-        //Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(string? id);
+        Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(string? id);
 
-        //Task<bool> EditAccessoryAsync(AccessoriesFormInputModel inputModel);
-        //Task<int> DeleteAccessoryAsync(string? id);
+        Task<bool> EditAccessoryAsync(AccessoriesFormInputModel inputModel);
+        Task<int> DeleteAccessoryAsync(int id);
 
     }
 }

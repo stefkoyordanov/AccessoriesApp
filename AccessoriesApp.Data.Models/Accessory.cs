@@ -74,7 +74,7 @@ namespace AccessoriesApp.Data.Models
         [Comment("Shows if Accessory is deleted")]
         public bool IsDeleted { get; set; } = false;
 
-        public ICollection<UserAccessories> UserAccessories { get; set; } = new List<UserAccessories>();
+        public ICollection<UserAccessory> UserAccessories { get; set; } = new List<UserAccessory>();
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
     }

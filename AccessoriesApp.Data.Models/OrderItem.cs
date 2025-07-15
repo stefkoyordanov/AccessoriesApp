@@ -15,6 +15,12 @@ namespace AccessoriesApp.Data.Models
         [Key]
         public int Id { get; set; }
 
+        [Comment("OrderId for referenced Order.")]
+        [Required]
+        public int? OrderId { get; set; }
+        public Order? Order { get; set; }
+
+
 
         [Comment("Foreign key to the referenced AspNetUser.")]        
         [Required]
@@ -45,7 +51,7 @@ namespace AccessoriesApp.Data.Models
         [Comment("Shows if the Order has been fulfilled is active")]
         public bool IsOrderItemFulfilled { get; set; } = false;
 
-        public Order Order { get; set; }
+        
     }
 
 }

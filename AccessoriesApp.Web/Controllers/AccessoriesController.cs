@@ -115,7 +115,7 @@ namespace AccessoriesApp.Web.Controllers
 
                 inputModel.ImageFileName = inputModel.File.FileName;
                 inputModel.TypeImage = inputModel.File.ContentType;
-                inputModel.Data = memoryStream.ToArray();
+                inputModel.Image = memoryStream.ToArray();
             }
 
             if (!this.ModelState.IsValid)
@@ -145,7 +145,7 @@ namespace AccessoriesApp.Web.Controllers
             
         }
 
-        /*
+        
         // GET: Accessories/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
@@ -160,6 +160,8 @@ namespace AccessoriesApp.Web.Controllers
                     return this.RedirectToAction(nameof(Index));
                 }
 
+                editableAccessory.Categories = await GetCategoriesSelectList();
+
                 return this.View(editableAccessory);
             }
             catch (Exception e)
@@ -172,6 +174,7 @@ namespace AccessoriesApp.Web.Controllers
             }
         }
 
+        
         // POST: Accessories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -205,9 +208,10 @@ namespace AccessoriesApp.Web.Controllers
             }
         }
 
+        
         // GET: Accessories/Delete/5
         [HttpGet]
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
@@ -231,10 +235,11 @@ namespace AccessoriesApp.Web.Controllers
             }
         }
 
+        
         // POST: Accessories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string? id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             AccessoriesDetailsViewModel? accessoryDetails = await this._accessoryService
                     .GetAccessoryDetailsByIdAsync(id);
@@ -248,7 +253,8 @@ namespace AccessoriesApp.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        */
+
+        
 
 
     }

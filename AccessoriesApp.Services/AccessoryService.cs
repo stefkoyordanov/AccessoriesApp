@@ -1,5 +1,6 @@
 ﻿using AccessoriesApp.Data;
 using AccessoriesApp.Data.Models;
+using AccessoriesApp.GCommon;
 using AccessoriesApp.Services.Interfaces;
 using AccessoriesApp.Web.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -83,8 +84,7 @@ namespace AccessoriesApp.Services
                         Description = m.Description,
                         CategoryName = m.Category.Name,                        
                         ReleaseDate = m.ReleaseDate,
-                        PriceBGN = m.PriceBGN.ToString(),
-                        PriceEuro = m.PriceEuro.ToString(),
+                        PriceBGN = m.PriceBGN.ToString(),                        
                         Image = m.Image                        
                     })
                     .SingleOrDefaultAsync();            
@@ -108,7 +108,7 @@ namespace AccessoriesApp.Services
                 Description = inputModel.Description,
                 ImageFileName = inputModel.ImageFileName,
                 TypeImage = inputModel.TypeImage,
-                Image = inputModel.Data,
+                Image = inputModel.Image,
                 AuthorId = userId
             };
 
@@ -119,34 +119,39 @@ namespace AccessoriesApp.Services
             return opResult;
         }
 
-        /*
-        public async Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(string? id)
+
+        
+        public async Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(int id)
         {
             AccessoriesFormInputModel? editableMovie = null;
-
-            bool isIdValidGuid = Guid.TryParse(id, out Guid movieId);
-            if (isIdValidGuid)
-            {
+            
                 editableMovie = await this._dbContext
                     .Accessories
                     .AsNoTracking()
-                    .Where(m => m.Id == movieId)
+                    .Where(m => m.Id == id)
                     .Select(m => new AccessoriesFormInputModel()
                     {
+                        //Description = m.Description,
+                        //TypeAccessory = m.TypeAccessory,
+                        //ImageUrl = m.ImageUrl ?? $"/images/{NoImageUrl}",
+                       // ReleaseDate = m.ReleaseDate.ToString(AppDateFormat),
+                        //PriceEuro = m.PriceEuro.ToString(),
+                        //Title = m.Title,
+                                                
+                        Title = m.Title,
                         Description = m.Description,
-                        TypeAccessory = m.TypeAccessory,
-                        ImageUrl = m.ImageUrl ?? $"/images/{NoImageUrl}",
-                        ReleaseDate = m.ReleaseDate.ToString(AppDateFormat),
-                        PriceEuro = m.PriceEuro.ToString(),
-                        Title = m.Title
+                        CategoryId = m.CategoryId,
+                        ReleaseDate = m.ReleaseDate.ToString(ApplicationConstants.AppDateFormat),
+                        PriceBGN = m.PriceBGN.ToString(),
+                        Image = m.Image,
                     })
                     .SingleOrDefaultAsync();
-            }
+            
 
             return editableMovie;
         }
 
-       
+
 
         
         public async Task<bool> EditAccessoryAsync(AccessoriesFormInputModel inputModel)
@@ -174,11 +179,14 @@ namespace AccessoriesApp.Services
         }
 
 
-        public async Task<int> DeleteAccessoryAsync(string? id)
+
+
+        
+        public async Task<int> DeleteAccessoryAsync(int id)
         {
             Accessory? deletableMovie = await this._dbContext
                 .Accessories
-                .SingleOrDefaultAsync(m => m.Id.ToString() == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (deletableMovie == null)
             {
                 return 0;
@@ -189,8 +197,11 @@ namespace AccessoriesApp.Services
             return countdeleted;
         }
 
-        */
+        public Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(string? id)
+        {
+            throw new NotImplementedException();
+        }
 
-
+        
     }
 }

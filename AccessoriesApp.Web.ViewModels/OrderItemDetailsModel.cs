@@ -6,14 +6,25 @@ using System.Threading.Tasks;
 
 namespace AccessoriesApp.Web.ViewModels
 {
-    public class AccessoriesDetailsViewModel
+    public class OrderItemDetailsModel
     {
-        public string Id { get; set; } = null!;
+        public int Id { get; set; }
+
+
+        public int? OrderId { get; set; }
+        public string? OrderItemUserId { get; set; }
+        public int OrderItemAccessoryId { get; set; }
+
+
         public string Title { get; set; } = null!;
         public string CategoryName { get; set; } = null!;
         public DateOnly ReleaseDate { get; set; }
-        public string PriceBGN { get; set; } = null!;        
-        public string PriceEuro => Math.Round(Convert.ToDecimal(PriceBGN) / 1.95583m, 2).ToString(); // Calculated, not mapped to DB
+
+
+        public int Quantity { get; set; } = 1;
+
+        public decimal PriceBGN { get; set; }
+        public decimal PriceEuro => Math.Round(PriceBGN / 1.95583m, 2); // Calculated, not mapped to DB
 
         public string Description { get; set; } = null!;
         public byte[]? Image { get; set; }
@@ -23,5 +34,6 @@ namespace AccessoriesApp.Web.ViewModels
         public bool IsAuthor { get; set; } // Show Edit/Delete buttons if true
 
         public bool IsSaved { get; set; } // Show Favorites button if false and user is not author
+
     }
 }

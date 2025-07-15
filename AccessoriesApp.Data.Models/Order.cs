@@ -23,13 +23,6 @@ namespace AccessoriesApp.Data.Models
         public IdentityUser OrderUser { get; set; } = null!;
 
 
-        [Comment("Foreign key to the referenced OrderItem.")]        
-        [Required]
-        public int OrderItemId { get; set; }
-
-        [ForeignKey(nameof(OrderItemId))]
-        public OrderItem OrderItem { get; set; } = null!;
-
         [Required]
         public DateOnly CreatedOn { get; set; }
 
@@ -42,6 +35,8 @@ namespace AccessoriesApp.Data.Models
 
         [Comment("Shows if the Order has been fulfilled is active")]
         public bool IsOrderFulfilled { get; set; } = false;
+
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 
 }

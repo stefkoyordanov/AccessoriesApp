@@ -166,10 +166,6 @@ namespace AccessoriesApp.Data.Migrations
                         .HasColumnType("bit")
                         .HasComment("Shows if the Order has been fulfilled is active");
 
-                    b.Property<int>("OrderItemId")
-                        .HasColumnType("int")
-                        .HasComment("Foreign key to the referenced OrderItem.");
-
                     b.Property<string>("OrderUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)")
@@ -180,9 +176,6 @@ namespace AccessoriesApp.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderItemId")
-                        .IsUnique();
 
                     b.HasIndex("OrderUserId");
 
@@ -205,6 +198,11 @@ namespace AccessoriesApp.Data.Migrations
                         .HasColumnType("bit")
                         .HasComment("Shows if the OrderItem has been fulfilled is active");
 
+                    b.Property<int?>("OrderId")
+                        .IsRequired()
+                        .HasColumnType("int")
+                        .HasComment("OrderId for referenced Order.");
+
                     b.Property<int>("OrderItemAccessoryId")
                         .HasColumnType("int")
                         .HasComment("Foreign key to the referenced Accessory.");
@@ -223,6 +221,8 @@ namespace AccessoriesApp.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderId");
+
                     b.HasIndex("OrderItemAccessoryId");
 
                     b.HasIndex("OrderItemUserId");
@@ -230,7 +230,7 @@ namespace AccessoriesApp.Data.Migrations
                     b.ToTable("OrderItem");
                 });
 
-            modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessories", b =>
+            modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessory", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)")
@@ -470,25 +470,23 @@ namespace AccessoriesApp.Data.Migrations
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.Order", b =>
                 {
-                    b.HasOne("AccessoriesApp.Data.Models.OrderItem", "OrderItem")
-                        .WithOne("Order")
-                        .HasForeignKey("AccessoriesApp.Data.Models.Order", "OrderItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "OrderUser")
                         .WithMany()
                         .HasForeignKey("OrderUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("OrderItem");
-
                     b.Navigation("OrderUser");
                 });
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.OrderItem", b =>
                 {
+                    b.HasOne("AccessoriesApp.Data.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("AccessoriesApp.Data.Models.Accessory", "OrderItemAccessory")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderItemAccessoryId")
@@ -501,12 +499,14 @@ namespace AccessoriesApp.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Order");
+
                     b.Navigation("OrderItemAccessory");
 
                     b.Navigation("OrderItemUser");
                 });
 
-            modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessories", b =>
+            modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessory", b =>
                 {
                     b.HasOne("AccessoriesApp.Data.Models.Accessory", "Accessory")
                         .WithMany("UserAccessories")
@@ -588,10 +588,9 @@ namespace AccessoriesApp.Data.Migrations
                     b.Navigation("Accessories");
                 });
 
-            modelBuilder.Entity("AccessoriesApp.Data.Models.OrderItem", b =>
+            modelBuilder.Entity("AccessoriesApp.Data.Models.Order", b =>
                 {
-                    b.Navigation("Order")
-                        .IsRequired();
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

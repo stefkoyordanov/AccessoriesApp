@@ -13,6 +13,10 @@ namespace AccessoriesApp.Services.Interfaces
         Task<CategoryViewModel?> GetCategoryDetailsByIdAsync(int id);
         Task<bool> AddCategoryAsync(CategoryFormInputModel inputModel);
         Task<CategoryFormInputModel?> GetEditableCategoryByIdAsync(int id);
+        Task<bool> EditCategoryAsync(CategoryFormInputModel inputModel);
+
+        Task<CategoryDeleteViewModel?> GetRecipeForDeleteAsync(int id);
+        Task<bool> DeleteCategoryAsync(int id);
 
     }
 }

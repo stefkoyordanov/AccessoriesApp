@@ -74,8 +74,60 @@ namespace AccessoriesApp.Services
                 .SingleOrDefaultAsync();
         }
 
+        public async Task<bool> EditCategoryAsync(CategoryFormInputModel inputModel)
+        {
+            Category? editableCategory = await this._dbContext
+                 .Categories
+                 .SingleOrDefaultAsync(m => m.Id == inputModel.Id);
+            if (editableCategory == null)
+            {
+                return false;
+            }
+
+            editableCategory.Name = inputModel.Name;
+
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
+        public Task<CategoryViewModel?> GetCategoryDetailsByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<CategoryDeleteViewModel?> GetRecipeForDeleteAsync(int id)
+        {
+            var category = await _dbContext.Categories
+                .Where(m => m.Id == id)
+                .Select(c => new CategoryDeleteViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .SingleOrDefaultAsync();
+            return category;
+        }
+
+        public async Task<bool> DeleteCategoryAsync(int id)
+        {
+            var category = await _dbContext.Categories.FindAsync(id);
+
+            if (category == null)
+            {
+                return false; // Recipe not in favorites
+            }
+
+            if (category != null)
+            {
+                _dbContext.Categories.Remove(category);
+                await _dbContext.SaveChangesAsync();
+            }
+            return true;
+        }
 
 
 
-     }
+
+    }
 }

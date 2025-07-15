@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AccessoriesApp.Web.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly ICategoryService _categoryService;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
@@ -56,10 +56,7 @@ namespace AccessoriesApp.Web.Controllers
 
         // GET: Category/Edit/5
         public async Task<IActionResult> Edit(int id)
-        {            
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null) return NotFound();
-
+        { 
             CategoryFormInputModel? editableCategory = await this._categoryService
                     .GetEditableCategoryByIdAsync(id);
             if (editableCategory == null)
@@ -75,53 +72,76 @@ namespace AccessoriesApp.Web.Controllers
         // POST: Category/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,IsActive")] Category category)
+        public async Task<IActionResult> Edit(CategoryFormInputModel inputModel)
         {
-            if (id != category.Id) return NotFound();
 
-            if (ModelState.IsValid)
-            {
+            if (!ModelState.IsValid)
+            {                
+                return View(inputModel);
+            }
+            
                 try
                 {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    bool editSuccess = await this._categoryService.EditCategoryAsync(inputModel);
+                    if (!editSuccess)
+                    {
+                        // TODO: Custom 404 page
+                        return this.RedirectToAction(nameof(Index));
+                    }
+
+                    return this.RedirectToAction(nameof(Details), new { id = inputModel.Id });
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception e)
                 {
-                    if (!CategoryExists(category.Id))
-                        return NotFound();
-                    else
-                        throw;
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(category);
+                    // TODO: Implement it with the ILogger
+                    // TODO: Add JS bars to indicate such errors
+                    Console.WriteLine(e.Message);
+
+                    return View(inputModel);
+                }     
         }
 
+
+
         // GET: Category/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null) return NotFound();
+            CategoryDeleteViewModel? deleteCategory = await this._categoryService
+                    .GetRecipeForDeleteAsync(id);
+            if (deleteCategory == null)
+            {
+                // TODO: Custom 404 page
+                return this.RedirectToAction(nameof(Index));
+            }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null) return NotFound();
-
-            return View(category);
+            return this.View(deleteCategory);
         }
 
         // POST: Category/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var category = await _context.Categories.FindAsync(id);
-            if (category != null)
+        {            
+            try
             {
-                _context.Categories.Remove(category);
-                await _context.SaveChangesAsync();
+                bool deleteSuccess = await this._categoryService.DeleteCategoryAsync(id);
+                if (!deleteSuccess)
+                {
+                    // TODO: Custom 404 page
+                    return this.RedirectToAction(nameof(Index));
+                }
+
+                return this.RedirectToAction(nameof(Details), new { id = id });
             }
-            return RedirectToAction(nameof(Index));
+            catch (Exception e)
+            {
+                // TODO: Implement it with the ILogger
+                // TODO: Add JS bars to indicate such errors
+                Console.WriteLine(e.Message);
+
+                return RedirectToAction(nameof(Index));
+            }
+                        
         }
 
         private bool CategoryExists(int id)

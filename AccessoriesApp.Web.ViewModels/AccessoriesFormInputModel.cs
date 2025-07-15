@@ -45,7 +45,7 @@ namespace AccessoriesApp.Web.ViewModels
         public string? ImageFileName { get; set; }               
         public string? TypeImage { get; set; }
 
-        public byte[]? Data { get; set; }
+        public byte[]? Image { get; set; }
         public IFormFile? File { get; set; }
 
     }

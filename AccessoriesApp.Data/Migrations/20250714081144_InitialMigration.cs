@@ -173,6 +173,28 @@ namespace AccessoriesApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderUserId = table.Column<string>(type: "nvarchar(450)", nullable: false, comment: "Foreign key to the referenced AspNetUser."),
+                    CreatedOn = table.Column<DateOnly>(type: "date", nullable: false),
+                    TotalPriceBGN = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    IsOrderFulfilled = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been fulfilled is active")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Order_AspNetUsers_OrderUserId",
+                        column: x => x.OrderUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Accessories",
                 columns: table => new
                 {
@@ -213,6 +235,7 @@ namespace AccessoriesApp.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: false, comment: "OrderId for referenced Order."),
                     OrderItemUserId = table.Column<string>(type: "nvarchar(450)", nullable: false, comment: "Foreign key to the referenced AspNetUser."),
                     OrderItemAccessoryId = table.Column<int>(type: "int", nullable: false, comment: "Foreign key to the referenced Accessory."),
                     Quantity = table.Column<int>(type: "int", nullable: false),
@@ -233,6 +256,12 @@ namespace AccessoriesApp.Data.Migrations
                         name: "FK_OrderItem_AspNetUsers_OrderItemUserId",
                         column: x => x.OrderItemUserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderItem_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -257,35 +286,6 @@ namespace AccessoriesApp.Data.Migrations
                         name: "FK_UserAccessories_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Order",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderUserId = table.Column<string>(type: "nvarchar(450)", nullable: false, comment: "Foreign key to the referenced AspNetUser."),
-                    OrderItemId = table.Column<int>(type: "int", nullable: false, comment: "Foreign key to the referenced OrderItem."),
-                    CreatedOn = table.Column<DateOnly>(type: "date", nullable: false),
-                    TotalPriceBGN = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    IsOrderFulfilled = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been fulfilled is active")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Order", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Order_AspNetUsers_OrderUserId",
-                        column: x => x.OrderUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Order_OrderItem_OrderItemId",
-                        column: x => x.OrderItemId,
-                        principalTable: "OrderItem",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -353,15 +353,14 @@ namespace AccessoriesApp.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_OrderItemId",
-                table: "Order",
-                column: "OrderItemId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Order_OrderUserId",
                 table: "Order",
                 column: "OrderUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_OrderId",
+                table: "OrderItem",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItem_OrderItemAccessoryId",
@@ -398,7 +397,7 @@ namespace AccessoriesApp.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "OrderItem");
 
             migrationBuilder.DropTable(
                 name: "UserAccessories");
@@ -407,7 +406,7 @@ namespace AccessoriesApp.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "OrderItem");
+                name: "Order");
 
             migrationBuilder.DropTable(
                 name: "Accessories");
