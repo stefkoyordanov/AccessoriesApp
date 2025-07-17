@@ -19,6 +19,7 @@ namespace AccessoriesApp.Web
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             
             builder.Services.AddScoped<IAccessoryService, AccessoryService>();
+            builder.Services.AddScoped<IOrderItemService, OrderItemService>();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(
                 options =>

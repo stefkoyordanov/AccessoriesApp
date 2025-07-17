@@ -16,7 +16,8 @@
 </div>
 <hr />
 
-<div class="row justify-content-center" style="margin: 0 auto; max-width: 800px;">
+<div class="card mb-3 w-75">
+<div class="row justify-content-center" >
     <div class="col-md-4 text-center">
         @if (Model.Image != null)
         {
@@ -24,7 +25,7 @@
         }
         else
         {
-            <img src="~/images/default-image.jpg" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
+            <img src="~/images/default-image.jpg" class="img-fluid" style="img-fluid w-100 h-100 object-fit-cover" alt="No Image Available" />
         }
     </div>
 
@@ -65,4 +66,6 @@
             </div>
         </div>
     </div>
+
+</div>
 </div>

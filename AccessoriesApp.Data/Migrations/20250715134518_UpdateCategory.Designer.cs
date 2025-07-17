@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessoriesApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250714081144_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250715134518_UpdateCategory")]
+    partial class UpdateCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,37 +119,37 @@ namespace AccessoriesApp.Data.Migrations
                         new
                         {
                             Id = 1,
-                            IsActive = false,
+                            IsActive = true,
                             Name = "Bags"
                         },
                         new
                         {
                             Id = 2,
-                            IsActive = false,
+                            IsActive = true,
                             Name = "Glasses"
                         },
                         new
                         {
                             Id = 3,
-                            IsActive = false,
+                            IsActive = true,
                             Name = "Scarves"
                         },
                         new
                         {
                             Id = 4,
-                            IsActive = false,
+                            IsActive = true,
                             Name = "Beachtowels"
                         },
                         new
                         {
                             Id = 5,
-                            IsActive = false,
+                            IsActive = true,
                             Name = "Purses"
                         },
                         new
                         {
                             Id = 6,
-                            IsActive = false,
+                            IsActive = true,
                             Name = "Hats"
                         });
                 });
@@ -182,7 +182,7 @@ namespace AccessoriesApp.Data.Migrations
 
                     b.HasIndex("OrderUserId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.OrderItem", b =>
@@ -230,7 +230,7 @@ namespace AccessoriesApp.Data.Migrations
 
                     b.HasIndex("OrderItemUserId");
 
-                    b.ToTable("OrderItem");
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.UserAccessory", b =>

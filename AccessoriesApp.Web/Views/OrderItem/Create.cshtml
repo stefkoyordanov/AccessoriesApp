@@ -1,0 +1,97 @@
+﻿@using AccessoriesApp.Web.ViewModels
+@model OrderItemFormInputModel
+
+@{
+    ViewData["Title"] = "Create Recipe";
+    var today = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+</div>
+<hr />
+
+<div class="row justify-content-center" style="margin: 0 auto; ">
+    <div class="col-md-4 text-center">
+        
+        @if (Model.Image != null)
+        {
+            <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Image)" class="img-fluid w-100 h-100 object-fit-cover" alt="@Model.Title" />
+        }
+        else
+        {
+            <img src="~/images/default-image.jpg" class="img-fluid" style="img-fluid w-100 h-100 object-fit-cover" alt="No Image Available" />
+        }
+
+    </div>
+
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-sm-12 ">
+                <form asp-controller="OrderItem" asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger fw-bold"></div>
+                    <div class="row">
+                        <div class="col-sm-6 mb-2">
+                            <div class="form-label-add-edit">Accessory Title:</div>
+                            <div class="fs-4 fw-bold">@Model.Title</div>
+                            <input asp-for="@Model.Title" type="hidden" />
+                        </div>
+
+                        <div class="col-sm-6 mb-2">                            
+                            <div class="form-label-add-edit">CategoryName:</div>
+                            <div class="fs-4 fw-bold">@Model.CategoryName</div>
+                            <input asp-for="@Model.CategoryName" type="hidden" />
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 mb-2">     
+                        <div class="form-label-add-edit">ReleaseDate:</div>
+                        <div class="fs-4 fw-bold">@Model.ReleaseDate</div>
+                        <input asp-for="@Model.ReleaseDate" type="hidden" />
+                    </div>
+
+                    <div class="col-sm-6 mb-2">    
+                        <div class="form-label-add-edit">PriceBGN</div>
+                        <div class="fs-4 fw-bold">@Model.PriceBGN</div>
+                        <input asp-for="@Model.PriceBGN" type="hidden" />
+                    </div>
+
+                    <div class="col-sm-6 mb-2">
+                        <label asp-for="@Model.Quantity" class="form-label-add-edit">Quantity</label>
+                        <input asp-for="@Model.Quantity" class="form-control" aria-required="true" type="number" />
+                        <span asp-validation-for="@Model.Quantity" class="text-danger"></span>                        
+                    </div>
+
+
+                    <div class="mb-2"> 
+                        <div class="form-label-add-edit">Description</div>
+                        <div class="fs-4 fw-bold" style="min-height: calc(1.5em * 2 + 0.75rem + 2px);">
+                            @Model.Description
+                        </div>
+                        <input asp-for="@Model.Description" type="hidden" />
+                    </div>                    
+                    
+                    <input asp-for="@Model.OrderItemAccessoryId" type="hidden" />
+
+                    <div class="mb-0">
+                        <button class="btn btn-warning btn-dark-text w-100 pb-0 fw-bold rounded" type="submit">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

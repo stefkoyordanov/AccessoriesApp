@@ -7,26 +7,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AccessoriesApp.Web.Controllers
 {
-    public class OrderItemsController : Controller
+    public class OrderItemController : Controller
     {
         private readonly IOrderItemService _orderItemService;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public OrderItemsController(IOrderItemService orderItemService, UserManager<IdentityUser> userManager)
+        public OrderItemController(IOrderItemService orderItemService, UserManager<IdentityUser> userManager)
         {
             _orderItemService = orderItemService;
             _userManager = userManager;
         }
 
-        /*
-        // GET: /OrderItems
+        
+        // GET: /OrderItem
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var items = await _orderItemService.GetAllAsync();
+            string? userId = User.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
+            var items = await _orderItemService.GetAllOrderItemAsync(userId);
             return View(items);
         }
 
+
+        /*
         // GET: /OrderItems/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int id)
@@ -39,6 +42,7 @@ namespace AccessoriesApp.Web.Controllers
             return View(item);
         }
         */
+
 
         // GET: /OrderItems/Create
         [HttpGet]
@@ -53,10 +57,12 @@ namespace AccessoriesApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(OrderItemFormInputModel model)
         {
+            /*
             if (!ModelState.IsValid)
             {                
                 return View(model);
             }
+            */
 
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             await _orderItemService.AddToOrderItem_OrderAsync(model, userId);
@@ -93,13 +99,31 @@ namespace AccessoriesApp.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditFromBody([FromBody] OrderItemFormInputModel model)
+        {
+            /*
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            */
+
+            string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            OrderItemResultModel retval = await _orderItemService.EditAccessoryAsync(model);
+
+            // Handle quantity logic (e.g. save or calculate)
+            return Json(new { mytotalbgn = retval.totalpricebgn });
+            
+        }
+
 
         // GET: /OrderItems/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            var item = await _orderItemService.GetRecipeForDeleteAsync(id, userId);
+            var item = await _orderItemService.GetOrderItemForDeleteAsync(id, userId);
             if (item == null)
             {
                 return NotFound();
@@ -109,13 +133,13 @@ namespace AccessoriesApp.Web.Controllers
 
 
         // POST: Accessories/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             OrderItemDetailsModel? accessoryDetails = await this._orderItemService
-                    .GetRecipeForDeleteAsync(id, userId);
+                    .GetOrderItemForDeleteAsync(id, userId);
             if (accessoryDetails == null)
             {
                 // TODO: Custom 404 page

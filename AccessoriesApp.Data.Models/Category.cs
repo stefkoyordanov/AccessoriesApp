@@ -20,7 +20,7 @@ namespace AccessoriesApp.Data.Models
         public string Name { get; set; } = null!;
 
         [Comment("Shows if Category is active")]
-        public bool IsActive { get; set; } = false;
+        public bool IsActive { get; set; } = true;
 
         public ICollection<Accessory> Accessories { get; set; } = new List<Accessory>();
     }

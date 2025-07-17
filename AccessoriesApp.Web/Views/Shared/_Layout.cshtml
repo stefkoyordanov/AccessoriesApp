@@ -7,6 +7,22 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AccessoriesApp.Web.styles.css" asp-append-version="true" />
+
+    <style>
+        .quantity-input {
+            font-size: 1.1rem;
+            padding: 0.4rem;
+            border-radius: 0.5rem;
+        }
+
+        .btn-minus, .btn-plus {
+            width: 40px;
+            height: 40px;
+            font-size: 1.25rem;
+            border-radius: 0.5rem;
+        }
+    </style>
+
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
@@ -118,6 +134,69 @@
                     $('#imagePreview').hide();
                 }
             });
+
+          
+          $('.quantity-input').on('input', function () {
+          const quantity = parseInt($(this).val());
+          const productId = parseInt($(this).data('product-id'));
+          const orderid = parseInt($(this).data('order-id'));
+
+          const model = {
+            Id: productId,
+            Quantity: quantity,
+            OrderId: orderid
+          };
+
+          //alert(JSON.stringify(model));
+
+          //alert(model.Id);
+          //alert(model.Quantity);
+          //alert(model.OrderId);
+
+          
+          $.ajax({
+            url: '/OrderItem/EditFromBody',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(model),
+            success: function (response) {
+              //console.log('Server response:', response);
+              //alert(response.mytotalbgn);
+              //alert(JSON.stringify(response));
+              $('#mytotal').text(response.mytotalbgn);
+            },
+            error: function (xhr, status, error) {
+              //console.error('Error:', error);
+              console.log("AJAX Error:", xhr.responseText); // Show error response from the backend
+            }
+          });          
+
+        });
+
+
+           $('.quantity-wrapper').each(function () {
+          const $wrapper = $(this);
+          const $input = $wrapper.find('.quantity-input');
+          const $btnMinus = $wrapper.find('.btn-minus');
+          const $btnPlus = $wrapper.find('.btn-plus');
+
+          $('.btnMinus').on('click', function () {
+            let current = parseInt($input.val()) || 0;
+            let min = parseInt($input.attr('min')) || 0;
+            if (current > min) {
+              $input.val(current - 1).trigger('input');
+            }
+          });
+
+          $('.btnPlus').on('click', function () {
+            let current = parseInt($input.val()) || 0;
+            let max = parseInt($input.attr('max')) || Infinity;
+            if (current < max) {
+              $input.val(current + 1).trigger('input');
+            }
+          });
+        });
+        
 
 
         });

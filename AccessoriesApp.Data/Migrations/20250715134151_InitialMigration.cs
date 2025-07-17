@@ -173,7 +173,7 @@ namespace AccessoriesApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Order",
+                name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -185,9 +185,9 @@ namespace AccessoriesApp.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Order", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Order_AspNetUsers_OrderUserId",
+                        name: "FK_Orders_AspNetUsers_OrderUserId",
                         column: x => x.OrderUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -230,7 +230,7 @@ namespace AccessoriesApp.Data.Migrations
                 comment: "Accessory in the system");
 
             migrationBuilder.CreateTable(
-                name: "OrderItem",
+                name: "OrderItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -245,23 +245,23 @@ namespace AccessoriesApp.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItem", x => x.Id);
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItem_Accessories_OrderItemAccessoryId",
+                        name: "FK_OrderItems_Accessories_OrderItemAccessoryId",
                         column: x => x.OrderItemAccessoryId,
                         principalTable: "Accessories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OrderItem_AspNetUsers_OrderItemUserId",
+                        name: "FK_OrderItems_AspNetUsers_OrderItemUserId",
                         column: x => x.OrderItemUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OrderItem_Order_OrderId",
+                        name: "FK_OrderItems_Orders_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "Order",
+                        principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -353,24 +353,24 @@ namespace AccessoriesApp.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_OrderUserId",
-                table: "Order",
-                column: "OrderUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderItem_OrderId",
-                table: "OrderItem",
+                name: "IX_OrderItems_OrderId",
+                table: "OrderItems",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItem_OrderItemAccessoryId",
-                table: "OrderItem",
+                name: "IX_OrderItems_OrderItemAccessoryId",
+                table: "OrderItems",
                 column: "OrderItemAccessoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItem_OrderItemUserId",
-                table: "OrderItem",
+                name: "IX_OrderItems_OrderItemUserId",
+                table: "OrderItems",
                 column: "OrderItemUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_OrderUserId",
+                table: "Orders",
+                column: "OrderUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserAccessories_AccessoryId",
@@ -397,7 +397,7 @@ namespace AccessoriesApp.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "OrderItem");
+                name: "OrderItems");
 
             migrationBuilder.DropTable(
                 name: "UserAccessories");
@@ -406,7 +406,7 @@ namespace AccessoriesApp.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Accessories");

@@ -24,7 +24,7 @@ namespace AccessoriesApp.Web.ViewModels
         public string CategoryName { get; set; } = null!;
         public DateOnly ReleaseDate { get; set; }
 
-
+        [Required]
         public int Quantity { get; set; } = 1;
 
         public decimal PriceBGN { get; set; }

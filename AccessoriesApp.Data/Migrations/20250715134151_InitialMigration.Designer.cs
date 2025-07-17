@@ -4,6 +4,7 @@ using AccessoriesApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessoriesApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250715134151_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,37 +119,37 @@ namespace AccessoriesApp.Data.Migrations
                         new
                         {
                             Id = 1,
-                            IsActive = true,
+                            IsActive = false,
                             Name = "Bags"
                         },
                         new
                         {
                             Id = 2,
-                            IsActive = true,
+                            IsActive = false,
                             Name = "Glasses"
                         },
                         new
                         {
                             Id = 3,
-                            IsActive = true,
+                            IsActive = false,
                             Name = "Scarves"
                         },
                         new
                         {
                             Id = 4,
-                            IsActive = true,
+                            IsActive = false,
                             Name = "Beachtowels"
                         },
                         new
                         {
                             Id = 5,
-                            IsActive = true,
+                            IsActive = false,
                             Name = "Purses"
                         },
                         new
                         {
                             Id = 6,
-                            IsActive = true,
+                            IsActive = false,
                             Name = "Hats"
                         });
                 });

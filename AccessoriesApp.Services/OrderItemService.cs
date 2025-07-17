@@ -21,9 +21,39 @@ namespace AccessoriesApp.Services
             _dbContext = dbContext;
         }
 
-        public async Task<OrderItemFormInputModel> GetOrderItemFormInputByIdAsync(int id, string userId)
+        public async Task<IEnumerable<OrderItemDetailsModel>> GetAllOrderItemAsync(string userId)
         {
-            OrderItemFormInputModel? orderItemDetails = null;
+
+            var orderItems = await this._dbContext
+                .OrderItems
+                .Include(oi => oi.OrderItemAccessory)
+                .ThenInclude(r => r.Category)                
+                .AsNoTracking()
+                .Where(m => m.OrderItemUserId == userId)
+                .Select(m => new OrderItemDetailsModel()
+                {
+                    Id = m.Id,
+                    OrderId = m.OrderId,
+                    OrderItemUserId = m.OrderItemUserId,
+                    OrderItemAccessoryId = m.OrderItemAccessoryId,
+                    Title = m.OrderItemAccessory.Title,
+                    CategoryName = m.OrderItemAccessory.Category.Name,
+                    ReleaseDate = m.OrderItemAccessory.ReleaseDate,
+                    Quantity = m.Quantity,
+                    PriceBGN = m.PriceBGN,
+                    Description = m.OrderItemAccessory.Description,
+                    Image = m.OrderItemAccessory.Image
+                })
+                .ToListAsync();
+
+            return orderItems;
+
+        }
+
+
+
+        public async Task<OrderItemFormInputModel> GetOrderItemFormInputByIdAsync(int id, string userId)
+        {            
 
             var accessory = await this._dbContext
                 .Accessories
@@ -31,7 +61,7 @@ namespace AccessoriesApp.Services
                 .Where(m => m.Id == id && !m.IsDeleted)
                 .Select(m => new OrderItemFormInputModel()
                 {
-                    Id = m.Id,
+                    OrderItemAccessoryId = m.Id,
                     Title = m.Title,
                     Description = m.Description,
                     CategoryName = m.Category.Name,
@@ -43,7 +73,7 @@ namespace AccessoriesApp.Services
 
             var orderItem = new OrderItemFormInputModel
             {
-                OrderItemAccessoryId = accessory.Id,
+                OrderItemAccessoryId = accessory.OrderItemAccessoryId,
                 OrderItemUserId = userId,
                 Title = accessory.Title,
                 Description = accessory.Description,
@@ -79,7 +109,7 @@ namespace AccessoriesApp.Services
             */
 
 
-            return orderItemDetails;
+            return orderItem;
 
         }
 
@@ -199,20 +229,20 @@ namespace AccessoriesApp.Services
             return movieDetails;
         }
 
-        public async Task<bool> EditAccessoryAsync(OrderItemFormInputModel inputModel)
+        public async Task<OrderItemResultModel> EditAccessoryAsync(OrderItemFormInputModel inputModel)
         {
-            OrderItem? editableOrderItem = await this._dbContext
-                .OrderItems
-                .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.Id == inputModel.Id);
+            
+            OrderItem ? editableOrderItem = await this._dbContext
+                .OrderItems                
+                .SingleOrDefaultAsync(m => m.Id == inputModel.Id);                
             if (editableOrderItem == null)
             {
-                return false;
+                return new OrderItemResultModel() { rownumberorderitem = 0, rownumberorder = 0, totalpricebgn = 0m };
             }
 
+            
             editableOrderItem.Quantity = inputModel.Quantity;
-
-            await this._dbContext.SaveChangesAsync();
+            int numberorderitem = await _dbContext.SaveChangesAsync();            
 
 
             var orderItemsData = await this._dbContext
@@ -224,19 +254,19 @@ namespace AccessoriesApp.Services
             // Calculate total price
             decimal totalPriceBGN = orderItemsData.Sum(item => item.Quantity * item.PriceBGN);
 
-            var order = await _dbContext.Orders
+            var order = await _dbContext.Orders                        
                         .Where(u => u.Id == inputModel.OrderId && u.IsOrderFulfilled == false)
                         .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
                         .FirstOrDefaultAsync();
 
             order.TotalPriceBGN = totalPriceBGN;
-            await _dbContext.SaveChangesAsync();
-
-
-            return true;
+            int numberorder = await _dbContext.SaveChangesAsync();
+                        
+            return new OrderItemResultModel() { rownumberorderitem = numberorderitem, rownumberorder = numberorder, totalpricebgn = order.TotalPriceBGN };
+                        
         }
 
-        public async Task<OrderItemDetailsModel?> GetRecipeForDeleteAsync(int id, string userId)
+        public async Task<OrderItemDetailsModel?> GetOrderItemForDeleteAsync(int id, string userId)
         {
 
             return await _dbContext.OrderItems
