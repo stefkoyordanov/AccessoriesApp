@@ -20,3 +20,15 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.navbar {
+    background: linear-gradient(90deg, #86b7fe, #0a58ca);
+}
+
+    .navbar .nav-link {
+        color: #ffffff !important;
+    }
+
+.navbar-brand {
+    color: #ffffff !important;
+}

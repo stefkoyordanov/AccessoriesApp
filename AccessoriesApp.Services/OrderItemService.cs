@@ -261,10 +261,26 @@ namespace AccessoriesApp.Services
 
             order.TotalPriceBGN = totalPriceBGN;
             int numberorder = await _dbContext.SaveChangesAsync();
-                        
-            return new OrderItemResultModel() { rownumberorderitem = numberorderitem, rownumberorder = numberorder, totalpricebgn = order.TotalPriceBGN };
+
+            var ordertotal = await _dbContext.Orders
+                        .AsNoTracking()
+                        .Where(u => u.Id == inputModel.OrderId && u.IsOrderFulfilled == false)                        
+                        .FirstOrDefaultAsync();
+
+            return new OrderItemResultModel() { rownumberorderitem = numberorderitem, rownumberorder = numberorder, totalpricebgn = ordertotal.TotalPriceBGN };
                         
         }
+
+        public async Task<decimal> TotalSumOrder(int? orderid)
+        {
+            var ordertotal = await _dbContext.Orders
+                        .AsNoTracking()
+                        .Where(u => u.Id == orderid && u.IsOrderFulfilled == false)                        
+                        .FirstOrDefaultAsync();
+
+            return ordertotal.TotalPriceBGN;
+        }
+
 
         public async Task<OrderItemDetailsModel?> GetOrderItemForDeleteAsync(int id, string userId)
         {

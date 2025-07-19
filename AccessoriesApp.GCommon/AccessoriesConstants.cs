@@ -41,10 +41,11 @@ namespace AccessoriesApp.GCommon
         public const int TypeImageMaxLength = 500;
 
 
-
-
         public const int CategoryNameMinLength = 3;
         public const int CategoryNameMaxLength = 20;
+
+        public const int CourierNameMinLength = 3;
+        public const int CourierNameMaxLength = 20;
     }
 
 

@@ -20,6 +20,7 @@ namespace AccessoriesApp.Web
             
             builder.Services.AddScoped<IAccessoryService, AccessoryService>();
             builder.Services.AddScoped<IOrderItemService, OrderItemService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(
                 options =>

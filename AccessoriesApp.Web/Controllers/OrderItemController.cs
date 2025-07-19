@@ -25,6 +25,8 @@ namespace AccessoriesApp.Web.Controllers
         {
             string? userId = User.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
             var items = await _orderItemService.GetAllOrderItemAsync(userId);
+
+            ViewData["SumOrder"] = await _orderItemService.TotalSumOrder(items.FirstOrDefault().OrderId);
             return View(items);
         }
 

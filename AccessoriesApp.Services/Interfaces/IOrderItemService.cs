@@ -8,8 +8,9 @@ namespace AccessoriesApp.Services.Interfaces
         Task<OrderItemFormInputModel> GetOrderItemFormInputByIdAsync(int id, string userId);
         Task<bool> AddToOrderItem_OrderAsync(OrderItemFormInputModel inputModel, string userId);
         Task<OrderItemFormInputModel?> GetEditableOrderItemByIdAsync(int id);
-        Task<OrderItemResultModel> EditAccessoryAsync(OrderItemFormInputModel inputModel);        
-        
+        Task<OrderItemResultModel> EditAccessoryAsync(OrderItemFormInputModel inputModel);
+        Task<decimal> TotalSumOrder(int? orderid);
+
         Task<OrderItemDetailsModel?> GetOrderItemForDeleteAsync(int id, string userId);
         Task<int> RemoveFromOrderItemAsync(int id, string userId);
     }

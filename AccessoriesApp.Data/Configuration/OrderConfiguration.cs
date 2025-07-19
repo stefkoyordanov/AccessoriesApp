@@ -25,7 +25,7 @@ namespace AccessoriesApp.Data.Configuration
                 .HasForeignKey(aum => aum.OrderUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure relation between UserAccessory and Accessory
+            // Configure relation between Order and OrderItems
             builder
                 //.HasOne(aum => aum.or)
                 .HasMany(aum => aum.OrderItems)
@@ -33,6 +33,17 @@ namespace AccessoriesApp.Data.Configuration
                 .WithOne(one => one.Order)
                 .HasForeignKey(aum => aum.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure relation between Order and Courier
+            builder
+                .HasOne(aum => aum.Courier)
+                //.HasMany(aum => aum.OrderItems)
+                .WithMany(m => m.Orders)
+                //.WithOne(one => one.Order)
+                .HasForeignKey(aum => aum.CourierId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

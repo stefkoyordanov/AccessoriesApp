@@ -1,5 +1,5 @@
 ﻿@using AccessoriesApp.Web.ViewModels
-@model IEnumerable<OrderItemDetailsModel>
+@model OrderFormInputModel
 
 @{
     ViewData["Title"] = "Index";
@@ -37,6 +37,8 @@
                     <h5 class="card-title">@item.Title</h5>
                     <p class="card-text">Category: @item.CategoryName</p>
                     <p class="card-text">PriceBGN: @item.PriceBGN</p>
+                    <p class="card-text">PriceEuro: @item.PriceEuro</p>
+                    <p class="card-text">PriceBGN: @item.Quantity</p>
                     <!--
                     <p class="card-text"><small>Favorites: </small></p>
                     -->
@@ -89,6 +91,15 @@
 
             </div>       
     }
+
+    <div>
+    <label asp-for="@Model.FirstOrDefault().CourierId" class="form-label-add-edit">Select courier</label>
+    <select asp-for="@Model.FirstOrDefault().CourierId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.FirstOrDefault().Couriers, "Id", "Name"))">
+    <option value="">...</option>
+    </select>
+    <span asp-validation-for="@Model.FirstOrDefault().CourierId" class="text-danger"></span>
+    </div>
+
 
     </div>
 
