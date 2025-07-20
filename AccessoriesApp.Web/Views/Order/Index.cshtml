@@ -12,7 +12,7 @@
 
     <div class="col-md-8">
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.OrderItems)
     {        
             <div class="card mb-3" >
                 <div class="row justify-content-center" >
@@ -39,82 +39,32 @@
                     <p class="card-text">PriceBGN: @item.PriceBGN</p>
                     <p class="card-text">PriceEuro: @item.PriceEuro</p>
                     <p class="card-text">PriceBGN: @item.Quantity</p>
-                    <!--
-                    <p class="card-text"><small>Favorites: </small></p>
-                    -->
-                    <div class="d-flex justify-content-between mt-auto">
-                        @if (User?.Identity?.IsAuthenticated == true && !item.IsAuthor && !item.IsSaved)
-                        {
-                            <!-- First row with Details and Favorites -->
-                            <!--
-                            <a asp-controller="Accessories" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info me-2 w-50">
-                                <i class="fas fa-info-circle"></i> Details
-                            </a>
-                            -->
-                            <form asp-controller="OrderItem" asp-action="DeleteConfirmed" method="post" >
-                             <div class="mb-3">
-                                
-                                
-                                <label asp-for="@item.Quantity" class="form-label">Quantity</label>
-                                <div class="input-group" style="max-width: 180px;">
-                                <button type="button" class="btn btn-outline-secondary btn-minus rounded-start">−</button>                                
-                                <input asp-for="@item.Quantity" class="form-control quantity-input" aria-required="true" type="text" data-product-id="@item.Id" data-order-id="@item.OrderId" />
-                                <button type="button" class="btn btn-outline-secondary btn-plus rounded-end">+</button>
-                                <span asp-validation-for="@item.Quantity" class="text-danger"></span>  
-                                </div>
-                            </div>                            
-                            
-                                <input type="hidden" name="id" value="@item.Id" />                                
-                                <button type="submit" class="btn btn-sm btn-danger mt-2">
-                                    <i class="fas fa-heart"></i> Remove from Orders
-                                </button>
-                            </form>
-                            
-                            
-                            <!--
-                            <a asp-controller="OrderItem" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
-                                <i class="fas fa-info-circle"></i> Remove from Orders
-                            </a>
-                            -->
-                        }
-                        else
-                        {
-                            <a asp-controller="Accessories" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info w-100">
-                                <i class="fas fa-info-circle"></i> Details
-                            </a>
-                        }
-                    </div>
                 </div>
                 </div>
 
             </div>
-
             </div>       
     }
 
     <div>
-    <label asp-for="@Model.FirstOrDefault().CourierId" class="form-label-add-edit">Select courier</label>
-    <select asp-for="@Model.FirstOrDefault().CourierId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.FirstOrDefault().Couriers, "Id", "Name"))">
+    <label asp-for="@Model.CourierId" class="form-label-add-edit">Select courier</label>
+    <select asp-for="@Model.CourierId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Couriers, "Id", "Name"))">
     <option value="">...</option>
     </select>
-    <span asp-validation-for="@Model.FirstOrDefault().CourierId" class="text-danger"></span>
+    <span asp-validation-for="@Model.CourierId" class="text-danger"></span>
     </div>
 
-
-    </div>
-
-    <div class="col-md-4 text-center">
-    <div class="d-flex flex-column align-items-start mb-3" >   
-        
+    
+    <div class="d-flex flex-column align-items-start mb-3">
     @if (User?.Identity?.IsAuthenticated == true)
     {
         <div id="mytotal" class="text-danger fs-3 fw-bold">@ViewData["SumOrder"]</div>
         <a asp-controller="Accessories" asp-action="Add" class="btn btn-primary">
             <i class="fa-solid fa-circle-check"></i> Confirm Order
         </a>
-    }
+    }    
+    </div>    
     
-    </div>        
     </div>
 
 </div>

@@ -27,12 +27,11 @@ namespace AccessoriesApp.Web.Controllers
             var model = new OrderFormInputModel
             {
                 OrderItems = items,
-                ReleaseDate = DateTime.UtcNow.ToString(AppDateFormat),
-            };
-            return View(model);
+                Couriers = await _orderService.GetAllCouriersAsync()
+            };            
 
             ViewData["SumOrder"] = await _orderService.TotalSumOrder(items.FirstOrDefault().OrderId);
-            return View(items);
+            return View(model);
         }
 
     }

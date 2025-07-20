@@ -46,7 +46,6 @@ namespace AccessoriesApp.Services
             return orderItems;
 
         }
-
         public async Task<IEnumerable<CourierViewModel>> GetAllCouriersAsync()
         {
             return await _dbContext.Couriers
@@ -57,6 +56,16 @@ namespace AccessoriesApp.Services
                     Name = c.Name
                 })
                 .ToListAsync();
+        }
+
+        public async Task<decimal> TotalSumOrder(int? orderid)
+        {
+            var ordertotal = await _dbContext.Orders
+                        .AsNoTracking()
+                        .Where(u => u.Id == orderid && u.IsOrderFulfilled == false)
+                        .FirstOrDefaultAsync();
+
+            return ordertotal.TotalPriceBGN;
         }
 
 

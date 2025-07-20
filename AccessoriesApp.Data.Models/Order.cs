@@ -23,12 +23,11 @@ namespace AccessoriesApp.Data.Models
         public IdentityUser OrderUser { get; set; } = null!;
 
 
-        [Comment("Order CourierId")]
-        [Required]
-        public int CourierId { get; set; }
+        [Comment("Order CourierId")]        
+        public int? CourierId { get; set; }
 
         [ForeignKey(nameof(CourierId))]
-        public Courier Courier { get; set; } = null!;
+        public Courier? Courier { get; set; }
 
 
         [Required]

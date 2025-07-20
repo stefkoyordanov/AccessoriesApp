@@ -10,5 +10,7 @@ namespace AccessoriesApp.Services.Interfaces
     public interface IOrderService
     {
         Task<IEnumerable<OrderItemDetailsModel>> GetOrderItemsInOrderAsync(string userId);
+        Task<IEnumerable<CourierViewModel>> GetAllCouriersAsync();
+        Task<decimal> TotalSumOrder(int? orderid);
     }
 }

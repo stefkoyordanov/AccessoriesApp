@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessoriesApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250715134518_UpdateCategory")]
-    partial class UpdateCategory
+    [Migration("20250719201612_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,6 +154,48 @@ namespace AccessoriesApp.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AccessoriesApp.Data.Models.Courier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit")
+                        .HasComment("Shows if Category is active");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Couriers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsActive = true,
+                            Name = "Speedy"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsActive = true,
+                            Name = "Econt"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsActive = true,
+                            Name = "Sameday"
+                        });
+                });
+
             modelBuilder.Entity("AccessoriesApp.Data.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -161,6 +203,10 @@ namespace AccessoriesApp.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CourierId")
+                        .HasColumnType("int")
+                        .HasComment("Order CourierId");
 
                     b.Property<DateOnly>("CreatedOn")
                         .HasColumnType("date");
@@ -179,6 +225,8 @@ namespace AccessoriesApp.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourierId");
 
                     b.HasIndex("OrderUserId");
 
@@ -473,11 +521,18 @@ namespace AccessoriesApp.Data.Migrations
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.Order", b =>
                 {
+                    b.HasOne("AccessoriesApp.Data.Models.Courier", "Courier")
+                        .WithMany("Orders")
+                        .HasForeignKey("CourierId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "OrderUser")
                         .WithMany()
                         .HasForeignKey("OrderUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Courier");
 
                     b.Navigation("OrderUser");
                 });
@@ -589,6 +644,11 @@ namespace AccessoriesApp.Data.Migrations
             modelBuilder.Entity("AccessoriesApp.Data.Models.Category", b =>
                 {
                     b.Navigation("Accessories");
+                });
+
+            modelBuilder.Entity("AccessoriesApp.Data.Models.Courier", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("AccessoriesApp.Data.Models.Order", b =>
