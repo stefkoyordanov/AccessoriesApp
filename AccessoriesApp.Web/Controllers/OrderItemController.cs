@@ -103,7 +103,7 @@ namespace AccessoriesApp.Web.Controllers
             }
 
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            await _orderItemService.EditAccessoryAsync(model);
+            await _orderItemService.EditOrderItemsAsync(model);
 
             return RedirectToAction(nameof(Index));
         }
@@ -119,7 +119,7 @@ namespace AccessoriesApp.Web.Controllers
             */
 
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            OrderItemResultModel retval = await _orderItemService.EditAccessoryAsync(model);
+            OrderItemResultModel retval = await _orderItemService.EditOrderItemsAsync(model);
 
             // Handle quantity logic (e.g. save or calculate)
             return Json(new { mytotalbgn = retval.totalpricebgn });

@@ -12,5 +12,6 @@ namespace AccessoriesApp.Services.Interfaces
         Task<IEnumerable<OrderItemDetailsModel>> GetOrderItemsInOrderAsync(string userId);
         Task<IEnumerable<CourierViewModel>> GetAllCouriersAsync();
         Task<decimal> TotalSumOrder(int? orderid);
+        Task<OrderDetailsModel> ConfirmOrderAsync(int id, string userId);
     }
 }

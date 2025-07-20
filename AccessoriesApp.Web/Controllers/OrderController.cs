@@ -16,10 +16,9 @@ namespace AccessoriesApp.Web.Controllers
             _orderService = orderService;
             _userManager = userManager;
         }
-
-        // GET: /OrderItem
+                
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Confirm()
         {
             string? userId = User.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
             var items = await _orderService.GetOrderItemsInOrderAsync(userId);
@@ -28,11 +27,15 @@ namespace AccessoriesApp.Web.Controllers
             {
                 OrderItems = items,
                 Couriers = await _orderService.GetAllCouriersAsync()
-            };            
+            };
 
             ViewData["SumOrder"] = await _orderService.TotalSumOrder(items.FirstOrDefault().OrderId);
             return View(model);
         }
+
+
+
+
 
     }
 }

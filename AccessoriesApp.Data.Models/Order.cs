@@ -41,7 +41,7 @@ namespace AccessoriesApp.Data.Models
         public decimal TotalPriceEuro => Math.Round(TotalPriceBGN / 1.95583m, 2); // Calculated, not mapped to DB
 
         [Comment("Shows if the Order has been fulfilled is active")]
-        public bool IsOrderFulfilled { get; set; } = false;
+        public bool IsOrderConfirmed { get; set; } = false;
 
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }

@@ -48,8 +48,8 @@ namespace AccessoriesApp.Data.Models
         [Comment("Shows if the OrderItem has been fulfilled is active")]
         public bool IsOrderItemIsActive { get; set; } = true;
 
-        [Comment("Shows if the Order has been fulfilled is active")]
-        public bool IsOrderItemFulfilled { get; set; } = false;
+        [Comment("Shows if the Order has been confirmed")]
+        public bool IsOrderItemConfirmed { get; set; } = false;
 
         
     }

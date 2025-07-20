@@ -123,7 +123,7 @@ namespace AccessoriesApp.Services
             {
                 bool orderexists = false;
 
-                if ( !_dbContext.Orders.Any(u => u.OrderUserId == userId && u.IsOrderFulfilled == false) )
+                if ( !_dbContext.Orders.Any(u => u.OrderUserId == userId && u.IsOrderConfirmed == false) )
                 {
                     // 1. Create Order
                     var order = new Order
@@ -131,7 +131,7 @@ namespace AccessoriesApp.Services
                         OrderUserId = userId,
                         CreatedOn = DateOnly.FromDateTime(DateTime.UtcNow),
                         TotalPriceBGN = inputModel.PriceBGN * inputModel.Quantity,
-                        IsOrderFulfilled = false
+                        IsOrderConfirmed = false
                     };
 
                     _dbContext.Orders.Add(order);
@@ -146,7 +146,7 @@ namespace AccessoriesApp.Services
                         Quantity = inputModel.Quantity,
                         PriceBGN = inputModel.PriceBGN,
                         IsOrderItemIsActive = true,
-                        IsOrderItemFulfilled = false
+                        IsOrderItemConfirmed = false
                     };
 
                     _dbContext.OrderItems.Add(orderItem);
@@ -156,7 +156,7 @@ namespace AccessoriesApp.Services
                 else
                 {                    
                         var order = await _dbContext.Orders
-                        .Where(u => u.OrderUserId == userId && u.IsOrderFulfilled == false)
+                        .Where(u => u.OrderUserId == userId && u.IsOrderConfirmed == false)
                         .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
                         .FirstOrDefaultAsync();
 
@@ -169,7 +169,7 @@ namespace AccessoriesApp.Services
                             Quantity = inputModel.Quantity,
                             PriceBGN = inputModel.PriceBGN,
                             IsOrderItemIsActive = true,
-                            IsOrderItemFulfilled = false
+                            IsOrderItemConfirmed = false
                         };
 
                         _dbContext.OrderItems.Add(orderItem);
@@ -229,7 +229,7 @@ namespace AccessoriesApp.Services
             return movieDetails;
         }
 
-        public async Task<OrderItemResultModel> EditAccessoryAsync(OrderItemFormInputModel inputModel)
+        public async Task<OrderItemResultModel> EditOrderItemsAsync(OrderItemFormInputModel inputModel)
         {
             
             OrderItem ? editableOrderItem = await this._dbContext
@@ -255,7 +255,7 @@ namespace AccessoriesApp.Services
             decimal totalPriceBGN = orderItemsData.Sum(item => item.Quantity * item.PriceBGN);
 
             var order = await _dbContext.Orders                        
-                        .Where(u => u.Id == inputModel.OrderId && u.IsOrderFulfilled == false)
+                        .Where(u => u.Id == inputModel.OrderId && u.IsOrderConfirmed == false)
                         .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
                         .FirstOrDefaultAsync();
 
@@ -264,7 +264,7 @@ namespace AccessoriesApp.Services
 
             var ordertotal = await _dbContext.Orders
                         .AsNoTracking()
-                        .Where(u => u.Id == inputModel.OrderId && u.IsOrderFulfilled == false)                        
+                        .Where(u => u.Id == inputModel.OrderId && u.IsOrderConfirmed == false)                        
                         .FirstOrDefaultAsync();
 
             return new OrderItemResultModel() { rownumberorderitem = numberorderitem, rownumberorder = numberorder, totalpricebgn = ordertotal.TotalPriceBGN };
@@ -275,7 +275,7 @@ namespace AccessoriesApp.Services
         {
             var ordertotal = await _dbContext.Orders
                         .AsNoTracking()
-                        .Where(u => u.Id == orderid && u.IsOrderFulfilled == false)                        
+                        .Where(u => u.Id == orderid && u.IsOrderConfirmed == false)                        
                         .FirstOrDefaultAsync();
 
             return ordertotal.TotalPriceBGN;
@@ -337,7 +337,7 @@ namespace AccessoriesApp.Services
                 decimal totalPriceBGN = orderItemsData.Sum(item => item.Quantity * item.PriceBGN);
 
                 var order = await _dbContext.Orders
-                            .Where(u => u.Id == orderItem.OrderId && u.IsOrderFulfilled == false)
+                            .Where(u => u.Id == orderItem.OrderId && u.IsOrderConfirmed == false)
                             .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
                             .FirstOrDefaultAsync();
 
@@ -350,7 +350,7 @@ namespace AccessoriesApp.Services
                 decimal totalPriceBGN = orderItemsData.Sum(item => item.Quantity * item.PriceBGN);
 
                 var order = await _dbContext.Orders
-                            .Where(u => u.Id == orderItem.OrderId && u.IsOrderFulfilled == false)
+                            .Where(u => u.Id == orderItem.OrderId && u.IsOrderConfirmed == false)
                             .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
                             .FirstOrDefaultAsync();
 

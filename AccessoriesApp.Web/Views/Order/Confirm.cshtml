@@ -38,7 +38,9 @@
                     <p class="card-text">Category: @item.CategoryName</p>
                     <p class="card-text">PriceBGN: @item.PriceBGN</p>
                     <p class="card-text">PriceEuro: @item.PriceEuro</p>
-                    <p class="card-text">PriceBGN: @item.Quantity</p>
+                    <p class="card-text">Quantity: @item.Quantity</p>
+                    <p class="card-text">Total price BGN: @(item.Quantity * item.PriceBGN)</p>
+                   <p class="card-text">Total price Euro: @(item.Quantity * item.PriceEuro)</p>
                 </div>
                 </div>
 
@@ -58,10 +60,13 @@
     <div class="d-flex flex-column align-items-start mb-3">
     @if (User?.Identity?.IsAuthenticated == true)
     {
+        <form asp-controller="Order" asp-action="Confirm" method="post" >
         <div id="mytotal" class="text-danger fs-3 fw-bold">@ViewData["SumOrder"]</div>
-        <a asp-controller="Accessories" asp-action="Add" class="btn btn-primary">
-            <i class="fa-solid fa-circle-check"></i> Confirm Order
-        </a>
+        <input type="hidden" name="id" value="@Model.OrderItems.FirstOrDefault().OrderId" />
+        <button type="submit" class="btn btn-sm btn-danger mt-2">
+        <i class="fas fa-heart"></i> Remove from Orders
+        </button>
+        </form>
     }    
     </div>    
     
