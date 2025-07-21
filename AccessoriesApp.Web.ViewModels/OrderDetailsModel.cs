@@ -12,8 +12,11 @@ namespace AccessoriesApp.Web.ViewModels
     {        
         public int Id { get; set; }
         public string OrderUserId { get; set; } = null!;
-        public int? CourierId { get; set; }                
-        public DateOnly CreatedOn { get; set; }        
+        public string OrderUserName { get; set; } = null!;
+        public int? CourierId { get; set; }
+        public string? CourierName { get; set; }
+        public DateOnly CreatedOn { get; set; }
+        public int TotalCountProducts { get; set; }
         public decimal TotalPriceBGN { get; set; }        
         public decimal TotalPriceEuro => Math.Round(TotalPriceBGN / 1.95583m, 2); // Calculated, not mapped to DB
         public bool IsOrderConfirmed { get; set; } = false;

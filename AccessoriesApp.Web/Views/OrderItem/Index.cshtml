@@ -98,7 +98,7 @@
     @if (User?.Identity?.IsAuthenticated == true)
     {
         <div id="mytotal" class="text-danger fs-3 fw-bold">@ViewData["SumOrder"]</div>
-        <a asp-controller="Order" asp-action="Confirm" class="btn btn-primary">
+        <a asp-controller="Order" asp-action="Confirm" asp-route-id="@Model.FirstOrDefault().OrderId" class="btn btn-primary">
             <i class="fa-solid fa-circle-check"></i> Confirm Order
         </a>
     }

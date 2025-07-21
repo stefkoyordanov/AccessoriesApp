@@ -9,7 +9,7 @@ namespace AccessoriesApp.Web.ViewModels
 {
     public class OrderFormInputModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public IEnumerable<OrderItemDetailsModel> OrderItems { get; set; } = new List<OrderItemDetailsModel>();
 
         [Required]        

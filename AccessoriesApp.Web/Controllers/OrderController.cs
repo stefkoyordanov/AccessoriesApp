@@ -1,4 +1,5 @@
-﻿using AccessoriesApp.Services.Interfaces;
+﻿using AccessoriesApp.Services;
+using AccessoriesApp.Services.Interfaces;
 using AccessoriesApp.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,12 +26,29 @@ namespace AccessoriesApp.Web.Controllers
 
             var model = new OrderFormInputModel
             {
+                Id = items.FirstOrDefault().OrderId,
                 OrderItems = items,
                 Couriers = await _orderService.GetAllCouriersAsync()
             };
 
             ViewData["SumOrder"] = await _orderService.TotalSumOrder(items.FirstOrDefault().OrderId);
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Confirmed(OrderFormInputModel confirmmodel)
+        {
+            /*
+            if (!ModelState.IsValid)
+            {                
+                return View(model);
+            }
+            */
+
+            string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var orderconfirmed = await _orderService.ConfirmOrderAsync(confirmmodel, userId);
+
+            return View(orderconfirmed);
         }
 
 

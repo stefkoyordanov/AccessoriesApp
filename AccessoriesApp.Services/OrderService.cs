@@ -63,32 +63,42 @@ namespace AccessoriesApp.Services
         {
             var ordertotal = await _dbContext.Orders
                         .AsNoTracking()
-                        .Where(u => u.Id == orderid && u.IsOrderConfirmed == false)
+                        //.Where(u => u.Id == orderid && u.IsOrderConfirmed == false)
+                        .Where(u => u.Id == orderid)
                         .FirstOrDefaultAsync();
 
             return ordertotal.TotalPriceBGN;
         }
 
 
-        public async Task<OrderDetailsModel> ConfirmOrderAsync(int id, string userId)
+        public async Task<OrderDetailsModel> ConfirmOrderAsync(OrderFormInputModel orderFormInputModel, string userId)
         {
                 var order = await _dbContext.Orders
-                            .Where(u => u.Id == id && u.IsOrderConfirmed == false)
+                            //.Where(u => u.Id == orderFormInputModel.Id && u.IsOrderConfirmed == false)
+                            .Where(u => u.Id == orderFormInputModel.Id )
                             .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
                             .FirstOrDefaultAsync();
 
+                order.CourierId = orderFormInputModel.CourierId;
                 order.IsOrderConfirmed = true;
                 await _dbContext.SaveChangesAsync();
 
-            var orderconfirmed = await _dbContext.Orders
-                            .Where(u => u.Id == id && u.IsOrderConfirmed == true)
+            var orderconfirmed = await _dbContext
+                            .Orders
+                            .Include(oi => oi.OrderUser)
+                            .Include(oi => oi.Courier)
+                            .Include(oi => oi.OrderItems)
+                            .Where(u => u.Id == orderFormInputModel.Id && u.IsOrderConfirmed == true)
                             //.OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
                             .Select(m => new OrderDetailsModel()
                             {
                                 Id = m.Id,
                                 OrderUserId = m.OrderUserId,
+                                OrderUserName = m.OrderUser.UserName,
                                 CourierId = m.CourierId,
+                                CourierName = m.Courier.Name,
                                 CreatedOn = m.CreatedOn,
+                                TotalCountProducts = m.OrderItems.Count(),
                                 TotalPriceBGN = m.TotalPriceBGN,
                                 IsOrderConfirmed = m.IsOrderConfirmed
                             })

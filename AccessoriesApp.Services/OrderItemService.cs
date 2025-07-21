@@ -275,7 +275,8 @@ namespace AccessoriesApp.Services
         {
             var ordertotal = await _dbContext.Orders
                         .AsNoTracking()
-                        .Where(u => u.Id == orderid && u.IsOrderConfirmed == false)                        
+                        //.Where(u => u.Id == orderid && u.IsOrderConfirmed == false)
+                        .Where(u => u.Id == orderid)
                         .FirstOrDefaultAsync();
 
             return ordertotal.TotalPriceBGN;
