@@ -2,6 +2,7 @@
 using AccessoriesApp.Data.Models;
 using AccessoriesApp.Services.Interfaces;
 using AccessoriesApp.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,8 @@ using static AccessoriesApp.Web.ViewModels.ValidationMessages.AccessoriesMessage
 
 namespace AccessoriesApp.Web.Controllers
 {
+
+    
     public class AccessoriesController : Controller
     {
         private readonly IAccessoryService _accessoryService;
@@ -26,6 +29,7 @@ namespace AccessoriesApp.Web.Controllers
             _accessoryService = accessoryService;
         }
 
+        
         // GET: Accessories
         [HttpGet]
         public async Task<IActionResult> Index(int page = 1, int pageSize = 8)
@@ -60,8 +64,10 @@ namespace AccessoriesApp.Web.Controllers
         {
             try
             {
+                string? userId = User.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
+
                 AccessoriesDetailsViewModel? accessoryDetails = await this._accessoryService
-                    .GetAccessoryDetailsByIdAsync(id);
+                    .GetAccessoryDetailsByIdAsync(id, userId);
                 if (accessoryDetails == null)
                 {
                     // TODO: Custom 404 page
@@ -82,6 +88,7 @@ namespace AccessoriesApp.Web.Controllers
 
 
 
+        [Authorize(Roles = "Admin")]
         // GET: Accessories/Create
         [HttpGet]
         public async Task<IActionResult> Add()
@@ -94,12 +101,14 @@ namespace AccessoriesApp.Web.Controllers
             return View(model);            
         }
 
+        [Authorize(Roles = "Admin")]
         private async Task<IEnumerable<CategoryViewModel>> GetCategoriesSelectList()
         {
             var categories = await _accessoryService.GetAllCategoriesAsync();
             return categories;
         }
 
+        [Authorize(Roles = "Admin")]
         // POST: Accessories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -145,7 +154,8 @@ namespace AccessoriesApp.Web.Controllers
             
         }
 
-        
+
+        [Authorize(Roles = "Admin")]
         // GET: Accessories/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
@@ -174,7 +184,8 @@ namespace AccessoriesApp.Web.Controllers
             }
         }
 
-        
+
+        [Authorize(Roles = "Admin")]
         // POST: Accessories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -208,15 +219,18 @@ namespace AccessoriesApp.Web.Controllers
             }
         }
 
-        
+
+        //[Authorize(Roles = "Admin")]
         // GET: Accessories/Delete/5
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> MyDelete(int id)
         {
             try
             {
+                string? userId = User.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
+
                 AccessoriesDetailsViewModel? accessoryDetails = await this._accessoryService
-                    .GetAccessoryDetailsByIdAsync(id);
+                    .GetAccessoryDetailsByIdAsync(id, userId);
                 if (accessoryDetails == null)
                 {
                     // TODO: Custom 404 page
@@ -235,14 +249,17 @@ namespace AccessoriesApp.Web.Controllers
             }
         }
 
-        
+
+        //[Authorize(Roles = "Admin")]
         // POST: Accessories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirm(int id)
         {
+            string? userId = User.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
+
             AccessoriesDetailsViewModel? accessoryDetails = await this._accessoryService
-                    .GetAccessoryDetailsByIdAsync(id);
+                    .GetAccessoryDetailsByIdAsync(id, userId);
             if (accessoryDetails == null)
             {
                 // TODO: Custom 404 page

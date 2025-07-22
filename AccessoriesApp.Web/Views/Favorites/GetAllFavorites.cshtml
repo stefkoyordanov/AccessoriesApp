@@ -1,5 +1,5 @@
 ﻿@using AccessoriesApp.Web.ViewModels
-@model PagedViewModel<AccessoriesIndexViewModel>
+@model IEnumerable<AccessoriesIndexViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,21 +7,9 @@
 
 <h1>Index</h1>
 
-
-<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-    <h2>@ViewData["Title"]</h2>
-    @if (User?.Identity?.IsAuthenticated == true)
+    @foreach (var item in Model)
     {
-        <a asp-controller="Accessories" asp-action="Add" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Add Accessory
-        </a>
-    }
-</div>
-<hr />
-
-<div class="row text-center">
-    @foreach (var item in Model.Items)
-    {
+        <div class="row text-center">
         <div class="col-md-3 mb-4">
             <div class="card h-100" style="width: 100%;">
                 @if (item.Image != null)
@@ -65,19 +53,6 @@
                                 <i class="fas fa-info-circle"></i> Add to Orders
                             </a>
                         }
-                        else if (User?.Identity?.IsAuthenticated == true && !item.IsAuthor)
-                        {
-                            <!-- First row with Details and Favorites -->
-                            <!--
-                            <a asp-controller="Accessories" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info me-2 w-50">
-                                <i class="fas fa-info-circle"></i> Details
-                            </a>
-                            -->
-
-                            <a asp-controller="OrderItem" asp-action="Create" asp-route-id="@item.Id" class="btn btn-danger w-50">
-                                <i class="fas fa-info-circle"></i> Add to Orders
-                            </a>
-                        }
                         else
                         {
                             <a asp-controller="Accessories" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info w-100">
@@ -88,40 +63,5 @@
                 </div>
             </div>
         </div>
+        </div>
     }
-</div>
-
-
-<nav class="d-flex justify-content-center mt-4">
-    <ul class="pagination">
-        @if (Model.HasPrevious)
-        {
-            <li class="page-item">
-                <a class="page-link" href="?page=@(Model.CurrentPage - 1)">Previous</a>
-            </li>
-        }
-        else
-        {
-            <li class="page-item disabled"><span class="page-link">Previous</span></li>
-        }
-
-        @for (int i = 1; i <= Model.TotalPages; i++)
-        {
-            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a class="page-link" href="?page=@i">@i</a>
-            </li>
-        }
-
-        @if (Model.HasNext)
-        {
-            <li class="page-item">
-                <a class="page-link" href="?page=@(Model.CurrentPage + 1)">Next</a>
-            </li>
-        }
-        else
-        {
-            <li class="page-item disabled"><span class="page-link">Next</span></li>
-        }
-    </ul>
-</nav>
-

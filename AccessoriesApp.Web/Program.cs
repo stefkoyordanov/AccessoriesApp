@@ -3,6 +3,7 @@ using AccessoriesApp.Services;
 using AccessoriesApp.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AccessoriesApp.Web
 {
@@ -21,6 +22,8 @@ namespace AccessoriesApp.Web
             builder.Services.AddScoped<IAccessoryService, AccessoryService>();
             builder.Services.AddScoped<IOrderItemService, OrderItemService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+
 
             builder.Services.AddDefaultIdentity<IdentityUser>(
                 options =>
@@ -31,11 +34,27 @@ namespace AccessoriesApp.Web
                     options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = false;
                 })
+                .AddRoles<IdentityRole>() // Add this line for role support
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            
 
-
+            /*
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(
+               options =>
+               {
+                   options.SignIn.RequireConfirmedAccount = true;
+                   options.Password.RequireDigit = false;
+                   options.Password.RequireNonAlphanumeric = false;
+                   options.Password.RequireUppercase = false;
+                   options.Password.RequireLowercase = false;
+               })
+               .AddEntityFrameworkStores<ApplicationDbContext>();
+            */
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages(); // REQUIRED for Identity UI and Razor Pages
+
+
 
             var app = builder.Build();
 
@@ -64,7 +83,37 @@ namespace AccessoriesApp.Web
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
+
+            // Seed roles
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                //await SeedRolesAsync(services);
+                //Task.Run(() => SeedRolesAsync(services)).Wait();
+                SeedRolesAsync(services).GetAwaiter().GetResult(); // FIXED HERE                
+            }
+
             app.Run();
         }
+
+
+        public static async Task SeedRolesAsync(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string[] roleNames = { "Admin", "Manager", "User" };
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExists = await roleManager.RoleExistsAsync(roleName);
+                if (!roleExists)
+                {
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+        }
+
+
     }
+
 }

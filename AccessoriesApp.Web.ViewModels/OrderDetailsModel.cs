@@ -20,5 +20,7 @@ namespace AccessoriesApp.Web.ViewModels
         public decimal TotalPriceBGN { get; set; }        
         public decimal TotalPriceEuro => Math.Round(TotalPriceBGN / 1.95583m, 2); // Calculated, not mapped to DB
         public bool IsOrderConfirmed { get; set; } = false;
+
+        public IEnumerable<OrderItemDetailsModel> OrderItems { get; set; } = new List<OrderItemDetailsModel>();
     }
 }

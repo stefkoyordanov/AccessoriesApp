@@ -69,13 +69,16 @@ namespace AccessoriesApp.Services
             return allAccessories;
         }
 
-        public async Task<AccessoriesDetailsViewModel?> GetAccessoryDetailsByIdAsync(int id)
+        public async Task<AccessoriesDetailsViewModel?> GetAccessoryDetailsByIdAsync(int id, string? userId)
         {
             AccessoriesDetailsViewModel? movieDetails = null;
             
                 movieDetails = await this._dbContext
-                    .Accessories                    
+                    .Accessories
                     .AsNoTracking()
+                    .Where(r => !r.IsDeleted)
+                    .Include(r => r.Category)
+                    .Include(r => r.UserAccessories)
                     .Where(m => m.Id == id && !m.IsDeleted)
                     .Select(m => new AccessoriesDetailsViewModel()
                     {
@@ -85,7 +88,9 @@ namespace AccessoriesApp.Services
                         CategoryName = m.Category.Name,                        
                         ReleaseDate = m.ReleaseDate,
                         PriceBGN = m.PriceBGN.ToString(),                        
-                        Image = m.Image                        
+                        Image = m.Image,
+                        IsAuthor = userId != null && m.AuthorId == userId,
+                        IsSaved = userId != null && m.UserAccessories.Any(ur => ur.UserId == userId),
                     })
                     .SingleOrDefaultAsync();            
 

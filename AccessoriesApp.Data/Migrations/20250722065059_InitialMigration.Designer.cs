@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessoriesApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250720163651_ChangeFieldNameOrderConfirmed")]
-    partial class ChangeFieldNameOrderConfirmed
+    [Migration("20250722065059_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -241,9 +241,9 @@ namespace AccessoriesApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsOrderItemFulfilled")
+                    b.Property<bool>("IsOrderItemConfirmed")
                         .HasColumnType("bit")
-                        .HasComment("Shows if the Order has been fulfilled is active");
+                        .HasComment("Shows if the Order has been confirmed");
 
                     b.Property<bool>("IsOrderItemIsActive")
                         .HasColumnType("bit")

@@ -23,11 +23,11 @@ namespace AccessoriesApp.Services
 
         public async Task<bool> AddToFavoritesAsync(int id, string userId)
         {
-            var recipe = await _dbContext.Accessories
+            var favorite = await _dbContext.Accessories
                 .Where(r => r.Id == id && !r.IsDeleted && r.AuthorId != userId)
                 .FirstOrDefaultAsync();
 
-            if (recipe == null)
+            if (favorite == null)
             {
                 return false; // Accessory not found, deleted, or user is the author
             }
@@ -40,13 +40,13 @@ namespace AccessoriesApp.Services
                 return false; // Accessory already in favorites
             }
 
-            var userRecipe = new UserAccessory
+            var userFavorite = new UserAccessory
             {
                 UserId = userId,
                 AccessoryId = id                
             };
 
-            await _dbContext.UserAccessories.AddAsync(userRecipe);
+            await _dbContext.UserAccessories.AddAsync(userFavorite);
             await _dbContext.SaveChangesAsync();
             return true;
         }

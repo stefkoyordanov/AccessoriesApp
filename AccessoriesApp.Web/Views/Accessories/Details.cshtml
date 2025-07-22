@@ -48,12 +48,12 @@
                 </button>
                 @if (User?.Identity?.IsAuthenticated == true && !Model.IsAuthor && !Model.IsSaved)
                 {
-                    <form asp-controller="Accessories" asp-action="Save" method="post" class="d-flex justify-content-center align-items-center flex-fill mx-1">
+                        <form asp-controller="Favorites" asp-action="Save" method="post" class="d-flex justify-content-center align-items-center flex-fill mx-1">
                         <input type="hidden" name="id" value="@Model.Id" />
                         <button type="submit" class="btn btn-success w-100">
                             <i class="fas fa-heart"></i> Add to Favorites
                         </button>
-                    </form>
+                        </form>
                     <a asp-controller="OrderItem" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
                             <i class="fa-solid fa-cart-shopping"></i> Аdd to Orders
                     </a>
@@ -63,7 +63,7 @@
                     <a asp-controller="Accessories" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">
                         <i class="fas fa-edit"></i> Edit
                     </a>
-                    <a asp-controller="Accessories" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
+                    <a asp-controller="Accessories" asp-action="MyDelete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1">
                         <i class="fas fa-trash"></i> Delete
                     </a>
                 }

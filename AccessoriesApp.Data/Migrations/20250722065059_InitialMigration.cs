@@ -231,7 +231,7 @@ namespace AccessoriesApp.Data.Migrations
                     CourierId = table.Column<int>(type: "int", nullable: true, comment: "Order CourierId"),
                     CreatedOn = table.Column<DateOnly>(type: "date", nullable: false),
                     TotalPriceBGN = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    IsOrderFulfilled = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been fulfilled is active")
+                    IsOrderConfirmed = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been fulfilled is active")
                 },
                 constraints: table =>
                 {
@@ -286,7 +286,7 @@ namespace AccessoriesApp.Data.Migrations
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     PriceBGN = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     IsOrderItemIsActive = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the OrderItem has been fulfilled is active"),
-                    IsOrderItemFulfilled = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been fulfilled is active")
+                    IsOrderItemConfirmed = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been confirmed")
                 },
                 constraints: table =>
                 {

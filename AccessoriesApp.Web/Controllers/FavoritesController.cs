@@ -11,8 +11,7 @@ namespace AccessoriesApp.Web.Controllers
 {
     public class FavoritesController : Controller
     {
-
-        private readonly ApplicationDbContext _context;
+        
         private readonly IFavoriteService _favoriteService;
 
         public FavoritesController(IFavoriteService favoriteService)
@@ -22,11 +21,11 @@ namespace AccessoriesApp.Web.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Favorites()
+        public async Task<IActionResult> GetAllFavorites()
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            var recipes = await _favoriteService.GetFavoriteAsync(userId);
-            return View(recipes);
+            var favorites = await _favoriteService.GetFavoriteAsync(userId);
+            return View(favorites);
         }
 
         [HttpPost]
@@ -35,10 +34,12 @@ namespace AccessoriesApp.Web.Controllers
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             bool success = await _favoriteService.AddToFavoritesAsync(id, userId);
 
+            
             if (!success)
             {
                 return NotFound();
             }
+            
 
 
             string referrer = Request.Headers["Referer"].ToString();
@@ -46,7 +47,7 @@ namespace AccessoriesApp.Web.Controllers
             {
                 return RedirectToAction(nameof(AccessoriesController.Details), "Accessories", new { id = id });
             }
-            return RedirectToAction(nameof(Favorites));
+            return RedirectToAction(nameof(GetAllFavorites));
         }
 
 
@@ -66,7 +67,7 @@ namespace AccessoriesApp.Web.Controllers
             {
                 return RedirectToAction(nameof(AccessoriesController.Details), "Accessories", new { id = id });
             }
-            return RedirectToAction(nameof(Favorites));
+            return RedirectToAction(nameof(GetAllFavorites));
         }
 
 

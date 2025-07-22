@@ -83,6 +83,8 @@ namespace AccessoriesApp.Services
                 order.IsOrderConfirmed = true;
                 await _dbContext.SaveChangesAsync();
 
+            var orderitems = await GetOrderItemsInOrderAsync(userId);
+
             var orderconfirmed = await _dbContext
                             .Orders
                             .Include(oi => oi.OrderUser)
@@ -100,7 +102,8 @@ namespace AccessoriesApp.Services
                                 CreatedOn = m.CreatedOn,
                                 TotalCountProducts = m.OrderItems.Count(),
                                 TotalPriceBGN = m.TotalPriceBGN,
-                                IsOrderConfirmed = m.IsOrderConfirmed
+                                IsOrderConfirmed = m.IsOrderConfirmed,
+                                OrderItems = orderitems
                             })
                             .FirstOrDefaultAsync();
 
