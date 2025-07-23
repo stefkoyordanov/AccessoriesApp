@@ -1,15 +1,63 @@
-﻿@using AccessoriesApp.Web.ViewModels
-@model IEnumerable<OrderDetailsModel>
+﻿@using static AccessoriesApp.GCommon.ApplicationConstants
+@using AccessoriesApp.Web.ViewModels
+@model OrderFilterViewModel
+
+
 
 @{
     ViewData["Title"] = "Index";
 }
 
-@foreach (var item in Model)
+<div class="container mt-3">
+
+    <div class="row justify-content-center my-3">
+    <div class="col-md-8">
+
+        <div class="card shadow-lg rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h5 class="mb-0"><i class="bi bi-person-plus-fill me-2"></i>Order period</h5>
+                </div>
+                <div class="card-body p-4">
+
+    <form asp-action="ConfirmedHistory" method="get" class="row mb-2" >
+    
+        <div class="col-md-4">
+        <label asp-for="StartDate" class="form-label">Start Date</label>
+        <div class="input-group date mydatepicker">  
+        <input asp-for="StartDate" class="form-control" type="text"  />
+        <div class="input-group-addon input-group-text">                      
+        <img src="~/images/calendar.svg" width="17" height="17"  />
+        </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="EndDate" class="form-label">End Date</label>
+        <div class="input-group date mydatepicker">  
+        <input asp-for="EndDate" class="form-control" type="text"  />
+        <div class="input-group-addon input-group-text">                      
+        <img src="~/images/calendar.svg" width="17" height="17"  />
+        </div>
+        </div>
+    </div>
+    <div class="col-md-4 d-flex align-self-end  justify-content-center">
+        <button type="submit" class="btn btn-primary w-100 mt-3">Search</button>
+    </div>
+    
+    </form>
+     </div>
+     </div>
+
+    </div>
+    </div>
+
+
+
+@foreach (var item in Model.Orders)
 {
 
+var modalId = $"detailsModal_{item.Id}";
 
-<div class="row justify-content-center mt-5">
+<div class="row justify-content-center mt-1">
     <div class="col-md-8">
 
         <div class="card mb-3">
@@ -24,7 +72,7 @@
                     <p class="card-text">PriceEuro: @item.TotalPriceEuro</p>
                     <p class="card-text">CourierName: @item.CourierName</p>
                     <p class="card-text">IsOrderConfirmed: @item.IsOrderConfirmed</p>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#@modalId">
                     View Details
                 </button>
             </div>
@@ -35,7 +83,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="@modalId" tabindex="-1" aria-labelledby="@($"{modalId}Label")" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -52,13 +100,13 @@
 
                                     @if (orderitem.Image != null)
                                 {
-                                        <a asp-controller="Accessories" asp-action="Details" asp-route-id="@orderitem.Id">
+                                        <a asp-controller="Accessories" asp-action="Details" asp-route-id="@orderitem.OrderItemAccessoryId">
                                             <img src="data:image/jpeg;base64,@Convert.ToBase64String(orderitem.Image)" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 150px;" alt="@orderitem.Title">
                                     </a>
                                 }
                                 else
                                 {
-                                        <a asp-controller="Accessories" asp-action="Details" asp-route-id="@orderitem.Id">
+                                        <a asp-controller="Accessories" asp-action="Details" asp-route-id="@orderitem.OrderItemAccessoryId">
                                         <img src="~/images/default-image.jpg" class="img-fluid w-100 h-100 object-fit-cover" style="max-height: 150px; object-fit: contain;" alt="No Image Available">
                                     </a>
                                 }
@@ -89,3 +137,5 @@
 </div>
 
 }
+
+</div>

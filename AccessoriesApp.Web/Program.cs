@@ -2,8 +2,10 @@ using AccessoriesApp.Data;
 using AccessoriesApp.Services;
 using AccessoriesApp.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 
 namespace AccessoriesApp.Web
 {
@@ -58,6 +60,23 @@ namespace AccessoriesApp.Web
 
             var app = builder.Build();
 
+
+            /*
+            //My Localization
+            var supportedCultures = new[] { new CultureInfo("en-CA") };
+            var localizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-CA"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            };
+            app.UseRequestLocalization(localizationOptions);
+            //My Localization
+            */
+
+
+
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -92,6 +111,9 @@ namespace AccessoriesApp.Web
                 //Task.Run(() => SeedRolesAsync(services)).Wait();
                 SeedRolesAsync(services).GetAwaiter().GetResult(); // FIXED HERE                
             }
+
+
+
 
             app.Run();
         }

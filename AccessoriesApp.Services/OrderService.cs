@@ -20,7 +20,7 @@ namespace AccessoriesApp.Services
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<OrderItemDetailsModel>> GetOrderItemsInOrderAsync(string userId, int orderid)
+        public async Task<IEnumerable<OrderItemDetailsModel>> GetOrderItemsInOrderAsync(string userId, int? orderid)
         {
             var orderItems = await this._dbContext
                  .OrderItems
@@ -99,7 +99,7 @@ namespace AccessoriesApp.Services
 
             await _dbContext.SaveChangesAsync();
 
-            var orderitems = await GetOrderItemsInChoosenOrderAsync(userId, orderFormInputModel.Id);
+            var orderitems = await GetOrderItemsInOrderAsync(userId, orderFormInputModel.Id);
 
             var orderconfirmed = await _dbContext
                             .Orders
@@ -127,14 +127,14 @@ namespace AccessoriesApp.Services
         }
 
 
-        public async Task<IEnumerable<OrderDetailsModel>> ConfirmOrderHistoryAsync(string userId)
+        public async Task<OrderFilterViewModel> ConfirmOrderHistoryAsync(string userId, DateOnly? startDate, DateOnly? endDate)
         {
             var orders = await _dbContext
                             .Orders
                             .Include(oi => oi.OrderUser)
                             .Include(oi => oi.Courier)
                             .Include(oi => oi.OrderItems)
-                            .Where(u => u.OrderUserId == userId && u.IsOrderConfirmed == true)
+                            .Where(u => u.OrderUserId == userId && u.IsOrderConfirmed == true & u.CreatedOn >= startDate & u.CreatedOn<= endDate)
                             .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
                             .ToListAsync();
 
@@ -153,14 +153,22 @@ namespace AccessoriesApp.Services
                                 TotalCountProducts = m.OrderItems.Count,
                                 TotalPriceBGN = m.TotalPriceBGN,
                                 IsOrderConfirmed = m.IsOrderConfirmed,
-                                OrderItems = await GetOrderItemsInChoosenOrderAsync(userId, m.Id) // Note: use m.Id here
+                                OrderItems = await GetOrderItemsInOrderAsync(userId, m.Id) // Note: use m.Id here
                             });
                         }
 
-            return orderConfirmed;
+            var orderfilterviewmodel = new OrderFilterViewModel
+            {
+                StartDate = startDate,
+                EndDate = endDate,
+                Orders = orderConfirmed
+            };
+
+            return orderfilterviewmodel;
         }
 
 
+        /*
         public async Task<IEnumerable<OrderItemDetailsModel>> GetOrderItemsInChoosenOrderAsync(string userId, int? OrderId)
         {
             var orderItems = await this._dbContext
@@ -187,6 +195,7 @@ namespace AccessoriesApp.Services
 
             return orderItems;
         }
+        */
 
 
 

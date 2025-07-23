@@ -10,10 +10,10 @@ namespace AccessoriesApp.Services.Interfaces
 {
     public interface IOrderService
     {
-        Task<IEnumerable<OrderItemDetailsModel>> GetOrderItemsInOrderAsync(string userId, int orderid);
+        Task<IEnumerable<OrderItemDetailsModel>> GetOrderItemsInOrderAsync(string userId, int? orderid);
         Task<IEnumerable<CourierViewModel>> GetAllCouriersAsync();
         Task<decimal> TotalSumOrder(int? orderid);
         Task<OrderDetailsModel> ConfirmOrderAsync(OrderFormInputModel confirmmodel, string userId);
-        Task<IEnumerable<OrderDetailsModel>> ConfirmOrderHistoryAsync(string userId);
+        Task<OrderFilterViewModel> ConfirmOrderHistoryAsync(string userId, DateOnly? startDate, DateOnly? endDate);
     }
 }

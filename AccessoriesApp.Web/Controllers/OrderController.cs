@@ -52,7 +52,7 @@ namespace AccessoriesApp.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ConfirmedHistory()
+        public async Task<IActionResult> ConfirmedHistory(DateOnly? startDate, DateOnly? endDate)
         {
             /*
             if (!ModelState.IsValid)
@@ -62,7 +62,7 @@ namespace AccessoriesApp.Web.Controllers
             */
 
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            var orderconfirmed = await _orderService.ConfirmOrderHistoryAsync(userId);
+            var orderconfirmed = await _orderService.ConfirmOrderHistoryAsync(userId, startDate, endDate);
 
             return View(orderconfirmed);
         }

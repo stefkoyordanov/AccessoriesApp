@@ -12,6 +12,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />                
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
+    <link href="~/js/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
+
+
     <style>
         .quantity-input {
             font-size: 1.1rem;
@@ -36,6 +39,11 @@
     .btn-plus {
         font-weight: bold;
         font-size: 20px;
+    }
+
+    .mydatepicker {
+      text-align: center;
+      color: red;
     }
 
 
@@ -174,6 +182,9 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <script src="~/js/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>     
+    <script src="~/js/bootstrap-datepicker/locales/bootstrap-datepicker.bg.min.js" charset="UTF-8"></script>
+
     <script>
         $(document).ready(function () {
             
@@ -251,6 +262,18 @@
           $input.trigger('input');   // triggers input event
         });        
 
+        
+        $(function () {
+                $(".mydatepicker").datepicker({
+                    autoclose: true,
+                    todayHighlight: true,
+                    //format: 'dd.mm.yyyy',
+                    //language: 'bg-BG',
+                    format: 'yyyy-mm-dd',
+                    weekStart: 1,
+                });
+            });
+            
 
         });
     </script>
