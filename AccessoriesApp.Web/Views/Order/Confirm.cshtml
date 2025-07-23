@@ -52,25 +52,33 @@
             </div>       
     }
 
+     <div id="mytotal" class="text-danger fs-2 fw-bold">@ViewData["SumOrder"]</div>
+
     <div>
     <label asp-for="@Model.CourierId" class="form-label-add-edit">Select courier</label>
-    <select asp-for="@Model.CourierId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Couriers, "Id", "Name"))">
+    <select asp-for="@Model.CourierId" class="form-control form-select" aria-required="true" asp-items="@(new SelectList(Model.Couriers, "Id", "Name"))">
     <option value="">...</option>
     </select>
     <span asp-validation-for="@Model.CourierId" class="text-danger"></span>
     </div>
 
+          <div class="d-flex mb-3 mt-3">
+          <button type="submit" class="btn btn-sm btn-success w-25">
+          <i class="fa-solid fa-truck"></i> Send order
+          </button>
+     </div>
+
     
-    <div class="d-flex flex-column align-items-start mb-3">
-        <div id="mytotal" class="text-danger fs-3 fw-bold">@ViewData["SumOrder"]</div>        
-        <button type="submit" class="btn btn-sm btn-success mt-2">
-        <i class="fa-solid fa-truck"></i> Send order
-        </button> 
-    </div>    
+    
     
     </div>
 
     </div>
     </form>
     }
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
 
