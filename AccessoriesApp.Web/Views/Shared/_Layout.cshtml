@@ -107,6 +107,12 @@
                                         <i class="fa-solid fa-cart-shopping"></i> Shopping cart
                                     </a>
                                 </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Order" asp-action="ConfirmedHistory">
+                                        <i class="fa-solid fa-clock-rotate-left"></i> Order history
+                                    </a>
+                                </li>
                             }
 
                             @if (User.IsInRole("Admin"))

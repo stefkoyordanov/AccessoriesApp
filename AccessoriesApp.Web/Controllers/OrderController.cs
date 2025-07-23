@@ -19,10 +19,10 @@ namespace AccessoriesApp.Web.Controllers
         }
                 
         [HttpGet]
-        public async Task<IActionResult> Confirm()
+        public async Task<IActionResult> Confirm(int id)
         {
             string? userId = User.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
-            var items = await _orderService.GetOrderItemsInOrderAsync(userId);
+            var items = await _orderService.GetOrderItemsInOrderAsync(userId, id);
 
             var model = new OrderFormInputModel
             {
@@ -47,6 +47,22 @@ namespace AccessoriesApp.Web.Controllers
 
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             var orderconfirmed = await _orderService.ConfirmOrderAsync(confirmmodel, userId);
+
+            return View(orderconfirmed);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmedHistory()
+        {
+            /*
+            if (!ModelState.IsValid)
+            {                
+                return View(model);
+            }
+            */
+
+            string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var orderconfirmed = await _orderService.ConfirmOrderHistoryAsync(userId);
 
             return View(orderconfirmed);
         }

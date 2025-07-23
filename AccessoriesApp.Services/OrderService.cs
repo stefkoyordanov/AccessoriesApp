@@ -20,14 +20,14 @@ namespace AccessoriesApp.Services
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<OrderItemDetailsModel>> GetOrderItemsInOrderAsync(string userId)
+        public async Task<IEnumerable<OrderItemDetailsModel>> GetOrderItemsInOrderAsync(string userId, int orderid)
         {
             var orderItems = await this._dbContext
                  .OrderItems
                  .Include(oi => oi.OrderItemAccessory)
                  .ThenInclude(r => r.Category)
                  .AsNoTracking()
-                 .Where(m => m.OrderItemUserId == userId)
+                 .Where(m => m.OrderItemUserId == userId && m.OrderId == orderid)
                  .Select(m => new OrderItemDetailsModel()
                  {
                      Id = m.Id,
@@ -71,6 +71,10 @@ namespace AccessoriesApp.Services
         }
 
 
+
+        
+
+
         public async Task<OrderDetailsModel> ConfirmOrderAsync(OrderFormInputModel orderFormInputModel, string userId)
         {
                 var order = await _dbContext.Orders
@@ -95,7 +99,7 @@ namespace AccessoriesApp.Services
 
             await _dbContext.SaveChangesAsync();
 
-            var orderitems = await GetOrderItemsInOrderAsync(userId);
+            var orderitems = await GetOrderItemsInChoosenOrderAsync(userId, orderFormInputModel.Id);
 
             var orderconfirmed = await _dbContext
                             .Orders
@@ -123,12 +127,72 @@ namespace AccessoriesApp.Services
         }
 
 
+        public async Task<IEnumerable<OrderDetailsModel>> ConfirmOrderHistoryAsync(string userId)
+        {
+            var orders = await _dbContext
+                            .Orders
+                            .Include(oi => oi.OrderUser)
+                            .Include(oi => oi.Courier)
+                            .Include(oi => oi.OrderItems)
+                            .Where(u => u.OrderUserId == userId && u.IsOrderConfirmed == true)
+                            .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
+                            .ToListAsync();
+
+            var orderConfirmed = new List<OrderDetailsModel>();
+
+                        foreach (var m in orders)
+                        {
+                            orderConfirmed.Add(new OrderDetailsModel
+                            {
+                                Id = m.Id,
+                                OrderUserId = m.OrderUserId,
+                                OrderUserName = m.OrderUser.UserName,
+                                CourierId = m.CourierId,
+                                CourierName = m.Courier.Name,
+                                CreatedOn = m.CreatedOn,
+                                TotalCountProducts = m.OrderItems.Count,
+                                TotalPriceBGN = m.TotalPriceBGN,
+                                IsOrderConfirmed = m.IsOrderConfirmed,
+                                OrderItems = await GetOrderItemsInChoosenOrderAsync(userId, m.Id) // Note: use m.Id here
+                            });
+                        }
+
+            return orderConfirmed;
+        }
+
+
+        public async Task<IEnumerable<OrderItemDetailsModel>> GetOrderItemsInChoosenOrderAsync(string userId, int? OrderId)
+        {
+            var orderItems = await this._dbContext
+                 .OrderItems
+                 .Include(oi => oi.OrderItemAccessory)
+                 .ThenInclude(r => r.Category)
+                 .AsNoTracking()
+                 .Where(m => m.OrderItemUserId == userId && m.OrderId == OrderId)
+                 .Select(m => new OrderItemDetailsModel()
+                 {
+                     Id = m.Id,
+                     OrderId = m.OrderId,
+                     OrderItemUserId = m.OrderItemUserId,
+                     OrderItemAccessoryId = m.OrderItemAccessoryId,
+                     Title = m.OrderItemAccessory.Title,
+                     CategoryName = m.OrderItemAccessory.Category.Name,
+                     ReleaseDate = m.OrderItemAccessory.ReleaseDate,
+                     Quantity = m.Quantity,
+                     PriceBGN = m.PriceBGN,
+                     Description = m.OrderItemAccessory.Description,
+                     Image = m.OrderItemAccessory.Image
+                 })
+                 .ToListAsync();
+
+            return orderItems;
+        }
+
+
 
 
 
 
 
     }
-
-
 }
