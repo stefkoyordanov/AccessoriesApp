@@ -95,7 +95,7 @@
     <div class="col-md-4 text-center">
     <div class="d-flex flex-column align-items-start mb-3" >   
         
-    @if (User?.Identity?.IsAuthenticated == true)
+    @if (Model.Any() == true)
     {
         <div id="mytotal" class="text-danger fs-3 fw-bold">@ViewData["SumOrder"]</div>
         <a asp-controller="Order" asp-action="Confirm" asp-route-id="@Model.FirstOrDefault().OrderId" class="btn btn-primary">

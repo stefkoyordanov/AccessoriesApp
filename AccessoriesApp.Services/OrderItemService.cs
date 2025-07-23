@@ -29,7 +29,7 @@ namespace AccessoriesApp.Services
                 .Include(oi => oi.OrderItemAccessory)
                 .ThenInclude(r => r.Category)                
                 .AsNoTracking()
-                .Where(m => m.OrderItemUserId == userId)
+                .Where(m => m.OrderItemUserId == userId && !m.IsOrderItemConfirmed)
                 .Select(m => new OrderItemDetailsModel()
                 {
                     Id = m.Id,

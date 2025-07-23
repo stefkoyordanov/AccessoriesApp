@@ -2,11 +2,13 @@
 using AccessoriesApp.Services;
 using AccessoriesApp.Services.Interfaces;
 using AccessoriesApp.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccessoriesApp.Web.Controllers
 {
+    [Authorize]
     public class OrderItemController : Controller
     {
         private readonly IOrderItemService _orderItemService;
@@ -18,7 +20,7 @@ namespace AccessoriesApp.Web.Controllers
             _userManager = userManager;
         }
 
-        
+        [Authorize]
         // GET: /OrderItem
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -52,7 +54,7 @@ namespace AccessoriesApp.Web.Controllers
         }
         */
 
-
+        [Authorize]
         // GET: /OrderItems/Create
         [HttpGet]
         public async Task<IActionResult> Create(int id)
@@ -63,6 +65,7 @@ namespace AccessoriesApp.Web.Controllers
             return View(model);            
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(OrderItemFormInputModel model)
         {
@@ -80,7 +83,7 @@ namespace AccessoriesApp.Web.Controllers
         }
 
 
-
+        [Authorize]
         // GET: /OrderItems/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -93,7 +96,7 @@ namespace AccessoriesApp.Web.Controllers
             return View(item);
         }
 
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(OrderItemFormInputModel model)
         {
@@ -108,6 +111,7 @@ namespace AccessoriesApp.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> EditFromBody([FromBody] OrderItemFormInputModel model)
         {
@@ -126,7 +130,7 @@ namespace AccessoriesApp.Web.Controllers
             
         }
 
-
+        [Authorize]
         // GET: /OrderItems/Delete/5
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
@@ -141,6 +145,7 @@ namespace AccessoriesApp.Web.Controllers
         }
 
 
+        [Authorize]
         // POST: Accessories/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]

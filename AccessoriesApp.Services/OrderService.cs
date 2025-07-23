@@ -83,6 +83,18 @@ namespace AccessoriesApp.Services
                 order.IsOrderConfirmed = true;
                 await _dbContext.SaveChangesAsync();
 
+            var orderitemsupdated = await _dbContext.OrderItems
+                            //.Where(u => u.Id == orderFormInputModel.Id && u.IsOrderConfirmed == false)
+                            .Where(u => u.OrderId == orderFormInputModel.Id)
+                            .ToListAsync();
+                
+                foreach (var item in orderitemsupdated)
+                {
+                    item.IsOrderItemConfirmed = true;
+                }
+
+            await _dbContext.SaveChangesAsync();
+
             var orderitems = await GetOrderItemsInOrderAsync(userId);
 
             var orderconfirmed = await _dbContext
