@@ -8,7 +8,9 @@
     ViewData["Title"] = "Index";
 }
 
+
 <div class="container mt-3">
+
 
     <div class="row justify-content-center my-3">
     <div class="col-md-8">
@@ -19,7 +21,7 @@
                 </div>
                 <div class="card-body p-4">
 
-    <form asp-action="ConfirmedHistory" method="get" class="row mb-2" >
+    <form asp-action="ConfirmedHistory" method="post" class="row mb-2" >
     
         <div class="col-md-4">
         <label asp-for="StartDate" class="form-label">Start Date</label>
@@ -49,6 +51,13 @@
 
     </div>
     </div>
+
+    @if ((Model == null || !Model.Orders.Any()) && !string.IsNullOrWhiteSpace(Model?.StartDate.ToString()) && !string.IsNullOrWhiteSpace(Model?.EndDate.ToString()))
+    {
+        <div class="alert alert-warning">
+            No orders for this period!
+        </div>
+    }
 
 
 
@@ -139,3 +148,7 @@ var modalId = $"detailsModal_{item.Id}";
 }
 
 </div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

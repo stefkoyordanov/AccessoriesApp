@@ -44,7 +44,7 @@
                     <p class="card-text"><small>Favorites: @item.SavedCount</small></p>
                     -->
                     <div class="d-flex justify-content-between mt-auto">
-                        @if (User?.Identity?.IsAuthenticated == true && !item.IsAuthor && !item.IsSaved)
+                        @if (User?.Identity?.IsAuthenticated == true && !item.IsAuthor)
                         {
                             <!-- First row with Details and Favorites -->
                             <!--
@@ -53,16 +53,34 @@
                             </a>
                             -->
 
-                            <form asp-controller="Accessories" asp-action="Save" method="post" class="w-50 me-2">
+                            if (!item.IsSaved)
+                            {
+                            <form asp-controller="Favorites" asp-action="Save" method="post" class="me-2 text-nowrap">
                                 <input type="hidden" name="id" value="@item.Id" />
-                                <button type="submit" class="btn btn-success w-100">
-                                    <i class="fas fa-heart"></i> Favorites
+                                <button type="submit" class="btn btn-outline-secondary" title="Add to Favorites">
+                                    <!--
+                                    <i class="fas fa-heart"></i> Add to Favorites
+                                    -->
+                                    <i class="fa-regular fa-heart"></i>
                                 </button>
-                            </form>
-                            
+                                </form>
+                            }
+                            else
+                            {
+                              <form asp-controller="Favorites" asp-action="Remove" method="post" class="me-2 text-nowrap">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-outline-secondary" title="Remove from Favorites">
+                                    <!--
+                                    <i class="fa-solid fa-square-minus"></i>Remove from Favorites
+                                    -->
+                                    <i class="fa-solid fa-heart" style="color: #ff0000;"></i>
+                                </button>
+                                </form>  
+                            }
 
-                            <a asp-controller="OrderItem" asp-action="Create" asp-route-id="@item.Id" class="btn btn-danger w-50">
-                                <i class="fas fa-info-circle"></i> Add to Orders
+
+                            <a asp-controller="OrderItem" asp-action="Create" asp-route-id="@item.Id" class="btn btn-success text-nowrap px-2">
+                                <i class="fa-solid fa-cart-shopping"></i> Add to cart
                             </a>
                         }
                         else if (User?.Identity?.IsAuthenticated == true && !item.IsAuthor)
@@ -74,13 +92,13 @@
                             </a>
                             -->
 
-                            <a asp-controller="OrderItem" asp-action="Create" asp-route-id="@item.Id" class="btn btn-danger w-50">
-                                <i class="fas fa-info-circle"></i> Add to Orders
+                            <a asp-controller="OrderItem" asp-action="Create" asp-route-id="@item.Id" class="btn btn-success  text-nowrap px-2">
+                                <i class="fa-solid fa-cart-shopping"></i> Add to cart
                             </a>
                         }
                         else
                         {
-                            <a asp-controller="Accessories" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info w-100">
+                            <a asp-controller="Accessories" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info w-100 text-nowrap px-2">
                                 <i class="fas fa-info-circle"></i> Details
                             </a>
                         }

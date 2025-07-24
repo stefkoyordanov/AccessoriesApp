@@ -116,11 +116,21 @@
                                     </a>
                                 </li>
 
+                                <!--
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Order" asp-action="ConfirmedHistory">
                                         <i class="fa-solid fa-clock-rotate-left"></i> Order history
                                     </a>
                                 </li>
+                                -->
+                                <li class="nav-item d-flex align-items-center">
+                                <form asp-controller="Order" asp-action="ConfirmedHistory" method="post" class="d-inline py-2">
+                                    <button type="submit" class="nav-link btn btn-link p-0 border-0" style="text-decoration: none;">
+                                        <i class="fa-solid fa-clock-rotate-left"></i> Order history
+                                    </button>
+                                </form>
+                                </li>
+
                             }
 
                             @if (User.IsInRole("Admin"))

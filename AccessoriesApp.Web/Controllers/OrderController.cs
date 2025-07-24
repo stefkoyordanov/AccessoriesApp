@@ -51,7 +51,8 @@ namespace AccessoriesApp.Web.Controllers
             return View(orderconfirmed);
         }
 
-        [HttpGet]
+        //[HttpGet]
+        [HttpPost]
         public async Task<IActionResult> ConfirmedHistory(DateOnly? startDate, DateOnly? endDate)
         {
             /*
