@@ -32,11 +32,11 @@ namespace AccessoriesApp.Web.Controllers
         
         // GET: Accessories
         [HttpGet]
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 8)
+        public async Task<IActionResult> Index(int id, int page = 1, int pageSize = 8)
         {
             string? userId = User.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
 
-            var accessories = await _accessoryService.GetAllAccessoriesAsync(userId);
+            var accessories = await _accessoryService.GetAllAccessoriesAsync(userId, id);
 
             var totalItems = accessories.Count();
             var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);

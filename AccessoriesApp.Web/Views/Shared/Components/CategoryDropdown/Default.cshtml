@@ -3,8 +3,34 @@
 
 @foreach (var category in Model)
 {
-    <a class="dropdown-item" asp-controller="Accessories" asp-action="Index" asp-route-name="@category.Id">
+    <a class="dropdown-item" asp-controller="Accessories" asp-action="Index" asp-route-id="@category.Id">
+        @if (category.Name == "Bags")
+        {
+            <i class="fa-solid fa-bag-shopping"></i> @category.Name
+        }
+        else if (category.Name == "Glasses")
+        {
+            <i class="fa-solid fa-glasses"></i> @category.Name
+        }
+        else if (category.Name == "Scarves")
+        {
+            <img src="~/images/scarf-svgrepo-com.svg" width="24" alt="Scarf icon" /> @category.Name
+        }
+        else if (category.Name == "Beachtowels")
+        {
+            <i class="fa-solid fa-umbrella-beach"></i> @category.Name
+        }
+        else if (category.Name == "Purses")
+        {
+            <i class="fa-solid fa-wallet"></i> @category.Name
+        }
+        else if (category.Name == "Hats")
+        {
+            <i class="fa-solid fa-hat-cowboy-side"></i> @category.Name
+        }
+        else
+        {
         <i class="fas fa-tag"></i> @category.Name
+        }
     </a>
-
 }

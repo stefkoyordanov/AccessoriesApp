@@ -5,7 +5,23 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="container mt-4">
+
+<div class="d-flex justify-content-between align-items-center mb-1">
+        <h1 class="text-muted fw-bold">My Favorites list</h1>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary fw-bold">
+            <i class="bi bi-arrow-left"></i> Back to Home Page
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning text-center">
+            <strong>Your favorite list is empty!</strong> Add accessories to your favorite list to see them here.
+        </div>
+    }
+    else
+    {
 
     @foreach (var item in Model)
     {
@@ -65,3 +81,6 @@
         </div>
         </div>
     }
+
+    }
+</div>

@@ -30,12 +30,12 @@ namespace AccessoriesApp.Services
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<AccessoriesIndexViewModel>> GetAllAccessoriesAsync(string? userId)
+        public async Task<IEnumerable<AccessoriesIndexViewModel>> GetAllAccessoriesAsync(string? userId, int categoryid)
         {
             IEnumerable<AccessoriesIndexViewModel> allAccessories = await this._dbContext
                 .Accessories
                 .AsNoTracking()
-                .Where(r => !r.IsDeleted)
+                .Where(r => !r.IsDeleted && (categoryid == 0 || r.Category.Id == categoryid))
                 .Include(r => r.Category)
                 .Include(r => r.UserAccessories)
                 .Select(m => new AccessoriesIndexViewModel()

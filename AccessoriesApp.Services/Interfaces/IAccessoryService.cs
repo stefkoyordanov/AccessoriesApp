@@ -10,7 +10,7 @@ namespace AccessoriesApp.Services.Interfaces
     public interface IAccessoryService
     {
         Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync();
-        Task<IEnumerable<AccessoriesIndexViewModel>> GetAllAccessoriesAsync(string? userId);
+        Task<IEnumerable<AccessoriesIndexViewModel>> GetAllAccessoriesAsync(string? userId, int categoryid);
 
         Task<bool> AddAccessoryAsync(AccessoriesFormInputModel inputModel, string userId);
 
