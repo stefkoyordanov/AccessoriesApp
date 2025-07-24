@@ -102,6 +102,7 @@ namespace AccessoriesApp.Web.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         private async Task<IEnumerable<CategoryViewModel>> GetCategoriesSelectList()
         {
             var categories = await _accessoryService.GetAllCategoriesAsync();

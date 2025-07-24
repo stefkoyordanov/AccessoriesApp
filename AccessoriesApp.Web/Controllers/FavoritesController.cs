@@ -47,7 +47,8 @@ namespace AccessoriesApp.Web.Controllers
             {
                 return RedirectToAction(nameof(AccessoriesController.Details), "Accessories", new { id = id });
             }
-            return RedirectToAction(nameof(GetAllFavorites));
+            //return RedirectToAction(nameof(GetAllFavorites));
+            return RedirectToAction(nameof(Index), "Accessories");
         }
 
 
@@ -67,7 +68,8 @@ namespace AccessoriesApp.Web.Controllers
             {
                 return RedirectToAction(nameof(AccessoriesController.Details), "Accessories", new { id = id });
             }
-            return RedirectToAction(nameof(GetAllFavorites));
+            //return RedirectToAction(nameof(GetAllFavorites));
+            return RedirectToAction(nameof(Index), "Accessories");
         }
 
 

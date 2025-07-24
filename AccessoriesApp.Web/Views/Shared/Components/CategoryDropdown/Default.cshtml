@@ -1,0 +1,9 @@
+﻿@using AccessoriesApp.Web.ViewModels
+@model IEnumerable<CategoryViewModel>
+
+@foreach (var category in Model)
+{
+    <a class="dropdown-item" asp-controller="Accessories" asp-action="Index" asp-route-name="@category.Id">
+        <i class="fas fa-tag"></i> @category.Name
+    </a>
+}
