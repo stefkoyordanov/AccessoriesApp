@@ -63,6 +63,10 @@ namespace AccessoriesApp.Web.Controllers
             */
 
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (User.IsInRole("Admin"))
+            {
+                userId = "0";
+            }
             var orderconfirmed = await _orderService.ConfirmOrderHistoryAsync(userId, startDate, endDate);
 
             return View(orderconfirmed);

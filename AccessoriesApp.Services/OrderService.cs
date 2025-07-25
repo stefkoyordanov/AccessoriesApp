@@ -134,7 +134,7 @@ namespace AccessoriesApp.Services
                             .Include(oi => oi.OrderUser)
                             .Include(oi => oi.Courier)
                             .Include(oi => oi.OrderItems)
-                            .Where(u => u.OrderUserId == userId && u.IsOrderConfirmed == true & u.CreatedOn >= startDate & u.CreatedOn<= endDate)
+                            .Where(u => (u.OrderUserId == userId || userId == "0") && u.IsOrderConfirmed == true & u.CreatedOn >= startDate & u.CreatedOn<= endDate)
                             .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
                             .ToListAsync();
 
