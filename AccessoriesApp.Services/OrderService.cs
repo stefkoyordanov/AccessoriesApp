@@ -27,7 +27,7 @@ namespace AccessoriesApp.Services
                  .Include(oi => oi.OrderItemAccessory)
                  .ThenInclude(r => r.Category)
                  .AsNoTracking()
-                 .Where(m => m.OrderItemUserId == userId && m.OrderId == orderid)
+                 .Where(m => (m.OrderItemUserId == userId || userId == "0") && m.OrderId == orderid)
                  .Select(m => new OrderItemDetailsModel()
                  {
                      Id = m.Id,
