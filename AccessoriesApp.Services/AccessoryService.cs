@@ -6,6 +6,7 @@ using AccessoriesApp.Web.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using static AccessoriesApp.GCommon.ApplicationConstants;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AccessoriesApp.Services
 {
@@ -126,7 +127,7 @@ namespace AccessoriesApp.Services
 
 
         
-        public async Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(int id)
+        public async Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(int? id)
         {
             AccessoriesFormInputModel? editableMovie = null;
             
@@ -161,23 +162,26 @@ namespace AccessoriesApp.Services
         
         public async Task<bool> EditAccessoryAsync(AccessoriesFormInputModel inputModel)
         {
-            Accessory? editableMovie = await this._dbContext
-                .Accessories                
-                .AsNoTracking()
+            Accessory? editableAccessory = await this._dbContext
+                .Accessories 
                 .SingleOrDefaultAsync(m => m.Id.ToString() == inputModel.Id);
-            if (editableMovie == null)
+            if (editableAccessory == null)
             {
                 return false;
             }
 
-            DateOnly movieReleaseDate = DateOnly
+            DateOnly accessoryReleaseDate = DateOnly
                 .ParseExact(inputModel.ReleaseDate, AppDateFormat,
                     CultureInfo.InvariantCulture, DateTimeStyles.None);
-            editableMovie.Title = inputModel.Title;
-            editableMovie.Description = inputModel.Description;            
-            editableMovie.CategoryId = inputModel.CategoryId;
-            editableMovie.Image = inputModel.Image;
-            editableMovie.ReleaseDate = movieReleaseDate;
+
+            editableAccessory.Title = inputModel.Title;            
+            editableAccessory.CategoryId = inputModel.CategoryId;
+            editableAccessory.ReleaseDate = accessoryReleaseDate;
+            editableAccessory.PriceBGN = Convert.ToDecimal(inputModel.PriceBGN);
+            editableAccessory.Description = inputModel.Description;
+            editableAccessory.ImageFileName = inputModel.ImageFileName;
+            editableAccessory.TypeImage = inputModel.TypeImage;
+            editableAccessory.Image = inputModel.Image;
 
             await this._dbContext.SaveChangesAsync();
 

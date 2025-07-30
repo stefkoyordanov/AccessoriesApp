@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccessoriesApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250722065059_InitialMigration")]
+    [Migration("20250728114933_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -204,12 +204,17 @@ namespace AccessoriesApp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateOnly>("ConfirmedOn")
+                        .HasColumnType("date");
+
                     b.Property<int?>("CourierId")
                         .HasColumnType("int")
                         .HasComment("Order CourierId");
 
-                    b.Property<DateOnly>("CreatedOn")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateInput")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<bool>("IsOrderConfirmed")
                         .HasColumnType("bit")
@@ -240,6 +245,14 @@ namespace AccessoriesApp.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("CreatedOnOrderItem")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("DateInput")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<bool>("IsOrderItemConfirmed")
                         .HasColumnType("bit")

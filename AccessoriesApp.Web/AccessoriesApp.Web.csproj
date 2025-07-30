@@ -10,7 +10,6 @@
   <ItemGroup>
     <Content Remove="Views\Accessories\Create.cshtml" />
     <Content Remove="Views\Accessories\Delete.cshtml" />
-    <Content Remove="Views\Accessories\Edit.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

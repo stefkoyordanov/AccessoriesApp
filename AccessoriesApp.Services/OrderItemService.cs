@@ -129,7 +129,7 @@ namespace AccessoriesApp.Services
                     var order = new Order
                     {
                         OrderUserId = userId,
-                        CreatedOn = DateOnly.FromDateTime(DateTime.UtcNow),
+                        ConfirmedOn = DateOnly.FromDateTime(DateTime.UtcNow),
                         TotalPriceBGN = inputModel.PriceBGN * inputModel.Quantity,
                         IsOrderConfirmed = false
                     };
@@ -145,6 +145,7 @@ namespace AccessoriesApp.Services
                         OrderItemAccessoryId = inputModel.OrderItemAccessoryId,
                         Quantity = inputModel.Quantity,
                         PriceBGN = inputModel.PriceBGN,
+                        CreatedOnOrderItem = DateOnly.FromDateTime(DateTime.UtcNow),
                         IsOrderItemIsActive = true,
                         IsOrderItemConfirmed = false
                     };
@@ -157,7 +158,7 @@ namespace AccessoriesApp.Services
                 {                    
                         var order = await _dbContext.Orders
                         .Where(u => u.OrderUserId == userId && u.IsOrderConfirmed == false)
-                        .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
+                        .OrderByDescending(u => u.ConfirmedOn) // Optional: get latest if multiple exist
                         .FirstOrDefaultAsync();
 
                         // Create OrderItem with the generated Order.Id
@@ -256,7 +257,7 @@ namespace AccessoriesApp.Services
 
             var order = await _dbContext.Orders                        
                         .Where(u => u.Id == inputModel.OrderId && u.IsOrderConfirmed == false)
-                        .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
+                        .OrderByDescending(u => u.ConfirmedOn) // Optional: get latest if multiple exist
                         .FirstOrDefaultAsync();
 
             order.TotalPriceBGN = totalPriceBGN;
@@ -339,7 +340,7 @@ namespace AccessoriesApp.Services
 
                 var order = await _dbContext.Orders
                             .Where(u => u.Id == orderItem.OrderId && u.IsOrderConfirmed == false)
-                            .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
+                            .OrderByDescending(u => u.ConfirmedOn) // Optional: get latest if multiple exist
                             .FirstOrDefaultAsync();
 
                 order.TotalPriceBGN = totalPriceBGN;
@@ -352,7 +353,7 @@ namespace AccessoriesApp.Services
 
                 var order = await _dbContext.Orders
                             .Where(u => u.Id == orderItem.OrderId && u.IsOrderConfirmed == false)
-                            .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
+                            .OrderByDescending(u => u.ConfirmedOn) // Optional: get latest if multiple exist
                             .FirstOrDefaultAsync();
 
                 _dbContext.Orders.Remove(order);

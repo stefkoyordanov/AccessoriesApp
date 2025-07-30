@@ -1,60 +1,99 @@
 ﻿@using AccessoriesApp.Web.ViewModels
 @model AccessoriesFormInputModel
 
+
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Recipe";
+    var today = DateTime.Now.ToString("yyyy-MM-dd");
 }
 
-<h1>Edit</h1>
-
-<h4>Accessory</h4>
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+</div>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TypeAccessory" class="control-label"></label>
-                <input asp-for="TypeAccessory" class="form-control" />
-                <span asp-validation-for="TypeAccessory" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReleaseDate" class="control-label"></label>
-                <input asp-for="ReleaseDate" class="form-control" />
-                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PriceEuro" class="control-label"></label>
-                <input asp-for="PriceEuro" class="form-control" />
-                <span asp-validation-for="PriceEuro" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>                       
 
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="row justify-content-center" style="margin: 0 auto; ">
+    <div class="col-md-4 text-center">
+        @if (Model.Image != null)
+        {
+            <img id="imagePreview" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Image)" class="img-fluid w-100 h-100 object-fit-cover" alt="@Model.Title" />
+        }
+        else
+        {
+            <img id="imagePreview" src="~/images/default-image.jpg" class="img-fluid" style="img-fluid w-100 h-100 object-fit-scale" alt="No Image Available" />
+        }        
     </div>
+
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-sm-12 ">
+                <form asp-controller="Accessories" asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger fw-bold"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="row">
+                        <div class="col-sm-6 mb-2">
+                            <label asp-for="@Model.Title" class="form-label-add-edit">Accessory Title</label>
+                            <input asp-for="@Model.Title" class="form-control" aria-required="true" />
+                            <span asp-validation-for="@Model.Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-sm-6 mb-2">
+                            <label asp-for="@Model.CategoryId" class="form-label-add-edit">Select Category</label>
+                            <select asp-for="@Model.CategoryId" class="form-control form-select" aria-required="true" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
+                                <option value="">...</option>
+                            </select>
+                            <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 mb-2">
+                        <label asp-for="@Model.ReleaseDate" class="form-label-add-edit">Created On</label>
+                        <div class="input-group date mydatepicker">
+                            <input asp-for="@Model.ReleaseDate" class="form-control" type="text" aria-required="true" value="@(string.IsNullOrEmpty(Model.ReleaseDate) ? today : Model.ReleaseDate)" />
+                            <div class="input-group-addon input-group-text">
+                                <img src="~/images/calendar.svg" width="17" height="17" />
+                            </div>
+                        </div>
+                        <span asp-validation-for="@Model.ReleaseDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-6 mb-2">
+                        <label asp-for="@Model.PriceBGN" class="form-label-add-edit">Accessory Price(BGN)</label>
+                        <input asp-for="@Model.PriceBGN" class="form-control" aria-required="true" />
+                        <span asp-validation-for="@Model.PriceBGN" class="text-danger"></span>
+                    </div>
+
+
+
+                    <div class="mb-2">
+                        <label asp-for="@Model.Description" class="form-label-add-edit">Description</label>
+                        <textarea asp-for="@Model.Description" class="form-control" aria-required="true" rows="2"></textarea>
+                        <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="mb-2">
+                        <label asp-for="@Model.File" class="form-label-add-edit">Image</label>
+                        <input asp-for="@Model.File" class="form-control" type="file" aria-required="false" placeholder="Choose image file (optional)" accept=".jpg,.jpeg,.png" />
+                        <span asp-validation-for="@Model.File" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-0">
+                        <button class="btn btn-warning btn-dark-text w-100 pb-0 fw-bold rounded" type="submit">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

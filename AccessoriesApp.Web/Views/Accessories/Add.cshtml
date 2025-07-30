@@ -41,7 +41,12 @@
 
             <div class="col-sm-6 mb-2">
                 <label asp-for="@Model.ReleaseDate" class="form-label-add-edit">Created On</label>
-                <input asp-for="@Model.ReleaseDate" class="form-control" type="text" aria-required="true" value="@(string.IsNullOrEmpty(Model.ReleaseDate) ? today : Model.ReleaseDate)" />
+                        <div class="input-group date mydatepicker">
+                            <input asp-for="@Model.ReleaseDate" class="form-control" type="text" aria-required="true" value="@(string.IsNullOrEmpty(Model.ReleaseDate) ? today : Model.ReleaseDate)" />
+                            <div class="input-group-addon input-group-text">
+                                <img src="~/images/calendar.svg" width="17" height="17" />
+                            </div>
+                        </div>
                 <span asp-validation-for="@Model.ReleaseDate" class="text-danger"></span>
             </div>
 

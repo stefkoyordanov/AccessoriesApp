@@ -80,10 +80,11 @@ namespace AccessoriesApp.Services
                 var order = await _dbContext.Orders
                             //.Where(u => u.Id == orderFormInputModel.Id && u.IsOrderConfirmed == false)
                             .Where(u => u.Id == orderFormInputModel.Id )
-                            .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
+                            .OrderByDescending(u => u.ConfirmedOn) // Optional: get latest if multiple exist
                             .FirstOrDefaultAsync();
 
                 order.CourierId = orderFormInputModel.CourierId;
+                order.ConfirmedOn = DateOnly.FromDateTime(DateTime.UtcNow);
                 order.IsOrderConfirmed = true;
                 await _dbContext.SaveChangesAsync();
 
@@ -115,7 +116,7 @@ namespace AccessoriesApp.Services
                                 OrderUserName = m.OrderUser.UserName,
                                 CourierId = m.CourierId,
                                 CourierName = m.Courier.Name,
-                                CreatedOn = m.CreatedOn,
+                                CreatedOnOrder = m.ConfirmedOn,
                                 TotalCountProducts = m.OrderItems.Count(),
                                 TotalPriceBGN = m.TotalPriceBGN,
                                 IsOrderConfirmed = m.IsOrderConfirmed,
@@ -134,8 +135,8 @@ namespace AccessoriesApp.Services
                             .Include(oi => oi.OrderUser)
                             .Include(oi => oi.Courier)
                             .Include(oi => oi.OrderItems)
-                            .Where(u => (u.OrderUserId == userId || userId == "0") && u.IsOrderConfirmed == true & u.CreatedOn >= startDate & u.CreatedOn<= endDate)
-                            .OrderByDescending(u => u.CreatedOn) // Optional: get latest if multiple exist
+                            .Where(u => (u.OrderUserId == userId || userId == "0") && u.IsOrderConfirmed == true & u.ConfirmedOn >= startDate & u.ConfirmedOn <= endDate)
+                            .OrderByDescending(u => u.ConfirmedOn) // Optional: get latest if multiple exist
                             .ToListAsync();
 
             var orderConfirmed = new List<OrderDetailsModel>();
@@ -149,7 +150,7 @@ namespace AccessoriesApp.Services
                                 OrderUserName = m.OrderUser.UserName,
                                 CourierId = m.CourierId,
                                 CourierName = m.Courier.Name,
-                                CreatedOn = m.CreatedOn,
+                                CreatedOnOrder = m.ConfirmedOn,
                                 TotalCountProducts = m.OrderItems.Count,
                                 TotalPriceBGN = m.TotalPriceBGN,
                                 IsOrderConfirmed = m.IsOrderConfirmed,

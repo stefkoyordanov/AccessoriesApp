@@ -16,7 +16,7 @@ namespace AccessoriesApp.Services.Interfaces
 
         Task<AccessoriesDetailsViewModel?> GetAccessoryDetailsByIdAsync(int id, string? userId);
 
-        Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(string? id);
+        Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(int? id);
 
         Task<bool> EditAccessoryAsync(AccessoriesFormInputModel inputModel);
         Task<int> DeleteAccessoryAsync(int id);

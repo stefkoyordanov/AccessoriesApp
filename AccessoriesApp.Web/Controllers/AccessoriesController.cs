@@ -159,7 +159,7 @@ namespace AccessoriesApp.Web.Controllers
         [Authorize(Roles = "Admin")]
         // GET: Accessories/Edit/5
         [HttpGet]
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             try
             {
@@ -194,10 +194,23 @@ namespace AccessoriesApp.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AccessoriesFormInputModel inputModel)
         {
+
+
+            if (inputModel.File != null && inputModel.File.Length > 0)
+            {
+                MemoryStream memoryStream = new MemoryStream();
+                await inputModel.File.CopyToAsync(memoryStream);
+
+                inputModel.ImageFileName = inputModel.File.FileName;
+                inputModel.TypeImage = inputModel.File.ContentType;
+                inputModel.Image = memoryStream.ToArray();
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(inputModel);
             }
+            
 
             try
             {

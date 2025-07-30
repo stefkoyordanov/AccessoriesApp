@@ -31,7 +31,7 @@ namespace AccessoriesApp.Data.Models
 
 
         [Required]
-        public DateOnly CreatedOn { get; set; }
+        public DateOnly ConfirmedOn { get; set; }
 
         [Precision(18, 2)]  // Total 18 digits, 2 after the decimal point
         [Required]
@@ -42,6 +42,10 @@ namespace AccessoriesApp.Data.Models
 
         [Comment("Shows if the Order has been fulfilled is active")]
         public bool IsOrderConfirmed { get; set; } = false;
+
+        
+        public DateTime DateInput { get; set; }
+
 
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }

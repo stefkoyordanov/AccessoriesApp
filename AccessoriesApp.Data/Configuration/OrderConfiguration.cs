@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace AccessoriesApp.Data.Configuration
 {
@@ -13,6 +15,11 @@ namespace AccessoriesApp.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
+
+            builder
+                .Property(e => e.DateInput)
+                .HasDefaultValueSql("GETDATE()");
+
             // Define composite Primary Key of the Mapping Entity
             //builder
             //    .HasKey(aum => new { aum.OrderItemId });

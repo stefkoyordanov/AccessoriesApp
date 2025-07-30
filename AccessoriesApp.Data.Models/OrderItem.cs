@@ -45,13 +45,17 @@ namespace AccessoriesApp.Data.Models
         [Required]
         public decimal PriceBGN { get; set; }
 
+        public DateOnly CreatedOnOrderItem { get; set; }
+
         [Comment("Shows if the OrderItem has been fulfilled is active")]
         public bool IsOrderItemIsActive { get; set; } = true;
 
         [Comment("Shows if the Order has been confirmed")]
         public bool IsOrderItemConfirmed { get; set; } = false;
 
-        
+        public DateTime DateInput { get; set; }
+
+
     }
 
 }

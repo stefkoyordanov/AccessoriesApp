@@ -229,9 +229,10 @@ namespace AccessoriesApp.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderUserId = table.Column<string>(type: "nvarchar(450)", nullable: false, comment: "Foreign key to the referenced AspNetUser."),
                     CourierId = table.Column<int>(type: "int", nullable: true, comment: "Order CourierId"),
-                    CreatedOn = table.Column<DateOnly>(type: "date", nullable: false),
+                    ConfirmedOn = table.Column<DateOnly>(type: "date", nullable: false),
                     TotalPriceBGN = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    IsOrderConfirmed = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been fulfilled is active")
+                    IsOrderConfirmed = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been fulfilled is active"),
+                    DateInput = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
                 },
                 constraints: table =>
                 {
@@ -285,8 +286,10 @@ namespace AccessoriesApp.Data.Migrations
                     OrderItemAccessoryId = table.Column<int>(type: "int", nullable: false, comment: "Foreign key to the referenced Accessory."),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     PriceBGN = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    CreatedOnOrderItem = table.Column<DateOnly>(type: "date", nullable: false),
                     IsOrderItemIsActive = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the OrderItem has been fulfilled is active"),
-                    IsOrderItemConfirmed = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been confirmed")
+                    IsOrderItemConfirmed = table.Column<bool>(type: "bit", nullable: false, comment: "Shows if the Order has been confirmed"),
+                    DateInput = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
                 },
                 constraints: table =>
                 {

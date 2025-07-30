@@ -13,6 +13,10 @@ namespace AccessoriesApp.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
+            builder
+                .Property(e => e.DateInput)
+                .HasDefaultValueSql("GETDATE()");
+
             // Define composite Primary Key of the Mapping Entity
             //builder
             //    .HasKey(aum => new { aum.OrderItemId });
