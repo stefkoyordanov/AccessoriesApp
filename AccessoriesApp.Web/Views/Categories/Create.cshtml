@@ -1,30 +1,54 @@
 ﻿@using AccessoriesApp.Web.ViewModels
 @model CategoryFormInputModel
 
+
+
 @{
     ViewData["Title"] = "Create Category";
 }
 
-<h2>Create New Category</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-plus-circle me-2"></i> Create New Category
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Categories" asp-action="Create" method="post">
 
-<form asp-controller="Categories" asp-action="Create" method="post" class="mt-4">
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label">Category Name</label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Category Name</label>
+                            <input asp-for="Name" class="form-control" placeholder="Enter category name..." />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check form-switch mb-4">
+                            <input asp-for="IsActive" class="form-check-input" role="switch" />
+                            <label asp-for="IsActive" class="form-check-label">Active Status</label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Save Category
+                            </button>
+
+                            <a asp-action="MyAllCategories" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left-circle"></i> Cancel
+                            </a>                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-check mb-3">
-        <input asp-for="IsActive" class="form-check-input" />
-        <label asp-for="IsActive" class="form-check-label">Is Active</label>
-    </div>
-
-    <button type="submit" class="btn btn-success">
-        <i class="bi bi-check-circle"></i> Save
-    </button>
-    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+

@@ -46,6 +46,11 @@ namespace AccessoriesApp.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CategoryFormInputModel category)
         {
+            if (await _categoryService.CategoryExistsAsync(category))
+            {
+                ModelState.AddModelError("Name", "A category with this name already exists.");
+            }
+
             if (ModelState.IsValid)
             {
                 await _categoryService.AddCategoryAsync(category);

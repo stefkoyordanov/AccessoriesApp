@@ -20,5 +20,7 @@ namespace AccessoriesApp.Services.Interfaces
         Task<bool> EditToggleStatusAsync(int id);
         Task<IEnumerable<CategoryViewModel>> GetMyAllCategoriesAsync();
 
+        Task<bool> CategoryExistsAsync(CategoryFormInputModel inputModel);
+
     }
 }

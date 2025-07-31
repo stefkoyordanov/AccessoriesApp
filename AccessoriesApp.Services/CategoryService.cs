@@ -50,8 +50,21 @@ namespace AccessoriesApp.Services
                 .SingleOrDefaultAsync();
         }
 
+        public async Task<bool> CategoryExistsAsync(CategoryFormInputModel inputModel)
+        {
+            bool ifexists = false;
+            if (await _dbContext.Categories.AnyAsync(c => c.Name.ToLower() == inputModel.Name.ToLower()))
+            {
+                ifexists = true;                
+            }
+            return ifexists;
+        }
+
+
         public async Task<bool> AddCategoryAsync(CategoryFormInputModel inputModel)
         {
+            
+
             bool opResult = false;
             Category category = new Category()
             {
