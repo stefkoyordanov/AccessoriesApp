@@ -1,0 +1,30 @@
+﻿@using AccessoriesApp.Web.ViewModels
+@model CategoryFormInputModel
+
+@{
+    ViewData["Title"] = "Create Category";
+}
+
+<h2>Create New Category</h2>
+
+<form asp-controller="Categories" asp-action="Create" method="post" class="mt-4">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Category Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label asp-for="IsActive" class="form-check-label">Is Active</label>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        <i class="bi bi-check-circle"></i> Save
+    </button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

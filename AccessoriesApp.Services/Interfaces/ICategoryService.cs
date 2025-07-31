@@ -17,6 +17,8 @@ namespace AccessoriesApp.Services.Interfaces
 
         Task<CategoryDeleteViewModel?> GetRecipeForDeleteAsync(int id);
         Task<bool> DeleteCategoryAsync(int id);
+        Task<bool> EditToggleStatusAsync(int id);
+        Task<IEnumerable<CategoryViewModel>> GetMyAllCategoriesAsync();
 
     }
 }

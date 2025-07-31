@@ -49,7 +49,7 @@ namespace AccessoriesApp.Web.Controllers
             if (ModelState.IsValid)
             {
                 await _categoryService.AddCategoryAsync(category);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MyAllCategories));
             }
             return View(category);
         }
@@ -143,6 +143,29 @@ namespace AccessoriesApp.Web.Controllers
             }
                         
         }
+
+        // GET: Category
+        public async Task<IActionResult> MyAllCategories()
+        {
+            var categories = await _categoryService.GetMyAllCategoriesAsync();
+            return View(categories);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleStatus(int id)
+        { 
+            bool toggleSuccess = await this._categoryService.EditToggleStatusAsync(id);
+            if (!toggleSuccess)
+            {
+                // TODO: Custom 404 page
+                return this.RedirectToAction(nameof(MyAllCategories));
+            }
+
+            return RedirectToAction(nameof(MyAllCategories));
+        }
+
+
+
 
         private bool CategoryExists(int id)
         {

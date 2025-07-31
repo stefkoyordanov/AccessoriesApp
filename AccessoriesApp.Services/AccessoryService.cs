@@ -134,7 +134,7 @@ namespace AccessoriesApp.Services
                 editableMovie = await this._dbContext
                     .Accessories
                     .AsNoTracking()
-                    .Where(m => m.Id == id)
+                    .Where(m => m.Id == id && !m.IsDeleted)
                     .Select(m => new AccessoriesFormInputModel()
                     {
                         //Description = m.Description,
@@ -164,7 +164,7 @@ namespace AccessoriesApp.Services
         {
             Accessory? editableAccessory = await this._dbContext
                 .Accessories 
-                .SingleOrDefaultAsync(m => m.Id.ToString() == inputModel.Id);
+                .SingleOrDefaultAsync(m => m.Id.ToString() == inputModel.Id && !m.IsDeleted);
             if (editableAccessory == null)
             {
                 return false;
@@ -194,23 +194,23 @@ namespace AccessoriesApp.Services
         
         public async Task<int> DeleteAccessoryAsync(int id)
         {
-            Accessory? deletableMovie = await this._dbContext
+            Accessory? deletableAccessory = await this._dbContext
                 .Accessories
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (deletableMovie == null)
+                .SingleOrDefaultAsync(m => m.Id == id && !m.IsDeleted);
+            if (deletableAccessory == null)
             {
                 return 0;
             }
-            _dbContext.Accessories.Remove(deletableMovie);
+            //_dbContext.Accessories.Remove(deletableMovie);
+
+            deletableAccessory.IsDeleted = true;
+
             int countdeleted = await this._dbContext.SaveChangesAsync();
 
             return countdeleted;
         }
 
-        public Task<AccessoriesFormInputModel?> GetEditableAccessoryByIdAsync(string? id)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         
     }

@@ -25,11 +25,13 @@ namespace AccessoriesApp.Services
 
         public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
         {
-            return await _dbContext.Categories                
+            return await _dbContext.Categories
+                .Where(r => r.IsActive)
                 .Select(c => new CategoryViewModel
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = c.Name,
+                    IsActive = c.IsActive                     
                 })
                 .ToListAsync();
         }
@@ -42,7 +44,8 @@ namespace AccessoriesApp.Services
                 .Select(c => new CategoryViewModel
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = c.Name,
+                    IsActive = c.IsActive
                 })
                 .SingleOrDefaultAsync();
         }
@@ -52,7 +55,8 @@ namespace AccessoriesApp.Services
             bool opResult = false;
             Category category = new Category()
             {
-                Name = inputModel.Name
+                Name = inputModel.Name,
+                IsActive = inputModel.IsActive
             };
             await _dbContext.Categories.AddAsync(category);
             await _dbContext.SaveChangesAsync();
@@ -69,7 +73,8 @@ namespace AccessoriesApp.Services
                 .Select(c => new CategoryFormInputModel
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = c.Name,
+                    IsActive = c.IsActive
                 })
                 .SingleOrDefaultAsync();
         }
@@ -103,7 +108,8 @@ namespace AccessoriesApp.Services
                 .Select(c => new CategoryDeleteViewModel
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = c.Name,
+                    IsActive = c.IsActive
                 })
                 .SingleOrDefaultAsync();
             return category;
@@ -123,6 +129,36 @@ namespace AccessoriesApp.Services
                 _dbContext.Categories.Remove(category);
                 await _dbContext.SaveChangesAsync();
             }
+            return true;
+        }
+
+        public async Task<IEnumerable<CategoryViewModel>> GetMyAllCategoriesAsync()
+        {
+            return await _dbContext.Categories                
+                .Select(c => new CategoryViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    IsActive = c.IsActive
+                })
+                .ToListAsync();
+        }
+
+
+        public async Task<bool> EditToggleStatusAsync(int id)
+        {
+            var category = await _dbContext
+                .Categories
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (category == null)
+            {
+                return false; // Recipe not in favorites
+            }
+            
+            category.IsActive = !category.IsActive;
+            _dbContext.SaveChanges();
+           
             return true;
         }
 
