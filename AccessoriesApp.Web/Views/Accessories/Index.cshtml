@@ -2,14 +2,14 @@
 @model PagedViewModel<AccessoriesIndexViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    
+    //ViewData["Title"] = Model.Items.FirstOrDefault().CategoryName;
 }
 
-<h1>Index</h1>
 
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
-    <h2>@ViewData["Title"]</h2>
+    <h2 class="text-muted fw-bold">@ViewData["Title"]</h2>
     @if (User?.Identity?.IsAuthenticated == true)
     {
         <a asp-controller="Accessories" asp-action="Add" class="btn btn-primary">

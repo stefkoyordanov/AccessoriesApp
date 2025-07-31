@@ -1,19 +1,22 @@
 ﻿using AccessoriesApp.Data;
 using AccessoriesApp.Services;
 using AccessoriesApp.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using AccessoriesApp.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 
 
 
 namespace AccessoriesApp.Web.Controllers
 {
+
+    [Authorize]
     public class FavoritesController : Controller
     {
         
         private readonly IFavoriteService _favoriteService;
-
+                
         public FavoritesController(IFavoriteService favoriteService)
         {
             _favoriteService = favoriteService;
@@ -21,6 +24,7 @@ namespace AccessoriesApp.Web.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllFavorites()
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -29,6 +33,7 @@ namespace AccessoriesApp.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Save(int id)
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -47,12 +52,36 @@ namespace AccessoriesApp.Web.Controllers
             {
                 return RedirectToAction(nameof(AccessoriesController.Details), "Accessories", new { id = id });
             }
+
+            else if (referrer.Contains("/Accessories"))
+            {
+                if (Uri.TryCreate(referrer, UriKind.Absolute, out Uri uri))
+                {
+                    string[] segments = uri.Segments;
+                    // segments: ["/", "Accessories/", "Index/", "1"]
+                    if (segments.Length >= 4)
+                    {
+                        string idSegment = segments[3].TrimEnd('/');
+                        if (int.TryParse(idSegment, out int idout))
+                        {
+                            // id now contains 1
+                            // use it as needed
+                            if (idout > 0)
+                            {
+                                return RedirectToAction(nameof(Index), "Accessories", new { id = id });
+                            }
+                        }
+                    }
+                }
+            }
+
             //return RedirectToAction(nameof(GetAllFavorites));
             return RedirectToAction(nameof(Index), "Accessories");
         }
 
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Remove(int id)
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -68,6 +97,33 @@ namespace AccessoriesApp.Web.Controllers
             {
                 return RedirectToAction(nameof(AccessoriesController.Details), "Accessories", new { id = id });
             }
+            else if (referrer.Contains("/Favorites/GetAllFavorites"))
+            {
+                return RedirectToAction(nameof(FavoritesController.GetAllFavorites), "Favorites", new { id = id });
+            }
+            else if (referrer.Contains("/Accessories"))
+            {
+                if (Uri.TryCreate(referrer, UriKind.Absolute, out Uri uri))
+                {
+                    string[] segments = uri.Segments;
+                    // segments: ["/", "Accessories/", "Index/", "1"]
+                    if (segments.Length >= 4)
+                    {
+                        string idSegment = segments[3].TrimEnd('/');
+                        if (int.TryParse(idSegment, out int idout))
+                        {
+                            // id now contains 1
+                            // use it as needed
+                            if (idout > 0)
+                            {
+                                return RedirectToAction(nameof(Index), "Accessories", new { id = id });
+                            }
+                        }
+                    }
+                }
+            }
+
+
             //return RedirectToAction(nameof(GetAllFavorites));
             return RedirectToAction(nameof(Index), "Accessories");
         }

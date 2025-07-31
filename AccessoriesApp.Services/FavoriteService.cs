@@ -66,7 +66,7 @@ namespace AccessoriesApp.Services
                     Image = ur.Accessory.Image,
                     CategoryName = ur.Accessory.Category.Name,
                     IsAuthor = ur.Accessory.AuthorId == userId,
-                    IsSaved = true // All recipes here are favorites
+                    IsSaved = true // All accessories here are favorites
                 })
                 .ToListAsync();
         }

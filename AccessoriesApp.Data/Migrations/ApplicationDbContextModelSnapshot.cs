@@ -117,35 +117,47 @@ namespace AccessoriesApp.Data.Migrations
                         {
                             Id = 1,
                             IsActive = true,
-                            Name = "Bags"
+                            Name = "Earrings"
                         },
                         new
                         {
                             Id = 2,
                             IsActive = true,
-                            Name = "Glasses"
+                            Name = "Necklaces"
                         },
                         new
                         {
                             Id = 3,
                             IsActive = true,
-                            Name = "Scarves"
+                            Name = "Bags"
                         },
                         new
                         {
                             Id = 4,
                             IsActive = true,
-                            Name = "Beachtowels"
+                            Name = "Glasses"
                         },
                         new
                         {
                             Id = 5,
                             IsActive = true,
-                            Name = "Purses"
+                            Name = "Scarves"
                         },
                         new
                         {
                             Id = 6,
+                            IsActive = true,
+                            Name = "Beachtowels"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsActive = true,
+                            Name = "Purses"
+                        },
+                        new
+                        {
+                            Id = 8,
                             IsActive = true,
                             Name = "Hats"
                         });

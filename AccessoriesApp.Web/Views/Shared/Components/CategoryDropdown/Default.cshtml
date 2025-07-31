@@ -4,7 +4,18 @@
 @foreach (var category in Model)
 {
     <a class="dropdown-item" asp-controller="Accessories" asp-action="Index" asp-route-id="@category.Id">
-        @if (category.Name == "Bags")
+
+        @if (category.Name == "Earrings")
+        {
+            <img src="~/images/heart-earrings-svgrepo-com.svg" width="24" alt="Earrings icon" /> @category.Name
+        }
+
+        else if (category.Name == "Necklaces")
+        {
+            <img src="~/images/intricate-necklace-svgrepo-com.svg" width="24" alt="Earrings icon" /> @category.Name
+        }        
+        
+        else if (category.Name == "Bags")
         {
             <i class="fa-solid fa-bag-shopping"></i> @category.Name
         }
@@ -30,7 +41,7 @@
         }
         else
         {
-        <i class="fas fa-tag"></i> @category.Name
+            <i class="fas fa-tag"></i> @category.Name
         }
     </a>
 }

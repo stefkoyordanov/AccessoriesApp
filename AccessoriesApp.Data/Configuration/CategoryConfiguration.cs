@@ -20,12 +20,14 @@ namespace AccessoriesApp.Data.Configuration
         {
             List<Category> categories = new List<Category>()
             {
-                new Category { Id = 1, Name = "Bags" },
-                new Category { Id = 2, Name = "Glasses" },
-                new Category { Id = 3, Name = "Scarves" },
-                new Category { Id = 4, Name = "Beachtowels" },
-                new Category { Id = 5, Name = "Purses" },
-                new Category { Id = 6, Name = "Hats" }
+                new Category { Id = 1, Name = "Earrings" },
+                new Category { Id = 2, Name = "Necklaces" },
+                new Category { Id = 3, Name = "Bags" },
+                new Category { Id = 4, Name = "Glasses" },
+                new Category { Id = 5, Name = "Scarves" },
+                new Category { Id = 6, Name = "Beachtowels" },
+                new Category { Id = 7, Name = "Purses" },
+                new Category { Id = 8, Name = "Hats" }
             };
             return categories;
         }

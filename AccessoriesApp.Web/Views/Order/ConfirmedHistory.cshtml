@@ -82,14 +82,13 @@ var modalId = $"detailsModal_{item.Id}";
 
         <div class="card mb-3">
             <div class="card-header">
-                <h1>Shopping cart</h1>
+                <h4 class="text-muted fw-bold">Shopping cart ID @item.Id</h4>
             </div>
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title">@item.Id</h5>
+            <div class="card-body d-flex flex-column">                
                     <p class="card-text">User name: @item.OrderUserName</p>
                     <p class="card-text">TotalCountProducts: @item.TotalCountProducts</p>
-                    <p class="card-text">PriceBGN: @item.TotalPriceBGN</p>
-                    <p class="card-text">PriceEuro: @item.TotalPriceEuro</p>
+                    <p class="card-text">PriceBGN: @item.TotalPriceBGN BGN</p>
+                    <p class="card-text">PriceEuro: @item.TotalPriceEuro &euro;</p>
                     <p class="card-text">CourierName: @item.CourierName</p>
                     <p class="card-text">IsOrderConfirmed: @item.IsOrderConfirmed</p>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#@modalId">
@@ -136,11 +135,11 @@ var modalId = $"detailsModal_{item.Id}";
                                 <div class="card-body d-flex flex-column p-1">
                                         <h5 class="card-title">@orderitem.Title</h5>
                                         <div class="card-text mt-1">Category: @orderitem.CategoryName</div>
-                                        <div class="card-text mt-1">PriceBGN: @orderitem.PriceBGN</div>
-                                        <div class="card-text mt-1">PriceEuro: @orderitem.PriceEuro</div>
+                                        <div class="card-text mt-1">PriceBGN: @orderitem.PriceBGN BGN</div>
+                                        <div class="card-text mt-1">PriceEuro: @orderitem.PriceEuro &euro;</div>
                                         <div class="card-text mt-1">Quantity: @orderitem.Quantity</div>
-                                        <div class="card-text mt-1">Total price BGN: @(orderitem.Quantity* orderitem.PriceBGN)</div>
-                                        <div class="card-text mt-1">Total price Euro: @(orderitem.Quantity* orderitem.PriceEuro)</div>
+                                        <div class="card-text mt-1">Total price BGN: @(orderitem.Quantity* orderitem.PriceBGN) BGN</div>
+                                        <div class="card-text mt-1">Total price Euro: @(orderitem.Quantity* orderitem.PriceEuro) &euro;</div>
                                 </div>
                             </div>
 

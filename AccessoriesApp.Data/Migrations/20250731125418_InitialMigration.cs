@@ -319,12 +319,14 @@ namespace AccessoriesApp.Data.Migrations
                 columns: new[] { "Id", "IsActive", "Name" },
                 values: new object[,]
                 {
-                    { 1, true, "Bags" },
-                    { 2, true, "Glasses" },
-                    { 3, true, "Scarves" },
-                    { 4, true, "Beachtowels" },
-                    { 5, true, "Purses" },
-                    { 6, true, "Hats" }
+                    { 1, true, "Earrings" },
+                    { 2, true, "Necklaces" },
+                    { 3, true, "Bags" },
+                    { 4, true, "Glasses" },
+                    { 5, true, "Scarves" },
+                    { 6, true, "Beachtowels" },
+                    { 7, true, "Purses" },
+                    { 8, true, "Hats" }
                 });
 
             migrationBuilder.InsertData(

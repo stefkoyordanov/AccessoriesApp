@@ -54,6 +54,14 @@ namespace AccessoriesApp.Web.Controllers
             };
 
 
+            if (id == 0)
+            {
+                ViewData["Title"] = "All accessories";
+            }
+            else
+            {
+                ViewData["Title"] = viewModel.Items.FirstOrDefault().CategoryName;
+            }
 
             return View(viewModel);
         }

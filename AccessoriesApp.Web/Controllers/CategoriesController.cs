@@ -2,6 +2,7 @@
 using AccessoriesApp.Data.Models;
 using AccessoriesApp.Services.Interfaces;
 using AccessoriesApp.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,6 +45,7 @@ namespace AccessoriesApp.Web.Controllers
         // POST: Category/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CategoryFormInputModel category)
         {
             if (await _categoryService.CategoryExistsAsync(category))
@@ -60,6 +62,7 @@ namespace AccessoriesApp.Web.Controllers
         }
 
         // GET: Category/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         { 
             CategoryFormInputModel? editableCategory = await this._categoryService
@@ -77,6 +80,7 @@ namespace AccessoriesApp.Web.Controllers
         // POST: Category/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(CategoryFormInputModel inputModel)
         {
 
@@ -109,6 +113,7 @@ namespace AccessoriesApp.Web.Controllers
 
 
         // GET: Category/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             CategoryDeleteViewModel? deleteCategory = await this._categoryService
@@ -125,6 +130,7 @@ namespace AccessoriesApp.Web.Controllers
         // POST: Category/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {            
             try
@@ -150,6 +156,8 @@ namespace AccessoriesApp.Web.Controllers
         }
 
         // GET: Category
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> MyAllCategories()
         {
             var categories = await _categoryService.GetMyAllCategoriesAsync();
@@ -157,6 +165,7 @@ namespace AccessoriesApp.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ToggleStatus(int id)
         { 
             bool toggleSuccess = await this._categoryService.EditToggleStatusAsync(id);
