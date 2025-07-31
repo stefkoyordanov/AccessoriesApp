@@ -79,6 +79,7 @@ namespace AccessoriesApp.Services
                     .AsNoTracking()
                     .Where(r => !r.IsDeleted)
                     .Include(r => r.Category)
+                    .Include(r => r.Author)
                     .Include(r => r.UserAccessories)
                     .Where(m => m.Id == id && !m.IsDeleted)
                     .Select(m => new AccessoriesDetailsViewModel()
@@ -88,7 +89,8 @@ namespace AccessoriesApp.Services
                         Description = m.Description,
                         CategoryName = m.Category.Name,                        
                         ReleaseDate = m.ReleaseDate,
-                        PriceBGN = m.PriceBGN.ToString(),                        
+                        PriceBGN = m.PriceBGN.ToString(),   
+                        AuthorUserName = m.Author.UserName,
                         Image = m.Image,
                         IsAuthor = userId != null && m.AuthorId == userId,
                         IsSaved = userId != null && m.UserAccessories.Any(ur => ur.UserId == userId),
