@@ -34,6 +34,8 @@ namespace AccessoriesApp.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int id, int page = 1, int pageSize = 8)
         {
+            ViewData["categoryid"] = id;
+
             string? userId = User.Identity?.IsAuthenticated == true ? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value : null;
 
             var accessories = await _accessoryService.GetAllAccessoriesAsync(userId, id);

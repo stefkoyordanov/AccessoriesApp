@@ -1,4 +1,5 @@
 ﻿using AccessoriesApp.Data;
+using AccessoriesApp.Data.Models;
 using AccessoriesApp.Services;
 using AccessoriesApp.Services.Interfaces;
 using AccessoriesApp.Web.ViewModels;
@@ -34,7 +35,7 @@ namespace AccessoriesApp.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Save(int id)
+        public async Task<IActionResult> Save(int id, int categoryid)
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             bool success = await _favoriteService.AddToFavoritesAsync(id, userId);
@@ -43,8 +44,7 @@ namespace AccessoriesApp.Web.Controllers
             if (!success)
             {
                 return NotFound();
-            }
-            
+            }            
 
 
             string referrer = Request.Headers["Referer"].ToString();
@@ -68,7 +68,7 @@ namespace AccessoriesApp.Web.Controllers
                             // use it as needed
                             if (idout > 0)
                             {
-                                return RedirectToAction(nameof(Index), "Accessories", new { id = id });
+                                return RedirectToAction(nameof(Index), "Accessories", new { id = categoryid });
                             }
                         }
                     }
@@ -82,7 +82,7 @@ namespace AccessoriesApp.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Remove(int id)
+        public async Task<IActionResult> Remove(int id, int categoryid)
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             bool success = await _favoriteService.RemoveFromFavoritesAsync(id, userId);
@@ -99,7 +99,7 @@ namespace AccessoriesApp.Web.Controllers
             }
             else if (referrer.Contains("/Favorites/GetAllFavorites"))
             {
-                return RedirectToAction(nameof(FavoritesController.GetAllFavorites), "Favorites", new { id = id });
+                return RedirectToAction(nameof(FavoritesController.GetAllFavorites), "Favorites");
             }
             else if (referrer.Contains("/Accessories"))
             {
@@ -116,7 +116,7 @@ namespace AccessoriesApp.Web.Controllers
                             // use it as needed
                             if (idout > 0)
                             {
-                                return RedirectToAction(nameof(Index), "Accessories", new { id = id });
+                                return RedirectToAction(nameof(Index), "Accessories", new { id = categoryid });
                             }
                         }
                     }

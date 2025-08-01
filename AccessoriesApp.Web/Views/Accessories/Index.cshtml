@@ -57,6 +57,7 @@
                             {
                             <form asp-controller="Favorites" asp-action="Save" method="post" class="me-2 text-nowrap">
                                 <input type="hidden" name="id" value="@item.Id" />
+                                <input type="hidden" name="categoryid" value="@ViewData["categoryid"]" />
                                 <button type="submit" class="btn btn-outline-secondary" title="Add to Favorites">
                                     <!--
                                     <i class="fas fa-heart"></i> Add to Favorites
@@ -69,6 +70,7 @@
                             {
                               <form asp-controller="Favorites" asp-action="Remove" method="post" class="me-2 text-nowrap">
                                 <input type="hidden" name="id" value="@item.Id" />
+                                <input type="hidden" name="categoryid" value="@ViewData["categoryid"]" />
                                 <button type="submit" class="btn btn-outline-secondary" title="Remove from Favorites">
                                     <!--
                                     <i class="fa-solid fa-square-minus"></i>Remove from Favorites
