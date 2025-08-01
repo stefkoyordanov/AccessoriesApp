@@ -181,10 +181,12 @@ namespace AccessoriesApp.Services
             editableAccessory.ReleaseDate = accessoryReleaseDate;
             editableAccessory.PriceBGN = Convert.ToDecimal(inputModel.PriceBGN);
             editableAccessory.Description = inputModel.Description;
-            editableAccessory.ImageFileName = inputModel.ImageFileName;
-            editableAccessory.TypeImage = inputModel.TypeImage;
-            editableAccessory.Image = inputModel.Image;
-
+            if (inputModel.Image != null && inputModel.Image.Length > 0)            
+            {
+                editableAccessory.ImageFileName = inputModel.ImageFileName;
+                editableAccessory.TypeImage = inputModel.TypeImage;
+                editableAccessory.Image = inputModel.Image;
+            }
             await this._dbContext.SaveChangesAsync();
 
             return true;
