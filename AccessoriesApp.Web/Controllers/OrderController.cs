@@ -72,6 +72,26 @@ namespace AccessoriesApp.Web.Controllers
             return View(orderconfirmed);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ConfirmedTotal(DateOnly? startDate, DateOnly? endDate)
+        {
+            /*
+            if (!ModelState.IsValid)
+            {                
+                return View(model);
+            }
+            */
+
+            string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (User.IsInRole("Admin"))
+            {
+                userId = "0";
+            }
+            var orderconfirmed = await _orderService.ConfirmOrderHistoryAsync(userId, startDate, endDate);
+
+            return View(orderconfirmed);
+        }
+
 
 
 

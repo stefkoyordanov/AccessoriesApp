@@ -160,12 +160,44 @@
                             </li>
 
                             <li class="nav-item d-flex align-items-center">
-                                <form asp-controller="Order" asp-action="ConfirmedHistory" method="post" class="d-inline py-2">
-                                    <button type="submit" class="nav-link btn btn-link p-0 border-0" style="text-decoration: none;">
-                                        <i class="fa-solid fa-chart-column"></i> Order statistics
-                                    </button>
+                               
+                             </li>
+
+                             <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-chart-column"></i> Order statistics</a>
+                                <div class="dropdown-menu">
+
+                                <!--                                
+                               
+                                <a class="dropdown-item" asp-controller="Order" asp-action="ConfirmedHistory">
+                                        <i class="fa-solid fa-layer-group"></i> Order details 
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" asp-controller="Order" asp-action="ConfirmedTotal">
+                                        <i class="fa-solid fa-layer-group"></i> Order total 
+                                </a>
+                                -->
+                                
+                                <a href="#" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('confirmedHistoryForm').submit();">
+                                <img src="~/images/details-svgrepo-com.svg" width="24" alt="details icon" /> Order details
+                                </a>
+                                <form id="confirmedHistoryForm" asp-controller="Order" asp-action="ConfirmedHistory" method="post" class="d-none">
+                                    @Html.AntiForgeryToken()
                                 </form>
-                                </li>
+
+                                <a href="#" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('confirmedTotalForm').submit();">
+                                    <img src="~/images/list-ul-alt-svgrepo-com.svg" width="24" alt="total icon" /> Order total
+                                </a>
+                                <form id="confirmedTotalForm" asp-controller="Order" asp-action="ConfirmedTotal" method="post" class="d-none">
+                                    @Html.AntiForgeryToken()
+                                </form>
+
+
+                                </div>
+                            </li>
+
+
                             }
                         }
                         

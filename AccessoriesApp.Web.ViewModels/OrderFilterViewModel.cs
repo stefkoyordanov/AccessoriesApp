@@ -19,6 +19,9 @@ namespace AccessoriesApp.Web.ViewModels
         //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateOnly? EndDate { get; set; }
 
+        //public decimal TotalPriceBGN { get; set; }
+        //public decimal TotalPriceEuro => Math.Round(TotalPriceBGN / 1.95583m, 2); 
+
         public IEnumerable<OrderDetailsModel> Orders { get; set; } = new List<OrderDetailsModel>();
     }
 }

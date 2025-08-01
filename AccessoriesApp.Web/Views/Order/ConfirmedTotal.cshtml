@@ -1,0 +1,122 @@
+﻿@using static AccessoriesApp.GCommon.ApplicationConstants
+@using AccessoriesApp.Web.ViewModels
+@model OrderFilterViewModel
+
+
+@{
+    ViewData["Title"] = "Total Orders by period";
+    decimal totalBGN = Model.Orders.Sum(o => o.TotalPriceBGN);
+    decimal totalEUR = Model.Orders.Sum(o => o.TotalPriceEuro);
+}
+
+
+<div class="container mt-3">
+
+    <!-- Header wrapped in the same row/column structure -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <h1 class="text-muted fw-bold">Total orders by period</h1>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary fw-bold">
+                    <i class="bi bi-arrow-left"></i> Back to Home Page
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row justify-content-center my-3">
+        <div class="col-md-8">
+
+            <div class="card shadow-lg rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h5 class="mb-0"><i class="bi bi-person-plus-fill me-2"></i>Order period</h5>
+                </div>
+                <div class="card-body p-4">
+
+                    <form asp-action="ConfirmedTotal" method="post" class="row mb-2">
+
+                        <div class="col-md-4">
+                            <label asp-for="StartDate" class="form-label">Start Date</label>
+                            <div class="input-group date mydatepicker">
+                                <input asp-for="StartDate" class="form-control" type="text" />
+                                <div class="input-group-addon input-group-text">
+                                    <img src="~/images/calendar.svg" width="17" height="17" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="EndDate" class="form-label">End Date</label>
+                            <div class="input-group date mydatepicker">
+                                <input asp-for="EndDate" class="form-control" type="text" />
+                                <div class="input-group-addon input-group-text">
+                                    <img src="~/images/calendar.svg" width="17" height="17" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 d-flex align-self-end  justify-content-center">
+                            <button type="submit" class="btn btn-primary w-100 mt-3">Search</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @if ((Model == null || !Model.Orders.Any()) && !string.IsNullOrWhiteSpace(Model?.StartDate.ToString()) && !string.IsNullOrWhiteSpace(Model?.EndDate.ToString()))
+    {
+        <div class="alert alert-warning">
+            No orders for this period!
+        </div>
+    }
+    else
+    {
+
+        @if (!string.IsNullOrWhiteSpace(Model?.StartDate.ToString()) && !string.IsNullOrWhiteSpace(Model?.EndDate.ToString()))
+        {
+<h2>Orders from @Model?.StartDate.ToString() to @Model?.EndDate.ToString()</h2>
+
+<table class="table table-bordered table-striped text-center">
+    <thead class="table-light">
+        <tr>
+            <th>#</th>
+            <th>Confirmed On</th>
+            <th>Total Price (BGN)</th>
+            <th>Total Price (EUR)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int index = 1;
+            foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@index</td>
+                    <td>@order.CreatedOnOrder.ToString("yyyy-MM-dd")</td>
+                    <td>@order.TotalPriceBGN.ToString("F2")</td>
+                    <td>@order.TotalPriceEuro.ToString("F2")</td>
+                </tr>
+                index++;
+            }
+        }        
+    </tbody>
+    <tfoot class="table-secondary fw-bold">
+        <tr>
+            <td colspan="2">Total</td>
+            <td>@totalBGN.ToString("F2")</td>
+            <td>@totalEUR.ToString("F2")</td>
+        </tr>
+    </tfoot>
+</table>
+        }
+
+    }
+
+
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
